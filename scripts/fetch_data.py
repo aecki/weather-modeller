@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Compatibility entrypoint. Prefer: python run.py fetch [--refresh]."""
-from pathlib import Path
+
 import sys
+from pathlib import Path
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from weather_modeller.ingestion import fetch_observations
 

@@ -1,0 +1,2 @@
+# Development tools only; install into the repository-local environment.
+ruff==0.17.3

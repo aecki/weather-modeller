@@ -1,6 +1,7 @@
 """Observation aggregation with explicit UTC windows and missingness."""
-from datetime import datetime, timedelta
+
 import math
+from datetime import datetime, timedelta
 
 
 def utc_datetime(timestamp):
@@ -20,7 +21,9 @@ def mean_discharge_day(rows, day):
     complete = (
         len(group) == 24
         and actual == expected
-        and all(isinstance(row["value"], (int, float)) and math.isfinite(row["value"]) for row in group)
+        and all(
+            isinstance(row["value"], (int, float)) and math.isfinite(row["value"]) for row in group
+        )
     )
     return {
         "timestamp": day + "T06:00:00Z",

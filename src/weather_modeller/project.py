@@ -1,4 +1,5 @@
 """Locate a source checkout without machine-specific paths."""
+
 from pathlib import Path
 
 

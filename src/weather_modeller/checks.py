@@ -1,0 +1,47 @@
+"""Offline numerical and application integrity checks."""
+
+import shutil
+import subprocess
+import sys
+
+from .build import build
+
+
+def check(root):
+    node = shutil.which("node")
+    if not node:
+        raise RuntimeError("Node.js is missing; use the repository-local Conda environment")
+    subprocess.run(
+        [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-v"],
+        cwd=root,
+        check=True,
+    )
+    for path in ("app.js", "data-core.js"):
+        subprocess.run([node, "--check", str(root / "web" / path)], check=True)
+    subprocess.run([node, str(root / "tests" / "test_data.cjs")], cwd=root, check=True)
+    build(root)
+    print("All local checks passed.")
+
+
+def quality(root):
+    """Explicit developer checks; normal app use needs no development packages."""
+    subprocess.run([sys.executable, "-m", "ruff", "check", "."], cwd=root, check=True)
+    subprocess.run([sys.executable, "-m", "ruff", "format", "--check", "."], cwd=root, check=True)
+    prettier = root / "node_modules/prettier/bin/prettier.cjs"
+    if not prettier.is_file():
+        raise RuntimeError("Install local frontend dev tools with npm ci --ignore-scripts")
+    subprocess.run(
+        [
+            shutil.which("node"),
+            str(prettier),
+            "--check",
+            "web/index.html",
+            "web/style.css",
+            "web/app.js",
+            "web/data-core.js",
+            "tests/test_data.cjs",
+            "config/catalog.json",
+        ],
+        cwd=root,
+        check=True,
+    )

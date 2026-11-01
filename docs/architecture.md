@@ -3,9 +3,9 @@
 The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database, external runtime service, frontend build framework or required npm install.
 
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
-- `src/weather_modeller/cli.py` implements build, serve, check and explicit data fetch commands.
-- `ingestion.py` reads the catalog, downloads/caches official sources and emits a compact JSON snapshot plus provenance.
-- `exports.py` produces CSV selections from the snapshot and writes only to repository-local outputs.
+- `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `server.py` serves the app and handles local exports; `checks.py` runs verification.
+- `catalog.py` validates event/station selection. `sources.py` handles cached downloads and provenance. `ingestion.py` prepares the observation snapshot. `validation.py` checks its contract before a refresh or build.
+- `exports.py` produces CSV selections from the snapshot. `storage.py` provides unique temporary files and atomic replacement for exports and source caches.
 - `aggregation.py` contains the river mean calculation shared by ingestion and Python tests.
 - `web/data-core.js` contains the rainfall and annual-maxima calculations shared by the frontend and Node tests.
 - `web/app.js` handles the map, event replay, charts, historical comparison and CSV export.
@@ -23,4 +23,10 @@ Manual browser checks additionally exercise event switching, accumulation contro
 
 Keep downloaded originals in `data/raw/`, editable source in `web/` or `src/`, and generated files in `dist/`. Never edit `dist/` as source. Use relative filesystem/asset paths, UTF-8 and LF line endings. Add numerical tests for calculations where missingness or time windows can change scientific meaning. Run checks after changing the catalog or refreshing data. Avoid adding dependencies until needed; add them to the repository's dependency files and install only locally.
 
-The optional Prettier version is pinned by `package-lock.json`; `.npmrc` keeps its cache in the repository. It is a development tool, not a runtime dependency.
+Optional developer tools are pinned in `requirements-dev.txt` (Ruff) and `package-lock.json` (Prettier). `python run.py dev` installs both locally; `python run.py quality` checks both. `pyproject.toml` records Python project metadata and quality rules. `.npmrc` keeps the npm cache in the repository. These tools are not runtime dependencies.
+
+## Failure handling
+
+Builds validate the observation schema and required assets in a staging directory inside `.cache/build/`. An incomplete copy never deletes the working app; a failed promotion restores the previous directory. Staging directories are cleaned on exit. Builds should be run serially.
+
+Exports and cache writes use unique temporary files in the destination directory and an atomic replace after writing/flushing. Concurrent exports to the same name produce a complete last-writer-wins file. Source cache hits require both URL and request-body equality. Regression tests cover these behaviors and invalid observation values.

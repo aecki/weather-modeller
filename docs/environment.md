@@ -32,8 +32,12 @@ No HOME variable is changed. Existing OS/browser installations remain system pre
 
 Conda environments embed absolute installation prefixes. Clone on another device or move the checkout, then recreate `.environments/weather-modeller/` at that location. Never commit `.environments/weather-modeller/`, caches, raw downloads, node_modules or dist. They are ignored. The checked-in processed snapshot and source code are sufficient to rebuild the app.
 
-`python run.py setup` is idempotent. `python run.py setup --update` updates only this prefix. It can change transitive package versions; review/test before updating a platform lock.
+`python run.py setup` is idempotent and repairs a partial environment if required executables are missing. `python run.py setup --update` updates only this prefix. It can change transitive package versions; review/test before updating a platform lock.
 
 ## Serving
 
 `python run.py serve` dispatches into the checkout's Python interpreter, builds `dist/`, and binds only `127.0.0.1`. Its only write endpoint saves a validated observation selection to the repository’s `outputs/` directory; it rejects cross-origin requests and caller-provided paths. HTML, JavaScript, CSS, map geography, Leaflet and observations are served from this directory. A content security policy restricts automatic asset requests to the local origin. Internet access is needed only for initial dependency setup, an explicit data fetch, optional formatter installation, or manually opening source links.
+
+## Optional developer dependencies
+
+`python run.py dev` explicitly installs Ruff from the pinned `requirements-dev.txt` into the repository environment and Prettier with `npm ci --ignore-scripts` into repository-local node_modules. It refuses to run under a different Python prefix. No global npm install is used. Python user-site packages are disabled in the launcher; developer pip installation explicitly disables user installs. `python run.py quality` checks Python and frontend style offline once installed. Normal app execution and numerical checks do not require these tools.

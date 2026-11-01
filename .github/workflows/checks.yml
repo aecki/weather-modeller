@@ -12,9 +12,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
         with:
           auto-activate-base: false
           activate-environment: ''
@@ -25,3 +28,9 @@ jobs:
       - name: Check the bundled snapshot and build offline app
         shell: bash
         run: python run.py check
+      - name: Install optional tools inside the checkout
+        shell: bash
+        run: python run.py dev
+      - name: Check Python and frontend quality
+        shell: bash
+        run: python run.py quality

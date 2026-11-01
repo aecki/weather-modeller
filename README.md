@@ -24,6 +24,8 @@ python run.py serve                 # Build and serve locally, loopback only
 python run.py serve --port 8766     # Choose a different local port
 python run.py build                 # Produce the complete offline app in dist/
 python run.py check                 # Run numerical, data-integrity and asset checks
+python run.py dev                   # Install optional repo-local developer tools
+python run.py quality               # Check Python/frontend style and common errors
 python run.py fetch                 # Explicitly download missing source data, reuse matching cache
 python run.py fetch --refresh       # Explicitly re-download official source observations
 python run.py setup --update        # Update this repository's environment from environment.yml
@@ -76,14 +78,14 @@ Every source response has its exact URL/request, retrieval time and SHA256 recor
 
 Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map geography: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Leaflet is vendored under its BSD licence.
 
-## Optional formatting tools
+## Development
 
-The app does not need npm dependencies. To use the pinned local formatter, after setup:
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow. Optional developer tools are installed locally and pinned separately from app dependencies:
 
 ```sh
-conda activate ./.environments/weather-modeller
-npm ci --ignore-scripts
-npm run format
+python run.py dev
+python run.py quality
+python run.py check
 ```
 
-Activation affects only the current shell. `.npmrc` keeps the npm cache in `.cache/npm`; `package-lock.json` pins the formatter. The launcher works without activation for all normal app commands.
+`dev` requires internet access; the two check commands run offline. Python code is checked/formatted with Ruff (`pyproject.toml`); frontend formatting uses Prettier (`package-lock.json`). The same checks are configured in the cross-platform CI matrix. The app itself still requires no npm installation.

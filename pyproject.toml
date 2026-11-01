@@ -1,0 +1,19 @@
+[project]
+name = "weather-modeller"
+version = "0.1.0"
+description = "A repository-local explorer of real Swiss weather and river observations"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [".environments", ".cache", ".conda", "node_modules", "data", "dist", "work", "outputs", "web/vendor"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# These checkout entrypoints set up the local source path before importing.
+"run.py" = ["E402"]
+"scripts/*.py" = ["E402"]
+"tests/*.py" = ["E402"]
