@@ -4,6 +4,10 @@ import json
 import os
 import tempfile
 from pathlib import Path
+from threading import Lock
+
+# Windows rejects overlapping replace operations on the same destination.
+_REPLACE_LOCK = Lock()
 
 
 def atomic_write_bytes(path: Path, content: bytes) -> None:
@@ -19,7 +23,8 @@ def atomic_write_bytes(path: Path, content: bytes) -> None:
             stream.write(content)
             stream.flush()
             os.fsync(stream.fileno())
-        temporary.replace(path)
+        with _REPLACE_LOCK:
+            temporary.replace(path)
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)

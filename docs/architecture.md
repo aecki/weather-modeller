@@ -30,7 +30,7 @@ Optional developer tools are pinned in `requirements-dev.txt` (Ruff) and `packag
 
 Builds validate the observation schema and required assets in a staging directory inside `.cache/build/`. An incomplete copy never deletes the working app; a failed promotion restores the previous directory. Staging directories are cleaned on exit. Builds should be run serially.
 
-Exports and cache writes use unique temporary files in the destination directory and an atomic replace after writing/flushing. Concurrent exports to the same name produce a complete last-writer-wins file. Source cache hits require both URL and request-body equality. Regression tests cover these behaviors and invalid observation values.
+Exports and cache writes use unique temporary files in the destination directory and an atomic replace after writing/flushing. Replacement operations are serialised within the app process to avoid Windows sharing violations. Concurrent exports to the same name produce a complete last-writer-wins file. Source cache hits require both URL and request-body equality. Regression tests cover these behaviors and invalid observation values.
 
 ## Static hosting
 

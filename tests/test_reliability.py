@@ -45,6 +45,31 @@ class StorageTests(LocalTemporaryTest):
         self.assertIn(path.read_bytes(), payloads)
         self.assertEqual(list(self.root.iterdir()), [path])
 
+    def test_windows_sharing_violation_is_avoided_for_parallel_exports(self):
+        import time
+        from threading import Lock
+
+        windows_handle = Lock()
+        original = Path.replace
+
+        def windows_replace(source, destination):
+            if not windows_handle.acquire(blocking=False):
+                raise PermissionError("WinError 5: overlapping destination handle")
+            try:
+                time.sleep(0.005)
+                return original(source, destination)
+            finally:
+                windows_handle.release()
+
+        path = self.root / "export.csv"
+        payloads = [str(index).encode() * 1000 for index in range(8)]
+        with (
+            patch("weather_modeller.storage.Path.replace", windows_replace),
+            ThreadPoolExecutor(max_workers=4) as pool,
+        ):
+            list(pool.map(lambda content: atomic_write_bytes(path, content), payloads))
+        self.assertIn(path.read_bytes(), payloads)
+
 
 class BuildTests(LocalTemporaryTest):
     def setUp(self):

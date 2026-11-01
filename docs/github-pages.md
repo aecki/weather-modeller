@@ -9,7 +9,7 @@ The app builds to a static `dist/` directory. GitHub Pages serves that directory
 3. Set **Build and deployment → Source → GitHub Actions**.
 4. Run **Publish aecki’s catastrophe lab** from the Actions tab, or push a commit to `main`.
 
-The workflow in `.github/workflows/pages.yml` sets up the repository-local toolchain, runs the numerical and graphics tests, builds the static site, uploads only `dist/`, and deploys the resulting Pages artifact. Deployment is separate from the cross-platform CI matrix. Remote CI/deployment must be observed before claiming it succeeded.
+The workflow in `.github/workflows/pages.yml` sets up the repository-local toolchain, runs the numerical and graphics tests, builds the static site, uploads only `dist/`, and deploys the resulting Pages artifact. Until Pages is enabled, the workflow still tests/builds/uploads the static artifact and skips deployment with a setup note. Deployment is separate from the cross-platform CI matrix. Remote CI/deployment must be observed before claiming it succeeded.
 
 For a project repository, the usual URL is `https://<owner>.github.io/<repository>/`. Every asset, data fetch and internal anchor uses a relative URL, so the same artifact works under a repository subpath without hard-coding an owner or repository name. A custom domain can be configured later through Pages settings.
 

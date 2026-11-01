@@ -15,6 +15,8 @@ jobs:
       pages: write
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      pages_enabled: ${{ steps.site.outputs.enabled }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -30,7 +32,19 @@ jobs:
       - name: Test and build the static site
         shell: bash
         run: python run.py check
+      - name: Check whether Pages is enabled
+        id: site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          enabled="$(gh api "repos/$GITHUB_REPOSITORY" --jq '.has_pages')"
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+          if [ "$enabled" != "true" ]; then
+            echo "Static site built and tested. To publish, select Settings → Pages → GitHub Actions, then rerun this workflow." >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: Configure Pages
+        if: steps.site.outputs.enabled == 'true'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - name: Upload static site
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
@@ -38,6 +52,7 @@ jobs:
           path: dist
   deploy:
     needs: build
+    if: needs.build.outputs.pages_enabled == 'true'
     runs-on: ubuntu-latest
     permissions:
       pages: write
