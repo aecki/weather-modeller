@@ -1,0 +1,13 @@
+{
+  "name": "swiss-catastrophe-lab",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Repository-local explorer for real Swiss weather and river observations",
+  "engines": { "node": ">=22 <23" },
+  "scripts": {
+    "format": "prettier --write web/index.html web/style.css web/app.js web/data-core.js tests/test_data.cjs config/catalog.json",
+    "format:check": "prettier --check web/index.html web/style.css web/app.js web/data-core.js tests/test_data.cjs config/catalog.json",
+    "test": "node tests/test_data.cjs"
+  },
+  "devDependencies": { "prettier": "3.6.2" }
+}

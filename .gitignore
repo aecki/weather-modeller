@@ -1,0 +1,24 @@
+# Local data downloads and generated site
+data/raw/
+dist/
+work/
+# Environments, caches and editors
+.conda/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.cache/
+.pytest_cache/
+.DS_Store
+.vscode/
+.idea/
+# Never commit credentials
+.env
+.env.*
+!.env.example
+.openai/*.tar.gz
+.sites-checkout/
+node_modules/
+.environments/
+outputs/

@@ -1,0 +1,27 @@
+name: Cross-platform local app checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: false
+          activate-environment: ''
+          miniforge-version: latest
+      - name: Create environment inside checkout
+        shell: bash
+        run: python run.py setup
+      - name: Check the bundled snapshot and build offline app
+        shell: bash
+        run: python run.py check

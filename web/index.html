@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
+    />
+    <meta
+      name="description"
+      content="Explore real Swiss extreme rainfall and river observations from MeteoSwiss and FOEN."
+    />
+    <title>Swiss Catastrophe Lab</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="vendor/leaflet.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="vendor/leaflet.js"></script>
+    <script defer src="data-core.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <a class="brand" href="./"
+          ><span class="cross">+</span><span>SWISS<br /><b>CATASTROPHE LAB</b></span></a
+        >
+        <div class="side-intro">
+          <span class="eyebrow">THE OBSERVATION ROOM</span>
+          <h1>When weather<br />becomes extreme.</h1>
+          <p>Explore the measurements behind Switzerland’s major rain events.</p>
+        </div>
+        <div class="eyebrow section-label">01 / CHOOSE AN EVENT</div>
+        <nav id="events" aria-label="Historical event"></nav>
+        <div class="eyebrow section-label">02 / SET YOUR LENS</div>
+        <label class="field-label" for="duration">Rainfall accumulation</label>
+        <div class="segmented" id="durations" role="group" aria-label="Rainfall accumulation">
+          <button data-days="1" class="active" aria-pressed="true">1 day</button
+          ><button data-days="3" aria-pressed="false">3 days</button
+          ><button data-days="5" aria-pressed="false">5 days</button>
+        </div>
+        <label class="field-label" for="station">Weather station</label
+        ><select id="station" aria-label="Weather station"></select>
+        <button class="source-button" id="source-open">↗ Data & methodology</button>
+        <div class="side-footer">
+          <span class="live-dot"></span> HISTORICAL OBSERVATIONS
+          <p>Source: MeteoSwiss · FOEN<br />No generated weather or loss data.</p>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <span>HAZARD EXPLORER <span class="muted">/ SWITZERLAND</span></span
+          ><span class="data-badge">● REAL MEASUREMENTS</span>
+        </header>
+        <div id="loading" role="status">Loading official Swiss measurements…</div>
+        <div id="content" hidden>
+          <section class="heading">
+            <div>
+              <div class="eyebrow">HISTORICAL EVENT REPLAY</div>
+              <h2 id="event-title"></h2>
+              <p id="event-dates"></p>
+            </div>
+            <div class="export-actions">
+              <button id="export" class="outline-button">↓ Save CSV in repository</button>
+              <p id="export-status" role="status"></p>
+            </div>
+          </section>
+          <section class="stats" aria-label="Observation summary">
+            <article>
+              <span class="stat-label">SELECTED STATION</span><strong id="station-name"></strong
+              ><small id="station-meta"></small>
+            </article>
+            <article>
+              <span class="stat-label">RAINFALL AT CURSOR</span
+              ><strong><span id="rain-value"></span><i> mm</i></strong
+              ><small id="rain-duration"></small>
+            </article>
+            <article>
+              <span class="stat-label">EVENT’S WETTEST WINDOW</span
+              ><strong><span id="peak-value"></span><i> mm</i></strong
+              ><small id="peak-date"></small>
+            </article>
+            <article>
+              <span class="stat-label">MEASUREMENT COVERAGE</span><strong id="coverage"></strong
+              ><small id="coverage-note"></small>
+            </article>
+          </section>
+          <section class="workspace">
+            <div class="map-card">
+              <div class="panel-top">
+                <h3>Rainfall across the network</h3>
+                <span id="map-day"></span>
+              </div>
+              <div id="map" aria-label="Swiss rainfall station map"></div>
+              <div class="map-legend">
+                <span>Accumulated rainfall · mm</span>
+                <div>
+                  <i style="background: #bccfce"></i>0 <i style="background: #6da9a2"></i>20
+                  <i style="background: #e5b36d"></i>50 <i style="background: #d87a43"></i>100
+                  <i style="background: #a63c2e"></i>150+ <i class="missing"></i>Missing
+                </div>
+              </div>
+              <div class="playback">
+                <button id="play" aria-label="Play event">▶</button>
+                <div class="scrubber">
+                  <label for="timeline" id="timeline-label">Event timeline</label
+                  ><input type="range" id="timeline" min="0" value="0" />
+                  <div class="range-ends">
+                    <span id="range-start"></span><span id="range-end"></span>
+                  </div>
+                </div>
+                <output id="cursor-date" for="timeline"></output>
+              </div>
+            </div>
+            <aside class="insight-card">
+              <div class="eyebrow">PUT IT IN PERSPECTIVE</div>
+              <h3>A longer memory.</h3>
+              <p id="history-summary"></p>
+              <div class="mini-divider"></div>
+              <div class="stat-label">LARGEST HISTORICAL WINDOWS</div>
+              <div id="rankings"></div>
+              <p class="footnote">
+                Annual maxima, 1981–2025. Only years with every daily rainfall value present are
+                included. These are observations, not return-period estimates.
+              </p>
+              <button id="reset-map" class="text-button">↗ Show whole network</button>
+            </aside>
+          </section>
+          <section class="charts">
+            <article class="chart-card">
+              <div class="panel-top">
+                <div>
+                  <span class="eyebrow">ATMOSPHERE</span>
+                  <h3 id="rain-title">Daily precipitation</h3>
+                </div>
+                <span class="unit-tag">mm / day</span>
+              </div>
+              <div id="rain-chart" class="chart"></div>
+              <p class="chart-note">
+                MeteoSwiss rainfall day: 06:00 UTC → 06:00 the following day. Click a bar to move
+                the cursor.
+              </p>
+            </article>
+            <article class="chart-card">
+              <div class="panel-top">
+                <div>
+                  <span class="eyebrow">RIVER RESPONSE</span>
+                  <h3>24-hour mean discharge</h3>
+                </div>
+                <span class="unit-tag">m³/s</span>
+              </div>
+              <label class="sr-only" for="river">River station</label
+              ><select id="river" aria-label="River station"></select>
+              <div id="river-chart" class="chart"></div>
+              <p class="chart-note">
+                Derived from 24 FOEN hourly means, 06:00–06:00 UTC. Incomplete windows are missing.
+                River stations are selected independently, not catchment matches.
+              </p>
+            </article>
+          </section>
+          <section class="comparison">
+            <div>
+              <span class="eyebrow">EVENT COMPARISON</span>
+              <h3>Same station. Different storms.</h3>
+              <p>
+                Peak <span id="compare-duration">1-day</span> rainfall within each replay window.
+              </p>
+            </div>
+            <div id="compare-bars"></div>
+          </section>
+          <footer>
+            Source:
+            <a
+              href="https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations"
+              target="_blank"
+              rel="noreferrer"
+              >MeteoSwiss · SwissMetNet</a
+            >
+            &
+            <a
+              href="https://data.bafu.admin.ch/en/dataproduct-water-observations"
+              target="_blank"
+              rel="noreferrer"
+              >FOEN · Hydrological observations</a
+            ><span id="snapshot"></span>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <dialog id="sources">
+      <div class="dialog-header">
+        <span class="eyebrow">DATA & METHODOLOGY</span
+        ><button id="source-close" aria-label="Close data and methodology">×</button>
+      </div>
+      <h2>Real records. Visible assumptions.</h2>
+      <p>
+        This explorer bundles a dated snapshot of official observations. It is not a live warning
+        service, a flood-inundation model, or an insured-loss model.
+      </p>
+      <h3>Rainfall · MeteoSwiss</h3>
+      <p>
+        18 selected SwissMetNet stations; daily precipitation parameter <code>rre150d0</code>, in
+        millimetres, 1981–2025. This is a sampled network, not all Swiss stations. A rainfall day
+        runs from 06:00 UTC on the labelled date to 06:00 UTC the next day. Original series are not
+        homogenised climate-trend records.
+      </p>
+      <h3>Rivers · FOEN</h3>
+      <p>
+        Six selected gauges, hourly mean discharge in m³/s, for the three replay windows. We compute
+        a 06:00–06:00 UTC mean only when all 24 hourly means exist, using the API’s documented
+        interval-start timestamps. Means are not instantaneous flood peaks. Original hourly records
+        are included in the snapshot. Source release flags are preserved in the data and exports: 1
+        provisional, 2 validated, 3 final/replaced.
+      </p>
+      <h3>Calculations & missing values</h3>
+      <p>
+        3- and 5-day rainfall are trailing sums ending on the cursor date, including days before a
+        replay window where needed. Any missing day makes that sum unavailable; missing values are
+        never replaced with zero. The event maximum is the largest complete trailing window ending
+        inside the replay. Coverage reports the underlying daily values in that replay.
+      </p>
+      <p>
+        Historical rankings compare annual maxima from complete calendar years only. Multi-day
+        windows must fall entirely within that year. No extreme-value fit, flood depth, damage
+        estimate or synthetic catalogue is included.
+      </p>
+      <p>
+        Rainfall points show measurements at stations; coloured circles are not storm footprints.
+        River and rainfall charts use matching 06:00–06:00 UTC windows but do not establish a causal
+        or catchment relationship.
+      </p>
+      <div class="source-links">
+        <a href="data/provenance.json" target="_blank">Download provenance & source hashes ↗</a
+        ><a href="data/observations.json" target="_blank">View observation snapshot ↗</a
+        ><a
+          href="https://opendatadocs.meteoswiss.ch/general/download"
+          target="_blank"
+          rel="noreferrer"
+          >MeteoSwiss format & time conventions ↗</a
+        ><a href="https://data.bafu.admin.ch/en/lizenz-und-quelle" target="_blank" rel="noreferrer"
+          >FOEN licence & attribution ↗</a
+        >
+      </div>
+    </dialog>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "historyStart": "1981-01-01",
+  "historyEnd": "2025-12-31",
+  "weatherStations": [
+    "BER",
+    "INT",
+    "MER",
+    "LUZ",
+    "ENG",
+    "ALT",
+    "SMA",
+    "SAE",
+    "STG",
+    "CHU",
+    "DAV",
+    "SIO",
+    "GVE",
+    "BAS",
+    "LUG",
+    "OTL",
+    "MAG",
+    "ABO"
+  ],
+  "riverStations": ["2135", "2030", "2152", "2020", "2368", "2044"],
+  "events": [
+    {
+      "id": "2005",
+      "name": "Alpine floods",
+      "subtitle": "August 2005",
+      "start": "2005-08-18",
+      "end": "2005-08-27"
+    },
+    {
+      "id": "2021",
+      "name": "A saturated summer",
+      "subtitle": "July 2021",
+      "start": "2021-07-10",
+      "end": "2021-07-20"
+    },
+    {
+      "id": "2024",
+      "name": "South of the Alps",
+      "subtitle": "June 2024",
+      "start": "2024-06-19",
+      "end": "2024-07-03"
+    }
+  ]
+}

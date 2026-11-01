@@ -1,0 +1,295 @@
+{
+  "sources": [
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/abo/ogd-smn_abo_d_historical.csv",
+      "file": "data/raw/ABO.csv",
+      "sha256": "d52abfa2576e904bf993b974fca929a3ead3a72f3bdabf97eff4ea7b30c6bacf",
+      "retrievedAt": "2026-11-01T20:15:15.537653+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/alt/ogd-smn_alt_d_historical.csv",
+      "file": "data/raw/ALT.csv",
+      "sha256": "939dd57578395de721bf5fb5600d6995ad9a947112b5e7ebe1a5fce6767ce58d",
+      "retrievedAt": "2026-11-01T20:15:12.939151+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/bas/ogd-smn_bas_d_historical.csv",
+      "file": "data/raw/BAS.csv",
+      "sha256": "567296242dabf090c2d4f257851cb410b86ba41ce06e7fe5e129ce342b8c2a74",
+      "retrievedAt": "2026-11-01T20:15:15.160357+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/ber/ogd-smn_ber_d_historical.csv",
+      "file": "data/raw/BER.csv",
+      "sha256": "1c2954a462e7f677ba09ea4297707e253786b2837dfe5b98f4be9e2a1921abd8",
+      "retrievedAt": "2026-11-01T20:15:11.716423+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/chu/ogd-smn_chu_d_historical.csv",
+      "file": "data/raw/CHU.csv",
+      "sha256": "f378e8b1a664d53803bb4f5f9e626cbb8d6f4fd33c11e939f370aa86e5105922",
+      "retrievedAt": "2026-11-01T20:15:14.336683+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/dav/ogd-smn_dav_d_historical.csv",
+      "file": "data/raw/DAV.csv",
+      "sha256": "78880e12148a274b1695cf615895992c745a5767667702d0a93e1a1f3d0a3886",
+      "retrievedAt": "2026-11-01T20:15:14.034452+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/eng/ogd-smn_eng_d_historical.csv",
+      "file": "data/raw/ENG.csv",
+      "sha256": "1e680332ab00480fa204e974c38a36c1ae71f04a146df4c1119df23ee03e83a7",
+      "retrievedAt": "2026-11-01T20:15:12.694472+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/gve/ogd-smn_gve_d_historical.csv",
+      "file": "data/raw/GVE.csv",
+      "sha256": "e62bf698364cb40b2fb4dadbcd35deb98d4af609aac9a8bc7f3c3e9d2cbc8ee0",
+      "retrievedAt": "2026-11-01T20:15:14.034246+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/int/ogd-smn_int_d_historical.csv",
+      "file": "data/raw/INT.csv",
+      "sha256": "e169ef7b2014339a43358d1a316ba0f300ce8579c940954bbb0ccd28d8c65bdc",
+      "retrievedAt": "2026-11-01T20:15:11.976511+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/lug/ogd-smn_lug_d_historical.csv",
+      "file": "data/raw/LUG.csv",
+      "sha256": "a0a76a563a334e5487ab18418c64d37dfb676655c1b24654d0904c9f309c99eb",
+      "retrievedAt": "2026-11-01T20:15:14.614753+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/luz/ogd-smn_luz_d_historical.csv",
+      "file": "data/raw/LUZ.csv",
+      "sha256": "5470a3b18d9c768d6a5bcf0883eb9413a0183fede0ab27e0c0e22922053aa7dd",
+      "retrievedAt": "2026-11-01T20:15:11.777767+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/mag/ogd-smn_mag_d_historical.csv",
+      "file": "data/raw/MAG.csv",
+      "sha256": "2fa33b10d864f342433e76e6243f2148f5017ed3bbc831b56dcac502d3366cad",
+      "retrievedAt": "2026-11-01T20:15:14.853618+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/mer/ogd-smn_mer_d_historical.csv",
+      "file": "data/raw/MER.csv",
+      "sha256": "7616eb846806fa65754b7433fdc83d53444787894e9cc1434dcc1e122afac565",
+      "retrievedAt": "2026-11-01T20:15:11.740614+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/otl/ogd-smn_otl_d_historical.csv",
+      "file": "data/raw/OTL.csv",
+      "sha256": "0e4305f69c8aedac67077cd968eae94e40d8867f2a865534c127aebda5aa220d",
+      "retrievedAt": "2026-11-01T20:15:14.968532+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/sae/ogd-smn_sae_d_historical.csv",
+      "file": "data/raw/SAE.csv",
+      "sha256": "8fb7db48061f9a0c487492f1d35027c94907b669f7bbc6e89f6dacc15176ed84",
+      "retrievedAt": "2026-11-01T20:15:13.211682+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/sio/ogd-smn_sio_d_historical.csv",
+      "file": "data/raw/SIO.csv",
+      "sha256": "f87140bf20683a09024f62fb1c519553f601537fcc720dde82cb6b993a6871c9",
+      "retrievedAt": "2026-11-01T20:15:13.874251+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/sma/ogd-smn_sma_d_historical.csv",
+      "file": "data/raw/SMA.csv",
+      "sha256": "8a74cb18269b08d6367111ae77dbba0514aaaab41c74c524289af04f99d6c26c",
+      "retrievedAt": "2026-11-01T20:15:13.164525+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/stg/ogd-smn_stg_d_historical.csv",
+      "file": "data/raw/STG.csv",
+      "sha256": "8e19fb69a4a4b9076bcb0ef149c63c599f73fe7150d9c366b6f89e0fffaffd61",
+      "retrievedAt": "2026-11-01T20:15:13.608441+00:00"
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/ogd-smn_meta_parameters.csv",
+      "file": "data/raw/parameters.csv",
+      "sha256": "9fa4358356a1f856d5ba2ab8117e750ea5c742ec4c18594f16bf31e8a87fc2c0",
+      "retrievedAt": "2026-11-01T20:15:11.431256+00:00"
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2020-2005.json",
+      "sha256": "39c68330c8a7843681b1f87982a1ca8ecb68cc21cd6e856657ab15957e3d62f0",
+      "retrievedAt": "2026-11-01T20:17:13.393194+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2020\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2020-2021.json",
+      "sha256": "461c4a0f5f219370533a66e6f84095dbb9100bd79fa8eaf25766293cd6672f3c",
+      "retrievedAt": "2026-11-01T20:17:16.884451+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2020\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2020-2024.json",
+      "sha256": "0ea13f821928a8029ea38df8d65a5ca8631d44603310eb1664417a2f636dcd30",
+      "retrievedAt": "2026-11-01T20:17:20.210043+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2020\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2030-2005.json",
+      "sha256": "532c157088c14bd7eedd9370d00a35a045df1214964db3b30cb32fe5cba68f8d",
+      "retrievedAt": "2026-11-01T20:16:53.797412+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2030\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2030-2021.json",
+      "sha256": "17498f7ea6bf0a76bab9f5ca9e31ac8b7407339a84c6430fe552bc9d9d1b13ef",
+      "retrievedAt": "2026-11-01T20:16:57.078794+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2030\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2030-2024.json",
+      "sha256": "5cdc4cbff0aceeecc62c24ac1d27b5b3b51609a0984c63aaaddd47d5f28018bc",
+      "retrievedAt": "2026-11-01T20:17:00.206725+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2030\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2044-2005.json",
+      "sha256": "4aa49d669a24613d44a3bec99211b1dbd78ee2a5b687074e78dc85b1327659fa",
+      "retrievedAt": "2026-11-01T20:17:33.953139+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2044\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2044-2021.json",
+      "sha256": "287f87b4b3749492bd3eda518d41d47cc6edf42dbf9373e3762c743fa1ce7185",
+      "retrievedAt": "2026-11-01T20:17:36.996719+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2044\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2044-2024.json",
+      "sha256": "de4f87f051f2726114864156a4ccff5ec9899420f1ac155197356736e3d02511",
+      "retrievedAt": "2026-11-01T20:17:40.226564+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2044\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2135-2005.json",
+      "sha256": "07d34001438777d0023d86d1135c10d688dbe212e15b89a82673f79fa96d281a",
+      "retrievedAt": "2026-11-01T20:16:43.611495+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2135\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2135-2021.json",
+      "sha256": "89bc0b612a02b435fb8ec47f83c1823de9bf42ff011bc1b1265fea6eb66ed837",
+      "retrievedAt": "2026-11-01T20:16:47.057380+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2135\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2135-2024.json",
+      "sha256": "67ed7e9acf8f7014821e38501e76e991de2573b5c513e64e800062102cc79b34",
+      "retrievedAt": "2026-11-01T20:16:50.471176+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2135\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2152-2005.json",
+      "sha256": "965b21ad70960a853e8fc1cdfc2d3ddcc503d1c4f11c2858e910b02e2729d5f6",
+      "retrievedAt": "2026-11-01T20:17:03.338911+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2152\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2152-2021.json",
+      "sha256": "e91ac3712cdf70728068aa687a5a8f781027f4ec494bfa16d0d699403773d74e",
+      "retrievedAt": "2026-11-01T20:17:06.672432+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2152\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2152-2024.json",
+      "sha256": "0fd6a49beb55a075c1e1819e419b6b0abc699bc3c3d74905f88f6d3cb47f97d9",
+      "retrievedAt": "2026-11-01T20:17:09.944637+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2152\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2368-2005.json",
+      "sha256": "0824d32345faa9344c8f00bcb776599e8eea55572528256333ff113e975580aa",
+      "retrievedAt": "2026-11-01T20:17:24.402423+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2368\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2005-08-18T06:00:00Z\", _lt: \"2005-08-28T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2368-2021.json",
+      "sha256": "41a588ff0bf4b0e45ef04ca29dd37f3b56fff95d40f3ff6601b5f1ba8bb0ba30",
+      "retrievedAt": "2026-11-01T20:17:27.534199+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2368\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2021-07-10T06:00:00Z\", _lt: \"2021-07-21T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-hourly-2368-2024.json",
+      "sha256": "ef09057c2b5e9fc93cf6f2c62db8acf5150f500204428987539fb408a3fbf4e3",
+      "retrievedAt": "2026-11-01T20:17:30.907054+00:00",
+      "request": {
+        "query": "{ water { observations { data_1hour_mean(where: { station: { no: { _eq: \"2368\" } }, parameterName: { _eq: \"Q\" }, timestamp: { _gte: \"2024-06-19T06:00:00Z\", _lt: \"2024-07-04T06:00:00Z\" } }) { timestamp value unitSymbol releaseState } } } }"
+      }
+    },
+    {
+      "url": "https://data.bafu.admin.ch/api",
+      "file": "data/raw/river-stations.json",
+      "sha256": "b33b5c5d0e63fa8dac8af0f111f5a037e41356c5d2e515c699126a4450bafd5b",
+      "retrievedAt": "2026-11-01T20:15:16.833168+00:00",
+      "request": {
+        "query": "{ water { observations { stations { no name riverName latitude longitude } } } }"
+      }
+    },
+    {
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-smn/ogd-smn_meta_stations.csv",
+      "file": "data/raw/stations.csv",
+      "sha256": "b0025fb9909f28d536e90983337525697c27b75a607d1724f2d411ef3477ab59",
+      "retrievedAt": "2026-11-01T20:15:11.365825+00:00"
+    }
+  ]
+}

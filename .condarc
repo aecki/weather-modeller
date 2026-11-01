@@ -1,0 +1,10 @@
+# Project-local configuration, selected only by scripts/bootstrap.py.
+channels:
+  - conda-forge
+channel_priority: strict
+solver: classic
+register_envs: false
+auto_update_conda: false
+notify_outdated_conda: false
+number_channel_notices: 0
+report_errors: false
