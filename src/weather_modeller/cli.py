@@ -16,9 +16,12 @@ from .server import LocalAppHandler
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Swiss Catastrophe Lab: repository-local observation explorer"
+        description="aecki’s catastrophe lab: repository-local observation explorer"
     )
     commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser(
+        "install-frontend", help="Install repository-local frontend build dependencies"
+    )
     commands.add_parser("dev", help="Install optional developer tools locally (requires internet)")
     commands.add_parser("build", help="Build the self-contained app without network access")
     commands.add_parser("check", help="Run offline integrity and numerical checks")
@@ -42,7 +45,11 @@ def main():
     )
     os.environ["PATH"] = os.pathsep.join(map(str, bins)) + os.pathsep + os.environ.get("PATH", "")
     try:
-        if args.command == "dev":
+        if args.command == "install-frontend":
+            from .development import install_frontend
+
+            install_frontend(root)
+        elif args.command == "dev":
             from .development import install_dev_tools
 
             install_dev_tools(root)
@@ -59,11 +66,11 @@ def main():
 
             quality(root)
         elif args.command == "serve":
-            build(root)
+            build(root, export_mode="repository")
             handler = partial(LocalAppHandler, root=root)
             with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
                 print(
-                    f"Swiss Catastrophe Lab: http://127.0.0.1:{args.port}\nPress Ctrl+C to stop.",
+                    f"aecki’s catastrophe lab: http://127.0.0.1:{args.port}\nPress Ctrl+C to stop.",
                     flush=True,
                 )
                 server.serve_forever()

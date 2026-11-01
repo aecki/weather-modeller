@@ -9,3 +9,7 @@
 - Data refreshes must be deliberate. Serving, building and tests remain offline.
 - Keep scientific, cache and file-replacement regression tests meaningful. Do not add tests that merely mirror trivial presentation changes.
 - Do not commit environments, caches, raw downloads, node_modules, exports or build output. Do not claim remote CI passed without observing it.
+
+- Product name: aecki’s catastrophe lab. Keep repository/environment identifier `weather-modeller`.
+- Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or map-tile/CDN dependencies.
+- Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, local serving with repository exports. Setup installs locked frontend dependencies; do not trigger npm installs during a build.

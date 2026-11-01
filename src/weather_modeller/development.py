@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 
-def install_dev_tools(root: Path) -> None:
+def install_frontend(root: Path) -> None:
     prefix = Path(sys.prefix).resolve()
     if prefix != (root / ".environments/weather-modeller").resolve():
         raise RuntimeError("Developer tools must be installed through python run.py dev")
@@ -20,6 +20,12 @@ def install_dev_tools(root: Path) -> None:
     npm = next((path for path in candidates if path.is_file()), None)
     if not node or npm is None:
         raise RuntimeError("Node.js/npm are missing from the repository-local environment")
+    subprocess.run([node, str(npm), "ci", "--ignore-scripts"], cwd=root, check=True)
+
+
+def install_dev_tools(root: Path) -> None:
+    if Path(sys.prefix).resolve() != (root / ".environments/weather-modeller").resolve():
+        raise RuntimeError("Developer tools must be installed through python run.py dev")
     subprocess.run(
         [
             sys.executable,
@@ -37,4 +43,4 @@ def install_dev_tools(root: Path) -> None:
         cwd=root,
         check=True,
     )
-    subprocess.run([node, str(npm), "ci", "--ignore-scripts"], cwd=root, check=True)
+    install_frontend(root)

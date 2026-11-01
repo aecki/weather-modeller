@@ -7,7 +7,7 @@ python run.py setup
 python run.py serve
 ```
 
-The `weather-modeller` Conda environment is created at `.environments/weather-modeller/`. Do not install project dependencies into base or global Python/Node locations. No API keys or cloud services are needed to run the bundled observations.
+The `weather-modeller` Conda environment is created at `.environments/weather-modeller/`. Do not install project dependencies into base or global Python/Node locations. Setup also installs the locked frontend build dependencies in node_modules. No API keys or cloud services are needed to run the bundled observations.
 
 ## Developer tools
 
@@ -17,13 +17,13 @@ python run.py quality
 python run.py check
 ```
 
-`dev` explicitly installs the pinned optional Ruff and Prettier tools inside the repository (network required). `quality` checks Python imports, common errors and formatting, plus frontend formatting. `check` runs offline regression/data checks and builds the app. Normal users do not need the development tools.
+`dev` explicitly installs the pinned optional Ruff and Prettier tools inside the repository (network required). `quality` checks Python imports, common errors and formatting, plus frontend formatting. `check` runs offline regression/data checks and builds the app. Normal users do not need Ruff or Prettier; React/visx and esbuild are installed locally by setup.
 
 To apply Python formatting, activate `conda activate ./.environments/weather-modeller`, then run `python -m ruff check . --fix` and `python -m ruff format .`. For frontend formatting run `npm run format` in that activated environment.
 
 ## Change boundaries
 
-- Frontend source belongs in `web/`; Python application code belongs in `src/weather_modeller/`.
+- Frontend source belongs in `web/` (visx components in `web/graphics/`); Python application code belongs in `src/weather_modeller/`.
 - Station and event selection belongs in `config/catalog.json`, not in UI code.
 - Keep new dependencies in `environment.yml`, `requirements-dev.txt`, or `package.json`/`package-lock.json`, according to their purpose.
 - Keep `.environments/`, `.cache/`, `data/raw/`, `node_modules/`, `outputs/` and `dist/` out of Git.

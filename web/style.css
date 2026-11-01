@@ -342,24 +342,6 @@ main {
   background: #e3e9e0;
   z-index: 0;
 }
-.leaflet-tile-pane {
-  filter: saturate(0.35) contrast(0.92);
-}
-.leaflet-control-attribution {
-  font-size: 8px !important;
-}
-.leaflet-tooltip {
-  font: 10px 'DM Sans';
-  border: 0;
-  box-shadow: 0 2px 8px #173b3e20;
-  color: #203c40;
-  padding: 4px 7px;
-}
-.leaflet-tooltip.selected {
-  background: #173b3e;
-  color: #fff;
-  font-weight: 700;
-}
 .map-legend {
   padding: 12px 18px;
   display: flex;
@@ -847,22 +829,6 @@ button:disabled {
   }
 }
 
-.country-label {
-  background: none !important;
-  box-shadow: none !important;
-  border: 0 !important;
-  font-size: 10px !important;
-  letter-spacing: 2px;
-  color: #8e9e94 !important;
-}
-.country-label:before {
-  display: none;
-}
-.swiss-label {
-  color: #537266 !important;
-  letter-spacing: 3px;
-}
-
 .export-actions {
   text-align: right;
   max-width: 300px;
@@ -872,4 +838,246 @@ button:disabled {
   line-height: 1.5;
   overflow-wrap: anywhere;
   max-width: 300px;
+}
+/* React + visx visualisations are bundled locally for both hosting modes. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+.page-nav {
+  display: flex;
+  gap: 24px;
+}
+.page-nav a {
+  color: #718180;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.page-nav a:first-child {
+  color: #203c40;
+}
+.page-nav a:hover {
+  color: #b46b3d;
+}
+.brand {
+  text-transform: none;
+}
+.brand b {
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+.visx-point {
+  cursor: pointer;
+  outline: none;
+}
+.visx-point:focus-visible {
+  stroke: #173b3e;
+  stroke-width: 3px;
+}
+.visx-map {
+  position: relative;
+  height: 100%;
+}
+.visx-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.map-controls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: grid;
+  box-shadow: 0 1px 5px #173b3e20;
+}
+.map-controls button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #cbd5c7;
+  background: #fff;
+  color: #203c40;
+  font-size: 20px;
+}
+.map-credit {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 8px;
+  color: #647772;
+  background: #f5f5efbb;
+  padding: 2px 4px;
+}
+.chart {
+  height: 208px;
+  min-height: 208px;
+}
+.chart-card:first-child .chart {
+  padding-top: 33px;
+  height: 241px;
+}
+#rankings {
+  height: 194px;
+  margin-top: 16px;
+}
+#compare-bars {
+  display: block;
+  height: 110px;
+}
+.how-section {
+  padding: 56px 0 35px;
+  border-bottom: 1px solid var(--line);
+}
+.how-heading {
+  max-width: 660px;
+}
+.how-heading h2 {
+  font:
+    500 32px/1.25 'Avenir Next',
+    'Segoe UI',
+    sans-serif;
+  letter-spacing: -1px;
+  margin: 12px 0;
+}
+.how-heading p,
+.how-example > p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.how-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 35px;
+  margin-top: 30px;
+  align-items: start;
+}
+.how-steps {
+  display: grid;
+  gap: 24px;
+}
+.how-steps article {
+  display: flex;
+  gap: 15px;
+}
+.step-number {
+  display: block;
+  font-size: 11px;
+  color: #b47b4f;
+  padding-top: 4px;
+}
+.how-steps h3,
+.how-example h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+.how-steps p {
+  margin: 0;
+  font-size: 12px;
+  color: #647772;
+  line-height: 1.8;
+}
+.how-example {
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #e9ede4;
+  padding: 24px;
+}
+.how-example h3 {
+  font-size: 22px;
+  margin-top: 12px;
+}
+#window-explanation {
+  width: 100%;
+  min-height: 280px;
+}
+.window-example {
+  margin: 20px 0 10px;
+}
+.example-title {
+  display: grid;
+  gap: 10px;
+  font-size: 10px;
+  color: #647772;
+}
+.example-title strong {
+  font-size: 25px;
+  font-weight: 500;
+  color: #203c40;
+}
+.example-title small {
+  font-size: 11px;
+  color: #647772;
+}
+.window-example p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #647772;
+}
+.how-trust {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 12px 30px;
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid var(--line);
+}
+.how-trust strong {
+  font-weight: 500;
+  font-size: 17px;
+}
+.how-trust p {
+  margin: 0;
+  font-size: 12px;
+  color: #647772;
+  line-height: 1.8;
+}
+.how-trust a {
+  grid-column: 2;
+  font-size: 11px;
+  color: #277c78;
+}
+@media (max-width: 1150px) {
+  .chart-card:first-child .chart {
+    padding-top: 0;
+    height: 208px;
+  }
+}
+@media (max-width: 760px) {
+  .how-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .how-heading h2 {
+    font-size: 27px;
+  }
+  .how-section {
+    padding-top: 35px;
+  }
+  .how-trust {
+    grid-template-columns: 1fr;
+  }
+  .how-trust a {
+    grid-column: 1;
+  }
+  .page-nav {
+    gap: 16px;
+  }
+  .page-nav a {
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+#window-explanation {
+  height: 370px;
+}
+@media (max-width: 760px) {
+  #window-explanation {
+    height: 400px;
+  }
 }

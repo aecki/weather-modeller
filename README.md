@@ -1,6 +1,6 @@
-# Swiss Catastrophe Lab
+# aecki’s catastrophe lab
 
-A standalone, local web app for exploring **real Swiss rainfall and river observations**. The application, Conda environment, package caches, data and build output stay inside this repository. No hosted service, database, API key or internet connection is needed to explore the included snapshot.
+A standalone, local web app for exploring **real Swiss rainfall and river observations**. The application, Conda environment, package caches, data and build output stay inside this repository. No database, API key or internet connection is needed to explore the included snapshot after setup. The static build can also be published on GitHub Pages.
 
 ## Start here
 
@@ -13,7 +13,7 @@ python run.py serve
 
 Open **http://127.0.0.1:8765**. Stop the server with Ctrl+C.
 
-`setup` creates **`.environments/weather-modeller/` inside this checkout**. It uses the existing Conda executable as a bootstrap tool; it does not install into or update `base`, write a global Conda configuration, or register the environment in your home directory. Its package cache and temporary files are also local. Initial setup needs internet access; normal serving, building and checking do not.
+`setup` creates **`.environments/weather-modeller/` inside this checkout**. It uses the existing Conda executable as a bootstrap tool; it does not install into or update `base`, write a global Conda configuration, or register the environment in your home directory. Its package cache and temporary files are also local. Initial setup installs the Conda environment and locked frontend build dependencies locally and needs internet access; subsequent serving, building and checking do not.
 
 On macOS/Linux you can then use `.environments/weather-modeller/bin/python run.py serve` directly; on Windows use `.environments\weather-modeller\python.exe run.py serve`. `run.py` automatically uses that local interpreter. It works from any current directory when invoked with the path to the script.
 
@@ -46,7 +46,7 @@ weather-modeller/
 ├── src/weather_modeller/  # Python ingestion, aggregation and app commands
 ├── web/                   # Editable HTML, CSS and JavaScript
 │   ├── geography/         # Bundled real country/lake boundaries + provenance
-│   └── vendor/            # Leaflet + its licence, served locally
+│   └── graphics/          # React + visx map, charts and interactive explanation
 ├── data/
 │   ├── processed/         # Tracked observations and source provenance
 │   └── raw/               # Original downloads and request metadata (ignored)
@@ -58,7 +58,7 @@ weather-modeller/
 ├── .environments/
 │   └── weather-modeller/  # Actual local environment (ignored)
 ├── .cache/                # Conda/npm/Python caches and temp files (ignored)
-├── node_modules/          # Optional local formatting tool (ignored)
+├── node_modules/          # Local frontend/compiler dependencies (ignored)
 └── dist/                  # Generated self-contained web app (ignored)
 ```
 
@@ -76,7 +76,7 @@ Python 3.12 and Node.js 22 are constrained in `environment.yml`, using conda-for
 
 Every source response has its exact URL/request, retrieval time and SHA256 recorded in `data/processed/provenance.json`. Missing observations stay missing. See [data methodology](docs/data.md) for time boundaries and limitations.
 
-Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map geography: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Leaflet is vendored under its BSD licence.
+Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map geography: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Graphics use React and visx, bundled with dependency notices in the generated site.
 
 ## Development
 
@@ -88,4 +88,10 @@ python run.py quality
 python run.py check
 ```
 
-`dev` requires internet access; the two check commands run offline. Python code is checked/formatted with Ruff (`pyproject.toml`); frontend formatting uses Prettier (`package-lock.json`). The same checks are configured in the cross-platform CI matrix. The app itself still requires no npm installation.
+`dev` requires internet access; the two check commands run offline. Python code is checked/formatted with Ruff (`pyproject.toml`); frontend formatting uses Prettier (`package-lock.json`). The same checks are configured in the cross-platform CI matrix. Frontend build dependencies are installed by setup. Site visitors need only a browser.
+
+## GitHub Pages
+
+The app is ready to build as a static website. See [GitHub Pages setup](docs/github-pages.md) for deployment. A checked-in Actions workflow builds/tests `dist/` and deploys it after Pages is enabled. Static hosting uses browser CSV downloads; local serving retains repository-local CSV saves.
+
+The page includes a **How it works** section with a visx illustration driven by the selected real measurements. Maps, charts and comparison graphics all use visx.

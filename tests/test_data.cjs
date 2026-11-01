@@ -57,3 +57,16 @@ assert.ok(means > 200);
 console.log(
   `Passed: missing values, zero rainfall, leap years, cross-year windows, all station arrays, event peaks and ${means} river means verified against hourly observations.`,
 );
+
+const csv = require('../web/data-core.js').selectionCSV(d, {
+  event: '2005',
+  station: 'MER',
+  river: '2135',
+  days: 3,
+});
+assert.equal(csv.filename, 'swiss-observations-2005-MER-2135-3day.csv');
+assert.ok(csv.content.includes('"2005-08-22","MER","110.9","218"'));
+assert.ok(csv.content.includes('"06:00 to next day 06:00"'));
+assert.equal(csv.content.trim().split('\r\n').length, 11);
+assert.throws(() => require('../web/data-core.js').selectionCSV(d, { event: 'unknown' }));
+console.log('Static CSV download verified against official observations and UTC window labels.');

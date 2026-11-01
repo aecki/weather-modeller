@@ -141,6 +141,8 @@ class LocalServerTests(unittest.TestCase):
                 {"event": "2005", "station": "MER", "river": "2135", "days": 3}
             ).encode()
             try:
+                config = json.load(urllib.request.urlopen(url + "/runtime-config.json"))
+                self.assertEqual(config["exportMode"], "repository")
                 request = urllib.request.Request(
                     url + "/api/exports",
                     data=selection,

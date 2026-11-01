@@ -1,6 +1,6 @@
 # Architecture and development
 
-The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database, external runtime service, frontend build framework or required npm install.
+The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or external runtime service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
 
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
 - `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `server.py` serves the app and handles local exports; `checks.py` runs verification.
@@ -10,7 +10,8 @@ The app has a static frontend and a small Python preparation/serving toolchain w
 - `web/data-core.js` contains the rainfall and annual-maxima calculations shared by the frontend and Node tests.
 - `web/app.js` handles the map, event replay, charts, historical comparison and CSV export.
 - `web/index.html` and `web/style.css` provide the responsive interface.
-- `web/vendor/` and `web/geography/` contain locally served assets and required attribution.
+- `web/graphics/` contains React/visx visual components: the station map, observation charts, historical comparisons and the live accumulation explanation. `scripts/build_frontend.mjs` bundles them and generates third-party licence notices.
+- `web/geography/` contains local geographic assets and provenance.
 - `python run.py build` copies source and processed data into generated `dist/`.
 
 ## Validation
@@ -30,3 +31,9 @@ Optional developer tools are pinned in `requirements-dev.txt` (Ruff) and `packag
 Builds validate the observation schema and required assets in a staging directory inside `.cache/build/`. An incomplete copy never deletes the working app; a failed promotion restores the previous directory. Staging directories are cleaned on exit. Builds should be run serially.
 
 Exports and cache writes use unique temporary files in the destination directory and an atomic replace after writing/flushing. Concurrent exports to the same name produce a complete last-writer-wins file. Source cache hits require both URL and request-body equality. Regression tests cover these behaviors and invalid observation values.
+
+## Static hosting
+
+`python run.py build` emits a complete static Pages artifact, with browser-side CSV downloads. `serve` selects repository exports in its generated runtime config. Neither build depends on a hosted API. Relative asset/data URLs support both a domain root and a GitHub repository subpath. See [GitHub Pages](github-pages.md).
+
+Graphics use visx geometry, scales, axes, grids and shapes throughout. The UI controller keeps selections in one place and passes measured values/callbacks into React graphic components. visx never creates or interpolates missing weather observations; river line paths explicitly break at gaps.

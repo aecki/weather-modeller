@@ -49,6 +49,9 @@ class StorageTests(LocalTemporaryTest):
 class BuildTests(LocalTemporaryTest):
     def setUp(self):
         super().setUp()
+        compiler = patch("weather_modeller.build.compile_frontend")
+        compiler.start()
+        self.addCleanup(compiler.stop)
         data = self.root / "data/processed"
         data.mkdir(parents=True)
         for filename in ("observations.json", "provenance.json"):
@@ -72,7 +75,15 @@ class BuildTests(LocalTemporaryTest):
         build(self.root)
         self.assertFalse((self.root / "dist/previous.txt").exists())
         self.assertTrue((self.root / "dist/data/observations.json").is_file())
+        config = json.loads((self.root / "dist/runtime-config.json").read_text())
+        self.assertEqual(config["exportMode"], "download")
+        self.assertTrue((self.root / "dist/.nojekyll").is_file())
         self.assertEqual(list((self.root / ".cache/build").iterdir()), [])
+
+    def test_local_server_build_uses_repository_exports(self):
+        build(self.root, export_mode="repository")
+        config = json.loads((self.root / "dist/runtime-config.json").read_text())
+        self.assertEqual(config["exportMode"], "repository")
 
     def test_failed_promotion_restores_previous_app(self):
         original = Path.rename

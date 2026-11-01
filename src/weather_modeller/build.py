@@ -2,9 +2,11 @@
 
 import json
 import shutil
+import subprocess
 import tempfile
 from pathlib import Path
 
+from .storage import write_json
 from .validation import validate_snapshot
 
 REQUIRED_ASSETS = (
@@ -13,9 +15,9 @@ REQUIRED_ASSETS = (
     "style.css",
     "app.js",
     "data-core.js",
-    "vendor/leaflet.js",
-    "vendor/leaflet.css",
-    "vendor/LEAFLET-LICENSE",
+    "graphics.js",
+    "third-party-notices.txt",
+    "runtime-config.json",
     "geography/countries.geojson",
     "geography/lakes.geojson",
     "geography/provenance.json",
@@ -24,7 +26,20 @@ REQUIRED_ASSETS = (
 )
 
 
-def build(root: Path) -> Path:
+def compile_frontend(root: Path, destination: Path) -> None:
+    node = shutil.which("node")
+    if not node or not (root / "node_modules/esbuild").is_dir():
+        raise RuntimeError(
+            "Frontend build dependencies are missing. Run python run.py setup first."
+        )
+    subprocess.run(
+        [node, str(root / "scripts/build_frontend.mjs"), str(destination)], cwd=root, check=True
+    )
+
+
+def build(root: Path, *, export_mode: str = "download") -> Path:
+    if export_mode not in ("download", "repository"):
+        raise ValueError("Unsupported export mode")
     root = Path(root)
     source, data, output = root / "web", root / "data/processed", root / "dist"
     snapshot = json.loads((data / "observations.json").read_text(encoding="utf-8"))
@@ -36,8 +51,11 @@ def build(root: Path) -> Path:
     staging_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=staging_root) as directory:
         staged, previous = Path(directory) / "dist", Path(directory) / "previous"
-        shutil.copytree(source, staged)
+        shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics"))
         shutil.copytree(data, staged / "data")
+        compile_frontend(root, staged)
+        write_json(staged / "runtime-config.json", {"exportMode": export_mode})
+        (staged / ".nojekyll").touch()
         for asset in REQUIRED_ASSETS:
             if not (staged / asset).is_file():
                 raise ValueError(f"Missing application asset: {asset}")

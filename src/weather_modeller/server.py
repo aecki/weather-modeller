@@ -9,6 +9,18 @@ class LocalAppHandler(SimpleHTTPRequestHandler):
         self.root = root
         super().__init__(*args, directory=str(root / "dist"), **kwargs)
 
+    def do_GET(self):
+        if self.path.partition("?")[0] == "/runtime-config.json":
+            payload = json.dumps({"exportMode": "repository"}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Length", str(len(payload)))
+            self.end_headers()
+            self.wfile.write(payload)
+            return
+        super().do_GET()
+
     def do_POST(self):
         if self.path != "/api/exports":
             self.send_error(404)

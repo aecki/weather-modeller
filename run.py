@@ -14,11 +14,14 @@ from bootstrap import ENVIRONMENT, local_environment
 def main():
     args = sys.argv[1:] or ["serve"]
     if args[0] == "setup":
-        return subprocess.call(
+        result = subprocess.call(
             [sys.executable, str(ROOT / "scripts" / "bootstrap.py"), *args[1:]],
             cwd=ROOT,
             env=local_environment(),
         )
+        if result != 0:
+            return result
+        args = ["install-frontend"]
     python = ENVIRONMENT / ("python.exe" if os.name == "nt" else "bin/python")
     if not python.is_file():
         print(

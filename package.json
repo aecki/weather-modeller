@@ -1,13 +1,29 @@
 {
-  "name": "swiss-catastrophe-lab",
+  "name": "aeckis-catastrophe-lab",
   "version": "0.1.0",
   "private": true,
-  "description": "Repository-local explorer for real Swiss weather and river observations",
-  "engines": { "node": ">=22 <23" },
+  "description": "aecki\u2019s catastrophe lab \u2014 real Swiss observations, interactive visx graphics",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
-    "format": "prettier --write web/index.html web/style.css web/app.js web/data-core.js tests/test_data.cjs config/catalog.json",
-    "format:check": "prettier --check web/index.html web/style.css web/app.js web/data-core.js tests/test_data.cjs config/catalog.json",
+    "format": "prettier --write web/index.html web/style.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json",
+    "format:check": "prettier --check web/index.html web/style.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json",
     "test": "node tests/test_data.cjs"
   },
-  "devDependencies": { "prettier": "3.6.2" }
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "prettier": "3.6.2"
+  },
+  "dependencies": {
+    "@visx/axis": "4.0.0",
+    "@visx/geo": "4.0.0",
+    "@visx/grid": "4.0.0",
+    "@visx/group": "4.0.0",
+    "@visx/responsive": "4.0.0",
+    "@visx/scale": "4.0.0",
+    "@visx/shape": "4.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
 }

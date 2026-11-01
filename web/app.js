@@ -17,8 +17,9 @@ let data,
   river,
   days = 1,
   cursor = 0,
-  map,
-  markers = [],
+  geography,
+  runtime = { exportMode: 'download' },
+  mapResetCount = 0,
   playing = null,
   dates = [],
   indices = [],
@@ -37,19 +38,6 @@ function eventIndices(e) {
 function eventPeak(e, s = station) {
   const [a, b] = eventIndices(e);
   return DataCore.peak(series(s), a, b);
-}
-function rainfallColor(v) {
-  return v === null
-    ? '#eef1ed'
-    : v < 20
-      ? '#bccfce'
-      : v < 50
-        ? '#6da9a2'
-        : v < 100
-          ? '#e5b36d'
-          : v < 150
-            ? '#d87a43'
-            : '#a63c2e';
 }
 function stop() {
   clearInterval(playing);
@@ -103,24 +91,23 @@ function updateAnalysis() {
     peak && annual.length
       ? `${count} of ${annual.length} complete years had a ${days}-day maximum at least as large as this event’s ${fmt(peak.value)} mm at ${station.name}.`
       : 'Not enough complete records for a historical comparison.';
-  const top = annual.slice(0, 5),
-    max = top[0]?.value || 1;
-  $('rankings').innerHTML =
-    top
-      .map(
-        (r) =>
-          `<div class="rank"><div class="rank-label"><b>${r.year} <small>· ${dateLabel(r.date)}</small></b><span>${fmt(r.value)} mm</span></div><div class="rank-track"><div style="width:${(r.value / max) * 100}%"></div></div></div>`,
-      )
-      .join('') || '<p>No complete years.</p>';
+  LabGraphics.rankings({
+    rows: annual.slice(0, 5).map((row) => ({
+      id: row.year,
+      label: row.year,
+      detail: dateLabel(row.date),
+      value: row.value,
+    })),
+  });
   $('compare-duration').textContent = `${days}-day`;
-  const comparisons = data.events.map((e) => ({ e, p: eventPeak(e) })),
-    cm = Math.max(...comparisons.map((x) => x.p?.value || 0), 1);
-  $('compare-bars').innerHTML = comparisons
-    .map(
-      ({ e, p }) =>
-        `<div class="compare-row ${e.id === event.id ? 'active' : ''}"><span>${e.id}</span><div class="compare-track"><div style="width:${((p?.value || 0) / cm) * 100}%"></div></div><b>${p ? fmt(p.value) + ' mm' : 'Missing'}</b></div>`,
-    )
-    .join('');
+  LabGraphics.comparisons({
+    rows: data.events.map((entry) => ({
+      id: entry.id,
+      label: entry.id,
+      value: eventPeak(entry)?.value ?? null,
+    })),
+    selectedId: event.id,
+  });
   updateCursor();
 }
 function updateCursor() {
@@ -135,191 +122,82 @@ function updateCursor() {
   updateMap();
   rainChart();
   riverChart();
+  const first = Math.max(0, i - days + 1);
+  LabGraphics.explanation({
+    samples: data.dates
+      .slice(first, i + 1)
+      .map((date, index) => ({ date, value: station.values[first + index] })),
+    total: rolled[i],
+    days,
+    stationName: station.name,
+    ending: date,
+  });
 }
 function initMap(countries, lakes) {
-  map = L.map('map', {
-    zoomControl: true,
-    scrollWheelZoom: false,
-    minZoom: 6,
-    maxZoom: 13,
-    maxBounds: [
-      [44, 3],
-      [50, 14],
-    ],
-    maxBoundsViscosity: 0.8,
-  }).setView([46.82, 8.15], 7);
-  L.geoJSON(countries, {
-    style: (f) => ({
-      color: f.properties.name === 'Switzerland' ? '#839d8d' : '#bcc8bc',
-      weight: f.properties.name === 'Switzerland' ? 1.6 : 0.8,
-      fillColor: f.properties.name === 'Switzerland' ? '#f1f1df' : '#e5e9de',
-      fillOpacity: 1,
-    }),
-    interactive: false,
-  }).addTo(map);
-  L.geoJSON(lakes, {
-    style: { color: '#9dbbb7', weight: 0.5, fillColor: '#bdd5d0', fillOpacity: 0.95 },
-    interactive: false,
-  }).addTo(map);
-  map.attributionControl.addAttribution(
-    'Geography: <a href="https://www.naturalearthdata.com/">Natural Earth</a>',
-  );
-  const labels = [
-    ['SWITZERLAND', 46.8, 8.2],
-    ['FRANCE', 46.9, 5.9],
-    ['GERMANY', 47.9, 8.4],
-    ['ITALY', 45.9, 8.2],
-    ['AUSTRIA', 47.15, 10.5],
-  ];
-  labels.forEach(([name, lat, lon]) =>
-    L.marker([lat, lon], {
-      interactive: false,
-      keyboard: false,
-      icon: L.divIcon({
-        className: 'country-label' + (name === 'SWITZERLAND' ? ' swiss-label' : ''),
-        html: name,
-        iconSize: [110, 15],
-        iconAnchor: [55, 7],
-      }),
-    }).addTo(map),
-  );
-  data.stations.forEach((s) => {
-    const m = L.circleMarker([s.lat, s.lon], {
-      radius: 8,
-      weight: 1.5,
-      color: '#fff',
-      fillOpacity: 0.9,
-    }).addTo(map);
-    m.on('click', () => setStation(s.id));
-    markers.push({ s, m });
-  });
-  resetMap();
+  geography = { countries, lakes };
 }
 function resetMap() {
-  map.fitBounds(L.latLngBounds(data.stations.map((s) => [s.lat, s.lon])).pad(0.13));
+  mapResetCount++;
+  updateMap();
 }
 function updateMap() {
-  if (!map) return;
-  markers.forEach(({ s, m }) => {
-    const v = series(s)[indices[cursor]],
-      selected = s.id === station.id;
-    m.setStyle({
-      fillColor: rainfallColor(v),
-      color: selected ? '#173b3e' : '#fff',
-      weight: selected ? 3 : 1.5,
-      radius: selected ? 12 : Math.min(11, 6 + Math.sqrt(v || 0) / 3),
-    });
-    m.unbindTooltip();
-    m.bindTooltip(`${s.id} · ${fmt(v)} mm`, {
-      permanent: selected,
-      direction: 'top',
-      className: selected ? 'selected' : '',
-    });
-    if (selected) m.bringToFront();
+  if (!geography) return;
+  LabGraphics.map({
+    ...geography,
+    stations: data.stations.map((entry) => ({ ...entry, value: series(entry)[indices[cursor]] })),
+    selected: station.id,
+    onSelect: setStation,
+    resetCount: mapResetCount,
   });
 }
-function svgFrame(values, unit) {
-  const w = 500,
-    h = 175,
-    l = 42,
-    r = 12,
-    t = 16,
-    b = 30,
-    pw = w - l - r,
-    ph = h - t - b;
-  const valid = values.filter(Number.isFinite),
-    mx = Math.max(...valid, 1) * 1.15;
-  const x = (i) => l + ((i + 0.5) * pw) / dates.length,
-    y = (v) => t + ph - (v / mx) * ph;
-  let body = '';
-  for (let j = 0; j <= 3; j++) {
-    const v = (mx * j) / 3,
-      yy = y(v);
-    body += `<line x1="${l}" x2="${w - r}" y1="${yy}" y2="${yy}" stroke="#e4e9e2"/><text x="${l - 7}" y="${yy + 3}" text-anchor="end" font-size="9" fill="#7d8f87">${fmt(v, 0)}</text>`;
-  }
-  dates.forEach((d, i) => {
-    if (i === 0 || i === dates.length - 1 || i === Math.floor(dates.length / 2))
-      body += `<text x="${x(i)}" y="${h - 8}" text-anchor="middle" font-size="9" fill="#7d8f87">${dateLabel(d)}</text>`;
-  });
-  body += `<line x1="${x(cursor)}" x2="${x(cursor)}" y1="${t}" y2="${h - b}" stroke="#6f8177" stroke-dasharray="3 3"/>`;
-  return { w, h, l, r, t, b, pw, ph, mx, x, y, body, unit };
-}
-function svgWrap(f, body, label) {
-  return `<svg viewBox="0 0 ${f.w} ${f.h}" role="img" aria-label="${label}" style="font-family:DM Sans,sans-serif">${f.body}${body}</svg>`;
+function selectDay(index) {
+  cursor = index;
+  updateCursor();
 }
 function rainChart() {
-  const vals = indices.map((i) => station.values[i]),
-    f = svgFrame(vals, 'mm');
-  let body = '';
-  vals.forEach((v, i) => {
-    const x = f.x(i),
-      width = (f.pw / dates.length) * 0.65;
-    if (v === null) {
-      body += `<text x="${x}" y="${f.h - f.b - 4}" text-anchor="middle" font-size="12" fill="#84958c">×<title>Missing rainfall on ${dates[i]}</title></text>`;
-      return;
-    }
-    body += `<rect class="bar" data-day="${i}" tabindex="0" role="button" aria-label="${dateLabel(dates[i], true)}: ${fmt(v)} mm" x="${x - width / 2}" y="${f.y(v)}" width="${width}" height="${Math.max(0.8, f.y(0) - f.y(v))}" rx="2" fill="${i === cursor ? '#ba6f40' : '#dfb98f'}"><title>${dateLabel(dates[i], true)}: ${fmt(v)} mm</title></rect>`;
+  LabGraphics.rainfall({
+    dates,
+    values: indices.map((index) => station.values[index]),
+    cursor,
+    label: `Daily rainfall at ${station.name}`,
+    onSelect: selectDay,
   });
-  $('rain-chart').innerHTML = svgWrap(
-    f,
-    body,
-    `Daily rainfall at ${station.name}; cursor ${dates[cursor]}`,
-  );
-  $('rain-chart')
-    .querySelectorAll('.bar')
-    .forEach((el) => {
-      const go = () => {
-        cursor = +el.dataset.day;
-        updateCursor();
-      };
-      el.addEventListener('click', go);
-      el.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          go();
-        }
-      });
-    });
 }
 function riverChart() {
-  const records = river.events[event.id] || [],
-    byDate = new Map(records.map((r) => [r.timestamp.slice(0, 10), r])),
-    vals = dates.map((d) => byDate.get(d)?.value ?? null);
-  if (!vals.some(Number.isFinite)) {
-    $('river-chart').innerHTML =
-      '<div class="empty">No discharge observations for this gauge in this event window. Choose another gauge.</div>';
-    return;
-  }
-  const f = svgFrame(vals, 'm³/s');
-  let path = '',
-    open = false;
-  vals.forEach((v, i) => {
-    if (v === null) {
-      open = false;
-      return;
-    }
-    path += `${open ? 'L' : 'M'}${f.x(i)},${f.y(v)} `;
-    open = true;
-  });
-  let body = `<path d="${path}" fill="none" stroke="#397f7a" stroke-width="2.5"/>`;
-  vals.forEach((v, i) => {
-    if (v === null) return;
-    const row = byDate.get(dates[i]);
-    body += `<circle cx="${f.x(i)}" cy="${f.y(v)}" r="${i === cursor ? 5 : 3}" fill="${i === cursor ? '#173b3e' : '#fff'}" stroke="#397f7a" stroke-width="1.5"><title>${dateLabel(dates[i], true)}: ${fmt(v)} m³/s · release ${row.releaseState}</title></circle>`;
-  });
-  const v = vals[cursor];
-  body += `<text x="${f.w - f.r}" y="11" text-anchor="end" font-size="10" fill="#397f7a">${fmt(v)} m³/s${byDate.get(dates[cursor]) ? ' · release ' + byDate.get(dates[cursor]).releaseState : ''}</text>`;
-  $('river-chart').innerHTML = svgWrap(
-    f,
-    body,
-    `Derived 24-hour mean discharge at ${river.name} on ${river.river}`,
+  const byDate = new Map(
+    (river.events[event.id] || []).map((row) => [row.timestamp.slice(0, 10), row]),
   );
+  LabGraphics.river({
+    dates,
+    values: dates.map((date) => byDate.get(date)?.value ?? null),
+    releaseStates: dates.map((date) => byDate.get(date)?.releaseState ?? ''),
+    cursor,
+    label: `24-hour mean discharge at ${river.name}`,
+    onSelect: selectDay,
+  });
 }
 async function exportSelection() {
   const button = $('export');
   button.disabled = true;
-  $('export-status').textContent = 'Saving in repository…';
+  $('export-status').textContent =
+    runtime.exportMode === 'repository' ? 'Saving in repository…' : 'Preparing download…';
   try {
+    if (runtime.exportMode !== 'repository') {
+      const result = DataCore.selectionCSV(data, {
+        event: event.id,
+        station: station.id,
+        river: river.id,
+        days,
+      });
+      const blob = new Blob(['\uFEFF' + result.content], { type: 'text/csv;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = result.filename;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      $('export-status').textContent = 'CSV download prepared from the selected observations.';
+      return;
+    }
     const response = await fetch('api/exports', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -340,11 +218,17 @@ async function init() {
       'data/observations.json',
       'geography/countries.geojson',
       'geography/lakes.geojson',
+      'runtime-config.json',
     ];
     const responses = await Promise.all(urls.map((url) => fetch(url)));
     for (const res of responses) if (!res.ok) throw Error('HTTP ' + res.status);
-    const [observations, countries, lakes] = await Promise.all(responses.map((res) => res.json()));
+    const [observations, countries, lakes, config] = await Promise.all(
+      responses.map((res) => res.json()),
+    );
     data = observations;
+    runtime = config;
+    $('export').textContent =
+      runtime.exportMode === 'repository' ? '↓ Save CSV in repository' : '↓ Download selection CSV';
     station = data.stations.find((s) => s.id === 'MER') || data.stations[0];
     river = data.rivers.find((r) => r.id === '2135') || data.rivers[0];
     $('events').innerHTML = data.events
@@ -417,6 +301,8 @@ async function init() {
     $('content').hidden = false;
     initMap(countries, lakes);
     setEvent(data.events[0].id);
+    if (location.hash === '#how-it-works')
+      $('how-it-works').scrollIntoView({ behavior: 'instant' });
   } catch (err) {
     $('loading').textContent =
       'The observation snapshot could not be loaded. Please reload the page. ' + err.message;
