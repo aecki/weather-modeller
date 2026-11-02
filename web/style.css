@@ -1642,3 +1642,7 @@ input[type='range'] {
     font-size: 22px;
   }
 }
+
+.map-credit a {
+  color: inherit;
+}

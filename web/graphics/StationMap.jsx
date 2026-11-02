@@ -164,7 +164,19 @@ export function StationMap({
           −
         </button>
       </div>
-      <span className="map-credit">visx · Geography: Natural Earth</span>
+      <span className="map-credit">
+        <a
+          href="https://www.swisstopo.admin.ch/en/conditions-geodata"
+          target="_blank"
+          rel="noreferrer"
+        >
+          © swisstopo
+        </a>
+        {' · '}
+        <a href="geography/provenance.json" target="_blank" rel="noreferrer">
+          Map sources
+        </a>
+      </span>
     </div>
   );
 }

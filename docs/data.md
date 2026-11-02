@@ -36,7 +36,13 @@ The processed JSON includes original hourly river records so derived values can 
 
 ## Geography
 
-Country boundaries use Natural Earth 1:50m; lakes use 1:10m. Selected features are bundled locally, with input URLs and hashes in `web/geography/provenance.json`. Boundaries are generalised for display, not cadastral or hydrological analysis. Natural Earth data is public domain.
+Map geography: **© swisstopo**. The Swiss national boundary comes from swissBOUNDARIES3D (January 2026); neighbouring country polygons and lakes come from swissTLMRegio 2026. These are geographic display layers, not rainfall observations or model outputs. Current geography is used for all historical events.
+
+The bundled GeoJSON is derived from official LV95/EPSG:2056 shapefiles, simplified with a topology-preserving 100-metre tolerance, transformed to WGS84 longitude/latitude, and clipped to 5.7–10.7° E, 45.7–48.0° N. Lakes smaller than 0.5 km² are omitted at this national display scale. Polygon exteriors are clockwise for d3/visx spherical rendering. These generalised boundaries must not be used for cadastral or hydrological analysis.
+
+Exact download URLs, archive SHA256 hashes (verified against the provider's STAC checksums), processing parameters and output hashes are recorded in `web/geography/provenance.json`. [swisstopo OGD conditions](https://www.swisstopo.admin.ch/en/conditions-geodata) allow free use with attribution. The map displays © swisstopo and links to the source record. No remote tiles, map API or runtime downloads are used.
+
+To regenerate explicitly, download the two archives and their STAC item JSON metadata listed in the provenance into `data/raw/geography/`, named by version (`swisstlmregio_2026.zip`/`.json`, `swissboundaries3d_2026-01.zip`/`.json`). In the repository environment, install optional tools with `python -m pip --isolated install --no-user --cache-dir .cache/pip -r requirements-geography.txt`, then run `python scripts/prepare_geography.py`. The script verifies archive checksums before processing. These tools and the ignored source downloads are not required for normal setup, build, tests or serving.
 
 ## Model estimates are separate from observations
 

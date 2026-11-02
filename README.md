@@ -76,7 +76,7 @@ Python 3.12 and Node.js 22 are constrained in `environment.yml`, using conda-for
 
 Every source response has its exact URL/request, retrieval time and SHA256 recorded in `data/processed/provenance.json`. Missing observations stay missing. See [data methodology](docs/data.md) for time boundaries and limitations.
 
-Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map geography: [Natural Earth](https://www.naturalearthdata.com/about/terms-of-use/), public domain. Graphics use React and visx, bundled with dependency notices in the generated site.
+Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map geography: © swisstopo, derived from swissBOUNDARIES3D 2026 and swissTLMRegio 2026; bundled locally with source attribution and provenance. Graphics use React and visx, bundled with dependency notices in the generated site.
 
 ## Development
 
