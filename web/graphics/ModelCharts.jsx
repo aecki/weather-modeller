@@ -5,7 +5,7 @@ import { Group } from '@visx/group';
 import { scaleLinear, scaleLog } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 
-const ticks = { fill: '#718180', fontSize: 10, fontFamily: 'inherit' };
+const ticks = { fill: '#596575', fontSize: 10, fontFamily: 'inherit' };
 const margin = { left: 57, right: 20, top: 24, bottom: 43 };
 export function ReturnLevelChart({
   width,
@@ -58,7 +58,7 @@ export function ReturnLevelChart({
         <text x={Math.min(x(years) + 7, innerWidth - 80)} y={12} fill="#a57b46" fontSize={9}>
           Extrapolation
         </text>
-        <GridRows scale={y} width={innerWidth} numTicks={5} stroke="#e4e9e2" />
+        <GridRows scale={y} width={innerWidth} numTicks={5} stroke="#e5e9ef" />
         <AxisLeft
           scale={y}
           numTicks={5}
@@ -66,7 +66,7 @@ export function ReturnLevelChart({
           hideAxisLine
           tickLabelProps={() => ({ ...ticks, textAnchor: 'end', dx: -5 })}
           label="Rainfall (mm)"
-          labelProps={{ ...ticks, fill: '#526c67', textAnchor: 'middle' }}
+          labelProps={{ ...ticks, fill: '#475569', textAnchor: 'middle' }}
         />
         <AxisBottom
           top={innerHeight}
@@ -87,7 +87,7 @@ export function ReturnLevelChart({
             y0={(row) => y(row.lower)}
             y1={(row) => y(row.upper)}
             yScale={y}
-            fill="#82ada4"
+            fill="#8daed6"
             opacity={0.25}
           />
         )}
@@ -96,7 +96,7 @@ export function ReturnLevelChart({
             data={curve}
             x={(row) => x(row.period)}
             y={(row) => y(row.other)}
-            stroke="#b48b65"
+            stroke="#64748b"
             strokeWidth={1.7}
             strokeDasharray="5 4"
           />
@@ -105,7 +105,7 @@ export function ReturnLevelChart({
           data={curve}
           x={(row) => x(row.period)}
           y={(row) => y(row.value)}
-          stroke="#277c78"
+          stroke="#2563a6"
           strokeWidth={2.5}
         />
         {maxima.map((row) => (
@@ -129,7 +129,7 @@ export function ReturnLevelChart({
           stroke="#b37748"
           strokeDasharray="3 3"
         />
-        <circle cx={x(period)} cy={y(level)} r={5} fill="#c58252" stroke="#fff" strokeWidth={1.5} />
+        <circle cx={x(period)} cy={y(level)} r={5} fill="#2563a6" stroke="#fff" strokeWidth={1.5} />
       </Group>
     </svg>
   );
@@ -168,7 +168,7 @@ export function DiagnosticChart({ width, points, kind }) {
       data-renderer="visx"
     >
       <Group left={m.left} top={m.top}>
-        <GridRows scale={y} width={iw} numTicks={4} stroke="#e4e9e2" />
+        <GridRows scale={y} width={iw} numTicks={4} stroke="#e5e9ef" />
         <AxisLeft
           scale={y}
           numTicks={4}
@@ -208,7 +208,7 @@ export function DiagnosticChart({ width, points, kind }) {
             cx={x(point.x)}
             cy={y(point.y)}
             r={3.5}
-            fill="#6f9f94"
+            fill="#527da9"
             stroke="#fff"
           >
             <title>{`${point.year}: observed ${point.y.toFixed(1)} mm${kind === 'qq' ? `; fitted ${point.x.toFixed(1)} mm` : ''}`}</title>

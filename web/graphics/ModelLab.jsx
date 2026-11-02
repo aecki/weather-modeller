@@ -205,10 +205,10 @@ export function ModelLab({
       <div className="model-heading">
         <div>
           <span className="eyebrow">EXTREME-VALUE MODELLING</span>
-          <h2>How rare is rare?</h2>
+          <h2>Return-period estimation</h2>
           <p>
-            Fit real Swiss annual rainfall maxima. Explore return levels and see how much the short
-            record leaves uncertain.
+            Fit GEV or Gumbel distributions to observed annual rainfall maxima. Estimate return
+            levels and sampling uncertainty.
           </p>
         </div>
         <span className="model-badge">STATIONARY HAZARD MODEL</span>
@@ -362,7 +362,7 @@ export function ModelLab({
           </div>
           <div className="model-period">
             <label htmlFor="model-period">
-              Explore a return period <strong>{period} years</strong>
+              Return period <strong>{period} years</strong>
             </label>
             <input
               id="model-period"
@@ -435,8 +435,8 @@ export function ModelLab({
           </p>
           <section className="model-threshold">
             <div>
-              <span className="eyebrow">ASK THE INVERSE QUESTION</span>
-              <h3>What about a specific amount of rain?</h3>
+              <span className="eyebrow">THRESHOLD ANALYSIS</span>
+              <h3>Threshold exceedance probability</h3>
               <p>
                 Estimate the return period of an observed or chosen threshold. A “100-year” event
                 can happen in consecutive years.
@@ -454,7 +454,7 @@ export function ModelLab({
               </label>
               <div className="model-shortcuts">
                 <button onClick={() => setThreshold(String(eventPeak?.value ?? 100))}>
-                  Use replay peak ({number(eventPeak?.value)} mm)
+                  Use event maximum ({number(eventPeak?.value)} mm)
                 </button>
                 <button onClick={() => setThreshold(calculations.amount.toFixed(1))}>
                   Use selected return level
@@ -528,8 +528,8 @@ export function ModelLab({
               </p>
             </article>
             <article>
-              <span className="eyebrow">CHECK THE STATIONARITY ASSUMPTION</span>
-              <h3>The maxima through time</h3>
+              <span className="eyebrow">STATIONARITY DIAGNOSTIC</span>
+              <h3>Annual maxima over time</h3>
               <div className="diagnostic-plot">
                 <ResponsiveChart
                   component={DiagnosticChart}
@@ -555,12 +555,12 @@ export function ModelLab({
               rejected for invalid or out-of-support fits. Method {result.version}; seed{' '}
               {result.seed}; deterministic Mulberry32 resampling, with replacement, of the observed
               annual maxima. Intervals are withheld if fewer than 90% of fits are valid. This is a
-              lab reliability guard, not a coverage guarantee.
+              numerical reliability guard, not a coverage guarantee.
             </p>
             <p>
-              These are independent lab estimates, not MeteoSwiss’s official extreme-value analyses.
-              The record is not homogenised for climate-trend analysis. Changing confidence or the
-              target period reuses the same fitted resamples.
+              These are independent model estimates, not MeteoSwiss’s official extreme-value
+              analyses. The record is not homogenised for climate-trend analysis. Changing
+              confidence or the target period reuses the same fitted resamples.
             </p>
             <a
               href="https://lmoments3.readthedocs.io/stable/distributions.html"
@@ -573,7 +573,7 @@ export function ModelLab({
         </>
       )}
       <div className="model-method">
-        <strong>How to interpret the uncertainty</strong>
+        <strong>Uncertainty interpretation</strong>
         <p>
           We keep the measured rainfall fixed, take one maximum from each complete year, and
           repeatedly resample those observed yearly maxima. Each resample is refitted. The central{' '}

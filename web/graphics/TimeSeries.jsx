@@ -12,7 +12,7 @@ const dateLabel = (date) =>
     timeZone: 'UTC',
   });
 const format = (value) => (Number.isFinite(value) ? value.toFixed(1) : 'Missing');
-const tickStyle = { fill: '#718180', fontSize: 10, fontFamily: 'inherit' };
+const tickStyle = { fill: '#596575', fontSize: 10, fontFamily: 'inherit' };
 
 export function ObservationChart({
   width,
@@ -50,14 +50,14 @@ export function ObservationChart({
         x={width - margin.right}
         y={13}
         textAnchor="end"
-        fill={kind === 'rain' ? '#a4653c' : '#397f7a'}
+        fill={kind === 'rain' ? '#2563a6' : '#426b97'}
         fontSize={10}
       >
         {dateLabel(dates[cursor])} · {format(selected)} {Number.isFinite(selected) ? unit : ''}
         {kind === 'river' && releaseStates[cursor] ? ` · release ${releaseStates[cursor]}` : ''}
       </text>
       <Group left={margin.left} top={margin.top}>
-        <GridRows scale={y} width={innerWidth} numTicks={4} stroke="#e4e9e2" />
+        <GridRows scale={y} width={innerWidth} numTicks={4} stroke="#e5e9ef" />
         <AxisLeft
           scale={y}
           numTicks={4}
@@ -88,7 +88,7 @@ export function ObservationChart({
             defined={(point) => Number.isFinite(point.value)}
             x={(point) => center(point.index)}
             y={(point) => y(point.value)}
-            stroke="#397f7a"
+            stroke="#426b97"
             strokeWidth={2.5}
           />
         )}
@@ -100,7 +100,7 @@ export function ObservationChart({
                 x={center(index)}
                 y={innerHeight - 4}
                 textAnchor="middle"
-                fill="#718180"
+                fill="#596575"
                 fontSize={13}
               >
                 <title>{`${dateLabel(date)}: missing observation`}</title>×
@@ -127,7 +127,7 @@ export function ObservationChart({
               width={x.bandwidth()}
               height={Math.max(1, innerHeight - y(value))}
               rx={2}
-              fill={index === cursor ? '#ba6f40' : '#dfb98f'}
+              fill={index === cursor ? '#2563a6' : '#a8bfdc'}
               className="visx-point"
             >
               <title>{`${dateLabel(date)}: ${format(value)} mm`}</title>
@@ -140,7 +140,7 @@ export function ObservationChart({
               cy={y(value)}
               r={index === cursor ? 5 : 3.5}
               fill={index === cursor ? '#173b3e' : '#fff'}
-              stroke="#397f7a"
+              stroke="#426b97"
               strokeWidth={1.5}
               className="visx-point"
             >
@@ -175,11 +175,11 @@ export function HorizontalBars({ width, rows, selectedId, compact = false }) {
     >
       {rows.map((row, index) => (
         <Group key={row.id} top={index * rowHeight + 4}>
-          <text x={0} y={12} fill="#203c40" fontSize={11}>
+          <text x={0} y={12} fill="#1f2937" fontSize={11}>
             {row.label}
           </text>
           {compact && (
-            <text x={0} y={26} fill="#718180" fontSize={8}>
+            <text x={0} y={26} fill="#596575" fontSize={8}>
               {row.detail}
             </text>
           )}
@@ -191,10 +191,10 @@ export function HorizontalBars({ width, rows, selectedId, compact = false }) {
               width={x(row.value)}
               height={compact ? 6 : 10}
               rx={2}
-              fill={row.id === selectedId ? '#c58252' : '#668d81'}
+              fill={row.id === selectedId ? '#2563a6' : '#668d81'}
             />
           )}
-          <text x={width} y={12} textAnchor="end" fill="#203c40" fontSize={10}>
+          <text x={width} y={12} textAnchor="end" fill="#1f2937" fontSize={10}>
             {Number.isFinite(row.value) ? `${format(row.value)} mm` : 'Missing'}
           </text>
         </Group>

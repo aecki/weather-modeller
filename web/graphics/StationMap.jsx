@@ -50,7 +50,7 @@ export function StationMap({
             <rect width={width} height={height} />
           </clipPath>
         </defs>
-        <rect width={width} height={height} fill="#e5e9de" />
+        <rect width={width} height={height} fill="#edf0f3" />
         <g clipPath={`url(#${clip})`}>
           <Mercator
             data={countries.features}
@@ -64,8 +64,8 @@ export function StationMap({
                   <path
                     key={index}
                     d={shape || ''}
-                    fill={feature.properties.name === 'Switzerland' ? '#f1f1df' : '#e5e9de'}
-                    stroke={feature.properties.name === 'Switzerland' ? '#839d8d' : '#bcc8bc'}
+                    fill={feature.properties.name === 'Switzerland' ? '#fafbfc' : '#edf0f3'}
+                    stroke={feature.properties.name === 'Switzerland' ? '#8f9ca9' : '#c5ced7'}
                     strokeWidth={feature.properties.name === 'Switzerland' ? 1.5 : 0.8}
                   />
                 ))}
@@ -73,8 +73,8 @@ export function StationMap({
                   <path
                     key={`lake-${index}`}
                     d={path(feature) || ''}
-                    fill="#bdd5d0"
-                    stroke="#9dbbb7"
+                    fill="#d8e6f1"
+                    stroke="#aec6da"
                     strokeWidth={0.5}
                   />
                 ))}
@@ -86,7 +86,7 @@ export function StationMap({
                       x={point[0]}
                       y={point[1]}
                       textAnchor="middle"
-                      fill="#8e9e94"
+                      fill="#64748b"
                       fontSize={9}
                       letterSpacing={2}
                     >

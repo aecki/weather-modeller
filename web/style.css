@@ -1,10 +1,10 @@
 :root {
-  --ink: #203c40;
-  --muted: #718180;
-  --paper: #f5f5ef;
-  --line: #dfe5de;
-  --orange: #c56b3e;
-  --teal: #277c78;
+  --ink: #1f2937;
+  --muted: #596575;
+  --paper: #ffffff;
+  --line: #dce1e7;
+  --orange: #2563a6;
+  --teal: #2563a6;
 }
 * {
   box-sizing: border-box;
@@ -43,8 +43,8 @@ input:focus-visible {
   min-height: 100vh;
 }
 .sidebar {
-  background: #173b3e;
-  color: #f2f2e8;
+  background: #f4f6f8;
+  color: #1f2937;
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
@@ -56,17 +56,17 @@ input:focus-visible {
   color: inherit;
   text-decoration: none;
   font-size: 11px;
-  letter-spacing: 2px;
+  letter-spacing: normal;
   line-height: 1.5;
 }
 .brand b {
   font-size: 11px;
-  letter-spacing: 1.6px;
+  letter-spacing: normal;
 }
 .cross {
   font-family: Arial;
   font-size: 42px;
-  color: #eba46b;
+  color: #2563a6;
   line-height: 1;
 }
 .side-intro {
@@ -74,29 +74,29 @@ input:focus-visible {
 }
 .eyebrow {
   font-size: 10px;
-  letter-spacing: 1.8px;
+  letter-spacing: normal;
   font-weight: 700;
   color: var(--muted);
 }
 .side-intro .eyebrow {
-  color: #99b3af;
+  color: #596575;
   font-size: 9px;
 }
 .side-intro h1 {
   font:
-    500 29px/1.23 'Avenir Next',
+    500 29px/1.23 Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: normal;
   margin: 15px 0;
 }
 .side-intro p {
-  color: #a9bcb8;
+  color: #596575;
   font-size: 13px;
   line-height: 1.7;
 }
 .section-label {
-  color: #9ab1ad;
+  color: #596575;
   margin: 28px 0 15px;
   font-size: 9px;
 }
@@ -111,25 +111,25 @@ nav {
   gap: 12px;
   width: 100%;
   background: transparent;
-  color: #b8cbc5;
-  border: 1px solid #375659;
+  color: #334155;
+  border: 1px solid #dce1e7;
   padding: 15px 12px;
-  border-radius: 7px;
+  border-radius: 2px;
   transition: 0.2s;
 }
 .event:hover {
-  background: #244a4d;
+  background: #e9eef5;
 }
 .event.active {
-  background: #edf0e6;
-  color: #203c40;
-  border-color: #edf0e6;
+  background: #e5edf8;
+  color: #1f2937;
+  border-color: #e5edf8;
 }
 .event .year {
-  font-family: 'Avenir Next', 'Segoe UI', sans-serif;
+  font-family: Arial, 'Segoe UI', sans-serif;
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: -1px;
+  letter-spacing: normal;
 }
 .event .ename {
   font-size: 11px;
@@ -146,42 +146,42 @@ nav {
 .field-label {
   font-size: 11px;
   display: block;
-  color: #b8cbc5;
+  color: #334155;
   margin: 0 0 10px;
 }
 .segmented {
   display: flex;
   margin-bottom: 22px;
-  border: 1px solid #426063;
-  border-radius: 5px;
+  border: 1px solid #c3ccd8;
+  border-radius: 2px;
   padding: 3px;
 }
 .segmented button {
   flex: 1;
   border: 0;
-  color: #bfceca;
+  color: #334155;
   background: transparent;
   padding: 8px 0;
-  border-radius: 3px;
+  border-radius: 2px;
   font-size: 11px;
 }
 .segmented button.active {
-  background: #d5a174;
-  color: #173b3e;
+  background: #dce9f8;
+  color: #1f2937;
 }
 .sidebar select {
-  background: #24484b;
-  color: #eff2eb;
-  border: 1px solid #426063;
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #c3ccd8;
   width: 100%;
   padding: 12px 9px;
-  border-radius: 5px;
+  border-radius: 2px;
   font-size: 12px;
 }
 .source-button {
   border: 0;
   background: none;
-  color: #c3d0c8;
+  color: #334155;
   font-size: 11px;
   text-align: left;
   padding: 25px 0;
@@ -190,14 +190,14 @@ nav {
   margin-top: auto;
   padding-top: 40px;
   font-size: 8px;
-  letter-spacing: 1.4px;
-  color: #c2d0c9;
+  letter-spacing: normal;
+  color: #596575;
 }
 .side-footer p {
   font-size: 10px;
-  letter-spacing: 0;
+  letter-spacing: normal;
   line-height: 1.8;
-  color: #90aaa5;
+  color: #596575;
 }
 .live-dot {
   display: inline-block;
@@ -221,7 +221,7 @@ main {
   justify-content: space-between;
   border-bottom: 1px solid var(--line);
   font-size: 9px;
-  letter-spacing: 1.5px;
+  letter-spacing: normal;
   font-weight: 700;
 }
 .muted {
@@ -229,10 +229,10 @@ main {
 }
 .data-badge {
   font-size: 8px;
-  letter-spacing: 1px;
+  letter-spacing: normal;
   padding: 8px 12px;
   border: 1px solid #cddbd0;
-  border-radius: 25px;
+  border-radius: 2px;
   color: #517465;
 }
 .heading {
@@ -243,10 +243,10 @@ main {
 }
 .heading h2 {
   font:
-    500 36px/1.2 'Avenir Next',
+    500 36px/1.2 Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1.5px;
+  letter-spacing: normal;
   margin: 7px 0;
 }
 .heading p {
@@ -258,7 +258,7 @@ main {
   border: 1px solid #cbd5cc;
   background: transparent;
   color: var(--ink);
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 10px 15px;
   font-size: 11px;
 }
@@ -282,28 +282,28 @@ main {
 .stat-label {
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: 1.1px;
+  letter-spacing: normal;
   color: var(--muted);
 }
 .stats strong {
   display: block;
   font:
-    500 31px 'Avenir Next',
+    500 31px Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: normal;
   margin: 6px 0;
 }
 .stats article:first-child strong {
   font-size: 21px;
   line-height: 1.5;
-  letter-spacing: -0.7px;
+  letter-spacing: normal;
 }
 .stats i {
   font-size: 16px;
   font-style: normal;
   color: var(--muted);
-  letter-spacing: 0;
+  letter-spacing: normal;
 }
 .stats small {
   color: var(--muted);
@@ -318,7 +318,7 @@ main {
 .chart-card {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 2px;
   overflow: hidden;
 }
 .panel-top {
@@ -379,7 +379,7 @@ main {
   border-radius: 50%;
   width: 35px;
   height: 35px;
-  background: #173b3e;
+  background: #f4f6f8;
   color: #fff;
   font-size: 12px;
   flex: none;
@@ -409,22 +409,22 @@ input[type='range'] {
   font-weight: 600;
 }
 .insight-card {
-  background: #e9ede4;
+  background: #f4f6f8;
   border: 1px solid #dce3d7;
-  border-radius: 9px;
+  border-radius: 2px;
   padding: 24px 20px;
 }
 .insight-card h3 {
   font:
-    500 25px 'Avenir Next',
+    500 25px Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: normal;
   margin: 10px 0;
 }
 .insight-card p {
   font-size: 12px;
-  color: #647772;
+  color: #596575;
   line-height: 1.7;
 }
 .mini-divider {
@@ -484,9 +484,9 @@ input[type='range'] {
   margin-top: 5px;
 }
 .unit-tag {
-  border: 1px solid #dfe5de;
+  border: 1px solid #dce1e7;
   padding: 5px 7px;
-  border-radius: 4px;
+  border-radius: 2px;
   font-size: 9px !important;
 }
 .chart {
@@ -509,7 +509,7 @@ input[type='range'] {
   width: calc(100% - 40px);
   padding: 5px 7px;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 2px;
   background: #f8faf6;
   color: var(--ink);
   font-size: 10px;
@@ -527,10 +527,10 @@ input[type='range'] {
 }
 .comparison h3 {
   font:
-    500 20px 'Avenir Next',
+    500 20px Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -0.7px;
+  letter-spacing: normal;
   margin: 8px 0;
 }
 .comparison p {
@@ -557,11 +557,11 @@ input[type='range'] {
 }
 .compare-track div {
   height: 100%;
-  background: #9aafa1;
+  background: #8da9cb;
   border-radius: 2px;
 }
 .compare-row.active .compare-track div {
-  background: #c58252;
+  background: #2563a6;
 }
 .compare-row b {
   text-align: right;
@@ -580,12 +580,12 @@ footer a {
 }
 dialog {
   border: 0;
-  border-radius: 12px;
+  border-radius: 2px;
   max-width: 680px;
   width: calc(100% - 32px);
   padding: 30px;
   color: var(--ink);
-  background: #f7f8f2;
+  background: #ffffff;
   max-height: 90vh;
 }
 dialog::backdrop {
@@ -605,10 +605,10 @@ dialog::backdrop {
 }
 dialog h2 {
   font:
-    500 28px 'Avenir Next',
+    500 28px Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: normal;
 }
 dialog h3 {
   font-size: 14px;
@@ -617,7 +617,7 @@ dialog h3 {
 dialog p {
   font-size: 12px;
   line-height: 1.8;
-  color: #526c67;
+  color: #475569;
 }
 .source-links {
   display: grid;
@@ -762,7 +762,7 @@ button:disabled {
   .topbar {
     height: 58px;
     font-size: 8px;
-    letter-spacing: 1px;
+    letter-spacing: normal;
   }
   .data-badge {
     font-size: 7px;
@@ -849,30 +849,30 @@ html {
   gap: 24px;
 }
 .page-nav a {
-  color: #718180;
+  color: #596575;
   text-decoration: none;
   font-size: 11px;
-  letter-spacing: 1px;
+  letter-spacing: normal;
 }
 .page-nav a:first-child {
-  color: #203c40;
+  color: #1f2937;
 }
 .page-nav a:hover {
-  color: #b46b3d;
+  color: #2563a6;
 }
 .brand {
   text-transform: none;
 }
 .brand b {
   font-size: 13px;
-  letter-spacing: 0.3px;
+  letter-spacing: normal;
 }
 .visx-point {
   cursor: pointer;
   outline: none;
 }
 .visx-point:focus-visible {
-  stroke: #173b3e;
+  stroke: #f4f6f8;
   stroke-width: 3px;
 }
 .visx-map {
@@ -889,14 +889,14 @@ html {
   top: 12px;
   left: 12px;
   display: grid;
-  box-shadow: 0 1px 5px #173b3e20;
+  box-shadow: 0 1px 5px #f4f6f820;
 }
 .map-controls button {
   width: 30px;
   height: 30px;
   border: 1px solid #cbd5c7;
   background: #fff;
-  color: #203c40;
+  color: #1f2937;
   font-size: 20px;
 }
 .map-credit {
@@ -904,8 +904,8 @@ html {
   bottom: 4px;
   right: 6px;
   font-size: 8px;
-  color: #647772;
-  background: #f5f5efbb;
+  color: #596575;
+  background: #ffffffbb;
   padding: 2px 4px;
 }
 .chart {
@@ -933,10 +933,10 @@ html {
 }
 .how-heading h2 {
   font:
-    500 32px/1.25 'Avenir Next',
+    500 32px/1.25 Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: normal;
   margin: 12px 0;
 }
 .how-heading p,
@@ -963,7 +963,7 @@ html {
 .step-number {
   display: block;
   font-size: 11px;
-  color: #b47b4f;
+  color: #596575;
   padding-top: 4px;
 }
 .how-steps h3,
@@ -975,13 +975,13 @@ html {
 .how-steps p {
   margin: 0;
   font-size: 12px;
-  color: #647772;
+  color: #596575;
   line-height: 1.8;
 }
 .how-example {
   border: 1px solid var(--line);
-  border-radius: 9px;
-  background: #e9ede4;
+  border-radius: 2px;
+  background: #f4f6f8;
   padding: 24px;
 }
 .how-example h3 {
@@ -999,21 +999,21 @@ html {
   display: grid;
   gap: 10px;
   font-size: 10px;
-  color: #647772;
+  color: #596575;
 }
 .example-title strong {
   font-size: 25px;
   font-weight: 500;
-  color: #203c40;
+  color: #1f2937;
 }
 .example-title small {
   font-size: 11px;
-  color: #647772;
+  color: #596575;
 }
 .window-example p {
   font-size: 11px;
   line-height: 1.7;
-  color: #647772;
+  color: #596575;
 }
 .how-trust {
   display: grid;
@@ -1030,13 +1030,13 @@ html {
 .how-trust p {
   margin: 0;
   font-size: 12px;
-  color: #647772;
+  color: #596575;
   line-height: 1.8;
 }
 .how-trust a {
   grid-column: 2;
   font-size: 11px;
-  color: #277c78;
+  color: #2563a6;
 }
 @media (max-width: 1150px) {
   .chart-card:first-child .chart {
@@ -1099,10 +1099,10 @@ html {
 }
 .model-heading h2 {
   font:
-    500 34px/1.2 'Avenir Next',
+    500 34px/1.2 Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -1.2px;
+  letter-spacing: normal;
   margin: 10px 0;
 }
 .model-heading p {
@@ -1114,11 +1114,11 @@ html {
 }
 .model-badge {
   border: 1px solid #d0dbd0;
-  border-radius: 24px;
-  color: #527568;
+  border-radius: 2px;
+  color: #475569;
   padding: 8px 11px;
   font-size: 8px;
-  letter-spacing: 1px;
+  letter-spacing: normal;
   white-space: nowrap;
 }
 .model-controls {
@@ -1133,7 +1133,7 @@ html {
   display: grid;
   gap: 8px;
   font-size: 11px;
-  color: #526c67;
+  color: #475569;
 }
 .model-lab select,
 .model-lab input[type='number'] {
@@ -1141,7 +1141,7 @@ html {
   padding: 10px 9px;
   background: #fff;
   border: 1px solid #d3ddd1;
-  border-radius: 5px;
+  border-radius: 2px;
   color: var(--ink);
   font-size: 12px;
   min-width: 0;
@@ -1163,28 +1163,28 @@ html {
   padding: 7px;
 }
 .model-check input {
-  accent-color: #277c78;
+  accent-color: #2563a6;
   width: 15px;
   height: 15px;
 }
 .model-coverage {
   font-size: 11px;
-  color: #718180;
+  color: #596575;
   line-height: 1.8;
   padding: 12px 14px;
   border: 1px solid var(--line);
-  border-radius: 5px;
-  background: #edf0e7;
+  border-radius: 2px;
+  background: #f4f6f8;
 }
 .model-coverage strong {
-  color: #3e6259;
+  color: #334155;
   font-weight: 500;
 }
 .model-state {
   padding: 35px 22px;
-  background: #e9eee4;
-  color: #42645c;
-  border-radius: 8px;
+  background: #f4f6f8;
+  color: #334155;
+  border-radius: 2px;
   font-size: 13px;
   line-height: 1.8;
   margin: 20px 0;
@@ -1198,7 +1198,7 @@ html {
   grid-template-columns: 1.2fr 1fr 1.2fr;
   margin: 24px 0;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   background: #fff;
   overflow: hidden;
 }
@@ -1212,20 +1212,20 @@ html {
 .model-summary strong {
   display: block;
   font:
-    500 27px 'Avenir Next',
+    500 27px Arial,
     'Segoe UI',
     sans-serif;
-  letter-spacing: -0.6px;
+  letter-spacing: normal;
   margin: 9px 0;
 }
 .model-summary strong small {
   font-size: 12px;
-  color: #718180;
-  letter-spacing: 0;
+  color: #596575;
+  letter-spacing: normal;
 }
 .model-summary p {
   font-size: 10px;
-  color: #718180;
+  color: #596575;
   line-height: 1.7;
   margin: 0;
 }
@@ -1244,7 +1244,7 @@ html {
   display: flex;
   justify-content: space-between;
   font-size: 11px;
-  color: #526c67;
+  color: #475569;
 }
 .model-period strong {
   font-weight: 500;
@@ -1260,21 +1260,21 @@ html {
 .model-presets button {
   background: none;
   border: 1px solid #d6dfd2;
-  border-radius: 4px;
-  color: #647772;
+  border-radius: 2px;
+  color: #596575;
   padding: 6px 10px;
   font-size: 10px;
 }
 .model-presets button.active {
   color: #fff;
-  background: #277c78;
-  border-color: #277c78;
+  background: #2563a6;
+  border-color: #2563a6;
 }
 .model-plot {
   height: 350px;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 8px 4px;
 }
 .model-legend {
@@ -1282,7 +1282,7 @@ html {
   gap: 15px;
   flex-wrap: wrap;
   font-size: 9px;
-  color: #647772;
+  color: #596575;
   margin: 14px 0 10px;
 }
 .model-legend span {
@@ -1294,28 +1294,28 @@ html {
   display: inline-block;
   width: 18px;
   height: 3px;
-  background: #277c78;
+  background: #2563a6;
 }
 .model-legend .band {
   height: 8px;
-  background: #82ada460;
+  background: #8daed660;
 }
 .model-legend .dashed {
   height: 0;
-  border-top: 2px dashed #b48b65;
+  border-top: 2px dashed #64748b;
   background: none;
 }
 .model-note,
 .model-warning {
   font-size: 10px;
   line-height: 1.8;
-  color: #718180;
+  color: #596575;
 }
 .model-warning {
   color: #956139;
   background: #faf0e0;
   padding: 12px;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 .model-threshold {
   display: grid;
@@ -1324,20 +1324,20 @@ html {
   margin-top: 30px;
   padding: 25px;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #e9ede4;
+  border-radius: 2px;
+  background: #f4f6f8;
 }
 .model-threshold h3 {
   font:
-    500 22px 'Avenir Next',
+    500 22px Arial,
     'Segoe UI',
     sans-serif;
   margin: 10px 0;
-  letter-spacing: -0.6px;
+  letter-spacing: normal;
 }
 .model-threshold p {
   font-size: 11px;
-  color: #647772;
+  color: #596575;
   line-height: 1.8;
 }
 .model-threshold input[type='number'] {
@@ -1352,9 +1352,9 @@ html {
 .model-shortcuts button {
   text-align: left;
   background: none;
-  color: #277c78;
+  color: #2563a6;
   border: 1px solid #b9ccc0;
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 6px 8px;
   font-size: 10px;
 }
@@ -1367,10 +1367,10 @@ html {
 .threshold-results strong {
   display: block;
   font:
-    500 24px 'Avenir Next',
+    500 24px Arial,
     'Segoe UI',
     sans-serif;
-  color: #244d46;
+  color: #1f2937;
   margin: 7px 0;
 }
 .threshold-results article p {
@@ -1386,7 +1386,7 @@ html {
 .model-diagnostics article {
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 2px;
   padding: 18px 14px;
 }
 .model-diagnostics h3 {
@@ -1398,7 +1398,7 @@ html {
   height: 218px;
 }
 .model-diagnostics p {
-  color: #718180;
+  color: #596575;
   font-size: 10px;
   line-height: 1.8;
   margin: 8px 0 0;
@@ -1406,9 +1406,9 @@ html {
 .model-details {
   margin: 20px 0;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: 2px;
   padding: 15px;
-  color: #526c67;
+  color: #475569;
 }
 .model-details summary {
   cursor: pointer;
@@ -1419,13 +1419,13 @@ html {
   line-height: 1.8;
 }
 .model-details a {
-  color: #277c78;
+  color: #2563a6;
   font-size: 11px;
 }
 .model-method {
   padding: 22px;
-  background: #e9ede4;
-  border-radius: 7px;
+  background: #f4f6f8;
+  border-radius: 2px;
   margin-top: 25px;
 }
 .model-method strong {
@@ -1434,7 +1434,7 @@ html {
 }
 .model-method p {
   font-size: 11px;
-  color: #647772;
+  color: #596575;
   line-height: 1.9;
   margin-bottom: 0;
 }
@@ -1511,5 +1511,134 @@ html {
   }
   .model-plot {
     margin: 0 -8px;
+  }
+}
+
+/* Research interface: neutral surfaces, compact hierarchy and tabular values. */
+.sidebar {
+  border-right: 1px solid var(--line);
+}
+.brand {
+  font-size: 13px;
+  font-weight: 600;
+}
+.cross,
+.event .arrow,
+.live-dot,
+.data-badge,
+.model-badge {
+  display: none;
+}
+.side-intro {
+  margin-top: 28px;
+}
+.side-intro h1 {
+  font:
+    600 18px/1.4 Arial,
+    sans-serif;
+}
+.side-intro p {
+  font-size: 12px;
+}
+.eyebrow,
+.section-label,
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+}
+.section-label {
+  margin: 22px 0 10px;
+}
+.event {
+  padding: 10px;
+  transition: none;
+}
+.event.active {
+  border-color: #8da9cb;
+}
+.event .year {
+  font-size: 18px;
+}
+.topbar {
+  height: 60px;
+  font-weight: 500;
+}
+.page-nav {
+  flex-wrap: wrap;
+}
+.page-nav a,
+.page-nav a:first-child {
+  color: #334155;
+  font-size: 12px;
+}
+.page-nav a:hover {
+  color: #2563a6;
+  text-decoration: underline;
+}
+.heading h2,
+.model-heading h2,
+.how-heading h2 {
+  font:
+    600 24px/1.35 Arial,
+    sans-serif;
+}
+.model-threshold h3,
+.how-example h3,
+dialog h2 {
+  font:
+    600 18px/1.4 Arial,
+    sans-serif;
+}
+.stats strong,
+.model-summary strong,
+.threshold-results strong {
+  font-family: Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.stats small,
+.model-note,
+.model-summary p,
+.chart-note,
+.model-diagnostics p,
+.model-method p,
+.footnote {
+  font-size: 12px;
+}
+.model-controls label,
+.model-settings label,
+.field-label,
+.model-period > label {
+  font-size: 12px;
+}
+.model-method,
+.model-threshold,
+.how-example {
+  background: #f4f6f8;
+}
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #2563a6;
+  outline-offset: 2px;
+}
+input[type='range'] {
+  accent-color: #2563a6;
+}
+.how-section {
+  padding-top: 32px;
+}
+@media (max-width: 760px) {
+  .page-nav {
+    gap: 16px;
+  }
+  .page-nav a {
+    font-size: 11px;
+  }
+  .heading h2,
+  .model-heading h2,
+  .how-heading h2 {
+    font-size: 22px;
   }
 }

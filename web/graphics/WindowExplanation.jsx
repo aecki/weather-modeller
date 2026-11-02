@@ -54,7 +54,7 @@ export function WindowExplanation({ width, samples, total, days, stationName, en
                 y={(Number.isFinite(sample.value) ? y(sample.value) : innerHeight) - 9}
                 textAnchor="middle"
                 fontSize={11}
-                fill="#203c40"
+                fill="#1f2937"
               >
                 {Number.isFinite(sample.value) ? sample.value.toFixed(1) : 'Missing'}
               </text>
@@ -63,7 +63,7 @@ export function WindowExplanation({ width, samples, total, days, stationName, en
                 y={innerHeight + 22}
                 textAnchor="middle"
                 fontSize={10}
-                fill="#718180"
+                fill="#596575"
               >
                 {sample.date.slice(5)}
               </text>
