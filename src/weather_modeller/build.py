@@ -21,6 +21,8 @@ REQUIRED_ASSETS = (
     "runtime-config.json",
     "geography/countries.geojson",
     "geography/lakes.geojson",
+    "geography/classic-map.json",
+    "geography/classic-map.webp",
     "geography/provenance.json",
     "data/observations.json",
     "data/provenance.json",

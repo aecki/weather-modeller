@@ -1646,3 +1646,24 @@ input[type='range'] {
 .map-credit a {
   color: inherit;
 }
+
+.map-layers {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  display: flex;
+  background: #ffffffed;
+  border: 1px solid var(--line);
+  padding: 6px 8px;
+  font-size: 11px;
+  color: #475569;
+}
+.map-layers label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.map-layers input {
+  margin: 0;
+  accent-color: #2563a6;
+}

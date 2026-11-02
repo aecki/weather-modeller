@@ -58,3 +58,16 @@ class GeographyTests(unittest.TestCase):
                         for p in swiss["geometry"]["coordinates"]
                     )
                 )
+
+    def test_classic_map_integrity_and_projection(self):
+        folder = ROOT / "web/geography"
+        metadata = json.loads((folder / "classic-map.json").read_text())
+        image = (folder / metadata["output"]["file"]).read_bytes()
+        self.assertEqual(hashlib.sha256(image).hexdigest(), metadata["output"]["sha256"])
+        self.assertEqual(metadata["attribution"], "© swisstopo")
+        self.assertEqual(metadata["processing"]["sourceCRS"], "EPSG:2056")
+        self.assertEqual(metadata["processing"]["imageCRS"], "EPSG:3857")
+        self.assertEqual(metadata["processing"]["bounds"], [4.7, 45.2, 11.7, 48.3])
+        self.assertEqual(metadata["processing"]["width"], 4000)
+        self.assertEqual(image[:4], b"RIFF")
+        self.assertEqual(image[8:12], b"WEBP")

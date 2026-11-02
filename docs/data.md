@@ -47,3 +47,14 @@ To regenerate explicitly, download the two archives and their STAC item JSON met
 ## Model estimates are separate from observations
 
 The Model lab now fits stationary GEV/Gumbel distributions to selected complete-year maxima and estimates return periods with bootstrap sampling uncertainty. These estimates do not change the observation snapshot or the descriptive historical rankings. Model assumptions, confidence-band interpretation and extrapolation limits are documented in [modelling.md](modelling.md).
+
+
+### Classic topographic background
+
+The default map background uses **Swiss Map Raster 500, colour combination (`komb`)**, © swisstopo, downloaded directly from the official STAC download service. It includes terrain relief, rivers and place names. The downloaded asset was last updated 31 December 2025; it is current cartographic context for every replay, not a historical-event map. A single bundled image replaces remote map tiles. Turning off “Topographic map” restores the bundled boundary/lake view.
+
+The source is a paletted 25-metre EPSG:2056 GeoTIFF representing a 1:500,000 map. `scripts/prepare_classic_map.py` checks its provider SHA256, expands the colour palette, reprojects with bilinear resampling to EPSG:3857 over 4.7–11.7° E and 45.2–48.3° N, and writes a 4,000-pixel-wide WebP (quality 85, method 6). The image is positioned using the same visx Mercator projection as the station markers, including zoom. Areas outside the source map are white. Zoom enlarges a fixed-resolution image; it does not fetch more detailed maps. Rainfall marker colours remain unchanged.
+
+`web/geography/classic-map.json` records exact source and metadata URLs, update time, input/output checksums and processing. This cartography supports geographic orientation; it is not an elevation analysis, catchment model or inundation map.
+
+To regenerate, download the `komb` GeoTIFF from the STAC item linked in that JSON into `data/raw/geography/classic-map.tif`, and save the STAC item as `classic-map.json` in the same ignored directory. Install `requirements-geography.txt` inside the repository environment, then run `python scripts/prepare_classic_map.py`. Normal setup, build, serving and tests do not require these optional GIS/image preparation packages or raw downloads.

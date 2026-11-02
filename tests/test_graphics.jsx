@@ -62,3 +62,20 @@ assert.ok(explanation.includes('110.9'));
 console.log(
   'visx graphics verified: real rainfall, accessible stations, explicit missing observations, and inspectable accumulation.',
 );
+
+const classicMap = JSON.parse(readFileSync('web/geography/classic-map.json', 'utf8'));
+const classic = renderToStaticMarkup(
+  <StationMap
+    width={600}
+    countries={empty}
+    lakes={empty}
+    classicMap={classicMap}
+    stations={[{ ...station, value: observed[2] }]}
+    selected="MER"
+  />,
+);
+assert.ok(classic.includes('href="geography/classic-map.webp"'));
+assert.ok(classic.includes('Topographic map'));
+assert.ok(classic.includes('© swisstopo'));
+assert.ok(classic.includes('110.9 mm'));
+assert.ok(!classic.includes('NaN'));

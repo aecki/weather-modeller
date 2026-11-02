@@ -18,6 +18,7 @@ export function StationMap({
   height = 345,
   countries,
   lakes,
+  classicMap,
   stations,
   selected,
   onSelect,
@@ -25,6 +26,7 @@ export function StationMap({
 }) {
   const [zoom, setZoom] = useState(1);
   const [hover, setHover] = useState(null);
+  const [showClassic, setShowClassic] = useState(true);
   const clip = useId().replaceAll(':', '');
   useEffect(() => {
     setZoom(1);
@@ -50,7 +52,7 @@ export function StationMap({
             <rect width={width} height={height} />
           </clipPath>
         </defs>
-        <rect width={width} height={height} fill="#edf0f3" />
+        <rect width={width} height={height} fill={classicMap && showClassic ? '#fff' : '#edf0f3'} />
         <g clipPath={`url(#${clip})`}>
           <Mercator
             data={countries.features}
@@ -60,40 +62,61 @@ export function StationMap({
           >
             {({ features, projection, path }) => (
               <>
-                {features.map(({ feature, path: shape }, index) => (
-                  <path
-                    key={index}
-                    d={shape || ''}
-                    fill={feature.properties.name === 'Switzerland' ? '#fafbfc' : '#edf0f3'}
-                    stroke={feature.properties.name === 'Switzerland' ? '#8f9ca9' : '#c5ced7'}
-                    strokeWidth={feature.properties.name === 'Switzerland' ? 1.5 : 0.8}
-                  />
-                ))}
-                {lakes.features.map((feature, index) => (
-                  <path
-                    key={`lake-${index}`}
-                    d={path(feature) || ''}
-                    fill="#d8e6f1"
-                    stroke="#aec6da"
-                    strokeWidth={0.5}
-                  />
-                ))}
-                {labels.map(([name, lon, lat]) => {
-                  const point = projection([lon, lat]);
-                  return (
-                    <text
-                      key={name}
-                      x={point[0]}
-                      y={point[1]}
-                      textAnchor="middle"
-                      fill="#64748b"
-                      fontSize={9}
-                      letterSpacing={2}
-                    >
-                      {name}
-                    </text>
-                  );
-                })}
+                {(!classicMap || !showClassic) &&
+                  features.map(({ feature, path: shape }, index) => (
+                    <path
+                      key={index}
+                      d={shape || ''}
+                      fill={feature.properties.name === 'Switzerland' ? '#fafbfc' : '#edf0f3'}
+                      stroke={feature.properties.name === 'Switzerland' ? '#8f9ca9' : '#c5ced7'}
+                      strokeWidth={feature.properties.name === 'Switzerland' ? 1.5 : 0.8}
+                    />
+                  ))}
+                {(!classicMap || !showClassic) &&
+                  lakes.features.map((feature, index) => (
+                    <path
+                      key={`lake-${index}`}
+                      d={path(feature) || ''}
+                      fill="#d8e6f1"
+                      stroke="#aec6da"
+                      strokeWidth={0.5}
+                    />
+                  ))}
+                {(!classicMap || !showClassic) &&
+                  labels.map(([name, lon, lat]) => {
+                    const point = projection([lon, lat]);
+                    return (
+                      <text
+                        key={name}
+                        x={point[0]}
+                        y={point[1]}
+                        textAnchor="middle"
+                        fill="#64748b"
+                        fontSize={9}
+                        letterSpacing={2}
+                      >
+                        {name}
+                      </text>
+                    );
+                  })}
+                {classicMap &&
+                  showClassic &&
+                  (() => {
+                    const [west, south, east, north] = classicMap.processing.bounds;
+                    const topLeft = projection([west, north]);
+                    const bottomRight = projection([east, south]);
+                    return (
+                      <image
+                        href="geography/classic-map.webp"
+                        x={topLeft[0]}
+                        y={topLeft[1]}
+                        width={bottomRight[0] - topLeft[0]}
+                        height={bottomRight[1] - topLeft[1]}
+                        preserveAspectRatio="none"
+                        pointerEvents="none"
+                      />
+                    );
+                  })()}
                 {stations.map((station) => {
                   const point = projection([station.lon, station.lat]);
                   const isSelected = station.id === selected;
@@ -148,6 +171,18 @@ export function StationMap({
           </Mercator>
         </g>
       </svg>
+      {classicMap && (
+        <div className="map-layers">
+          <label>
+            <input
+              type="checkbox"
+              checked={showClassic}
+              onChange={(event) => setShowClassic(event.target.checked)}
+            />
+            Topographic map
+          </label>
+        </div>
+      )}
       <div className="map-controls">
         <button
           aria-label="Zoom in"
@@ -173,7 +208,13 @@ export function StationMap({
           © swisstopo
         </a>
         {' · '}
-        <a href="geography/provenance.json" target="_blank" rel="noreferrer">
+        <a
+          href={
+            classicMap && showClassic ? 'geography/classic-map.json' : 'geography/provenance.json'
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
           Map sources
         </a>
       </span>
