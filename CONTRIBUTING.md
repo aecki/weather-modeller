@@ -41,3 +41,7 @@ Add regression tests when changing missingness, aggregation, date windows, cache
 A change should describe the user-visible behavior, its reason, and the checks run. Keep commits focused and avoid unrelated generated-file or snapshot changes. The CI matrix runs the same environment setup, tests, build and quality checks on macOS, Ubuntu and Windows. Remote CI results must be observed before claiming those platforms passed.
 
 Architecture and methodology: [docs/architecture.md](docs/architecture.md), [docs/data.md](docs/data.md), [docs/environment.md](docs/environment.md).
+
+## Scientific model checks
+
+`python run.py check` also verifies the browser EVT calculations against the versioned real-data fixtures and executes the bundled worker. To regenerate those fixtures only, activate the local environment, run `python -m pip install --isolated --no-user --cache-dir .cache/pip -r requirements-science.txt`, then `python scripts/reference_models.py`. SciPy/lmoments3 are optional and are not runtime or routine CI dependencies. Read [docs/modelling.md](docs/modelling.md) before changing the estimator, resampling, supports, plotting positions or uncertainty language.

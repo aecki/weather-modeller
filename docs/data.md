@@ -37,3 +37,7 @@ The processed JSON includes original hourly river records so derived values can 
 ## Geography
 
 Country boundaries use Natural Earth 1:50m; lakes use 1:10m. Selected features are bundled locally, with input URLs and hashes in `web/geography/provenance.json`. Boundaries are generalised for display, not cadastral or hydrological analysis. Natural Earth data is public domain.
+
+## Model estimates are separate from observations
+
+The Model lab now fits stationary GEV/Gumbel distributions to selected complete-year maxima and estimates return periods with bootstrap sampling uncertainty. These estimates do not change the observation snapshot or the descriptive historical rankings. Model assumptions, confidence-band interpretation and extrapolation limits are documented in [modelling.md](modelling.md).

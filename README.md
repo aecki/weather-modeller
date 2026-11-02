@@ -95,3 +95,9 @@ python run.py check
 The app is ready to build as a static website. See [GitHub Pages setup](docs/github-pages.md) for deployment. A checked-in Actions workflow builds/tests `dist/` and deploys it after Pages is enabled. Static hosting uses browser CSV downloads; local serving retains repository-local CSV saves.
 
 The page includes a **How it works** section with a visx illustration driven by the selected real measurements. Maps, charts and comparison graphics all use visx.
+
+## Extreme-value Model lab
+
+Fit stationary GEV or Gumbel distributions to real complete-year rainfall maxima. Change the station, 1/3/5-day duration, fitting years, replay-year exclusion, return period and confidence level. The visx return-level curve shows pointwise bootstrap uncertainty and extrapolation; threshold probabilities and Q–Q/time diagnostics help inspect the fit. Computation stays in a browser worker, including on GitHub Pages.
+
+The lab estimates rainfall hazard, not flood depths or insured losses. Its conditional sampling intervals exclude climate change and model-choice uncertainty. See [the full modelling method](docs/modelling.md) for assumptions, fitting equations, failed fits, infinite bounds and verification against independent scientific references.

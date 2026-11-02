@@ -108,7 +108,28 @@ function updateAnalysis() {
     })),
     selectedId: event.id,
   });
+  LabGraphics.modelLab({
+    annual,
+    station,
+    stations: data.stations,
+    days,
+    event,
+    eventPeak: peak,
+    historyStart: data.historyStart,
+    historyEnd: data.historyEnd,
+    onStation: setStation,
+    onDuration: setDuration,
+  });
   updateCursor();
+}
+function setDuration(value) {
+  days = value;
+  document.querySelectorAll('#durations button').forEach((button) => {
+    const active = +button.dataset.days === days;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', active);
+  });
+  updateAnalysis();
 }
 function updateCursor() {
   const date = dates[cursor],
@@ -258,12 +279,7 @@ async function init() {
     $('durations').onclick = (e) => {
       const b = e.target.closest('button');
       if (!b) return;
-      days = +b.dataset.days;
-      document.querySelectorAll('#durations button').forEach((x) => {
-        x.classList.toggle('active', x === b);
-        x.setAttribute('aria-pressed', x === b);
-      });
-      updateAnalysis();
+      setDuration(+b.dataset.days);
     };
     $('timeline').oninput = (e) => {
       cursor = +e.target.value;
@@ -301,8 +317,8 @@ async function init() {
     $('content').hidden = false;
     initMap(countries, lakes);
     setEvent(data.events[0].id);
-    if (location.hash === '#how-it-works')
-      $('how-it-works').scrollIntoView({ behavior: 'instant' });
+    if (['#how-it-works', '#model-lab'].includes(location.hash))
+      document.querySelector(location.hash).scrollIntoView({ behavior: 'instant' });
   } catch (err) {
     $('loading').textContent =
       'The observation snapshot could not be loaded. Please reload the page. ' + err.message;

@@ -13,3 +13,6 @@
 - Product name: aecki’s catastrophe lab. Keep repository/environment identifier `weather-modeller`.
 - Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or map-tile/CDN dependencies.
 - Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, local serving with repository exports. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
+
+- The Model lab uses stationary annual-maxima GEV/Gumbel fits, with xi = -SciPy c. Read docs/modelling.md before altering the mathematics or confidence bands. Preserve worker cancellation, bootstrap failures, infinite bounds and model/observation separation.
+- Verify mathematical changes against the versioned lmoments3/SciPy real-data references. Optional requirements-science.txt is only for fixture generation; do not add a scientific Python runtime dependency to the hosted site.

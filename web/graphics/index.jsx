@@ -4,6 +4,7 @@ import { ParentSize } from '@visx/responsive';
 import { StationMap } from './StationMap';
 import { HorizontalBars, ObservationChart } from './TimeSeries';
 import { WindowExplanation } from './WindowExplanation';
+import { ModelLab } from './ModelLab';
 
 const roots = new WeakMap();
 function mount(id, Component, props) {
@@ -18,6 +19,11 @@ function mount(id, Component, props) {
     );
 }
 window.LabGraphics = {
+  modelLab: (props) => {
+    const element = document.getElementById('model-lab');
+    if (!roots.has(element)) roots.set(element, createRoot(element));
+    roots.get(element).render(<ModelLab {...props} />);
+  },
   map: (props) => mount('map', StationMap, props),
   rainfall: (props) => mount('rain-chart', ObservationChart, { ...props, kind: 'rain' }),
   river: (props) => mount('river-chart', ObservationChart, { ...props, kind: 'river' }),

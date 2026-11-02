@@ -16,6 +16,7 @@ REQUIRED_ASSETS = (
     "app.js",
     "data-core.js",
     "graphics.js",
+    "model-worker.js",
     "third-party-notices.txt",
     "runtime-config.json",
     "geography/countries.geojson",
@@ -51,7 +52,7 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
     staging_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(dir=staging_root) as directory:
         staged, previous = Path(directory) / "dist", Path(directory) / "previous"
-        shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics"))
+        shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics", "modelling"))
         shutil.copytree(data, staged / "data")
         compile_frontend(root, staged)
         write_json(staged / "runtime-config.json", {"exportMode": export_mode})

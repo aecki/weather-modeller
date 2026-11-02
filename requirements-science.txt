@@ -1,0 +1,4 @@
+# Optional: regenerate independent extreme-value reference fixtures.
+lmoments3==1.0.8
+scipy==1.18.1
+numpy==2.5.4

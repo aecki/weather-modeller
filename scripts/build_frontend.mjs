@@ -46,3 +46,13 @@ for (const name of [...packages].sort()) {
   notices.push(`${name}@${metadata.version} — ${metadata.license || 'See package'}\n${text}`);
 }
 await writeFile(path.join(destination, 'third-party-notices.txt'), notices.join('\n\n---\n\n'));
+
+await build({
+  entryPoints: [path.join(root, 'web/modelling/worker.mjs')],
+  bundle: true,
+  outfile: path.join(destination, 'model-worker.js'),
+  minify: true,
+  target: ['es2022'],
+  legalComments: 'eof',
+  format: 'iife',
+});

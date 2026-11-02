@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <meta
       name="description"
@@ -49,7 +49,8 @@
       <main id="explorer">
         <header class="topbar">
           <nav class="page-nav" aria-label="Page sections">
-            <a href="#explorer">Explore</a><a href="#how-it-works">How it works</a>
+            <a href="#explorer">Explore</a><a href="#model-lab">Model lab</a
+            ><a href="#how-it-works">How it works</a>
           </nav>
           <span class="data-badge">● REAL MEASUREMENTS</span>
         </header>
@@ -169,13 +170,14 @@
             </div>
             <div id="compare-bars"></div>
           </section>
+          <section id="model-lab" aria-label="Extreme-value model lab"></section>
           <section id="how-it-works" class="how-section" aria-labelledby="how-title">
             <div class="how-heading">
               <span class="eyebrow">INSIDE THE LAB</span>
               <h2 id="how-title">From a rain gauge to the bigger picture.</h2>
               <p>
-                No invented storms. No hidden model. Here is what you are looking at, and how the
-                numbers are made.
+                Follow official observations through transparent calculations, then explore a fitted
+                extreme-value model with visible uncertainty.
               </p>
             </div>
             <div class="how-layout">
@@ -219,8 +221,9 @@
                     <h3>Put an event in context.</h3>
                     <p>
                       We compare its wettest window with the largest windows in complete calendar
-                      years. These historical counts are descriptive: they do not estimate a return
-                      period, flood depth, future probability or insured loss.
+                      years. These historical counts are descriptive. The Model lab separately fits
+                      annual maxima to estimate return periods with sampling uncertainty. It does
+                      not estimate flood depth or insured loss.
                     </p>
                   </div>
                 </article>
@@ -300,8 +303,9 @@
       </p>
       <p>
         Historical rankings compare annual maxima from complete calendar years only. Multi-day
-        windows must fall entirely within that year. No extreme-value fit, flood depth, damage
-        estimate or synthetic catalogue is included.
+        windows must fall entirely within that year. The Model lab separately fits stationary GEV
+        and Gumbel distributions and reports bootstrap uncertainty. These are estimates. No
+        flood-depth model, damage estimate or synthetic storm catalogue is included.
       </p>
       <p>
         Rainfall points show measurements at stations; coloured circles are not storm footprints.

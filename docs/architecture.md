@@ -37,3 +37,9 @@ Exports and cache writes use unique temporary files in the destination directory
 `python run.py build` emits a complete static Pages artifact, with browser-side CSV downloads. `serve` selects repository exports in its generated runtime config. Neither build depends on a hosted API. Relative asset/data URLs support both a domain root and a GitHub repository subpath. See [GitHub Pages](github-pages.md).
 
 Graphics use visx geometry, scales, axes, grids and shapes throughout. The UI controller keeps selections in one place and passes measured values/callbacks into React graphic components. visx never creates or interpolates missing weather observations; river line paths explicitly break at gaps.
+
+## Browser extreme-value modelling
+
+`web/modelling/extremes.mjs` implements pure L-moment GEV/Gumbel fitting, return levels, exceedance calculations and seeded resampling of observed annual maxima. `worker.mjs` runs refits off the main thread and is bundled as `model-worker.js`. `ModelLab.jsx` manages fit settings, worker cancellation, limited result caching and conditional uncertainty; `ModelCharts.jsx` renders visx return-level bands and diagnostics. The controller passes the existing complete-year maxima into the lab, preserving the observation/model distinction.
+
+The generated worker is a required build asset. Node checks execute that worker and compare calculations to 108 versioned lmoments3/SciPy reference cases. No scientific Python dependency is needed to build, run or check the site; pinned optional science packages only regenerate the checked-in references. See [modelling.md](modelling.md).
