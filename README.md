@@ -101,3 +101,7 @@ The page includes a **How it works** section with a visx illustration driven by 
 Fit stationary GEV or Gumbel distributions to real complete-year rainfall maxima. Change the station, 1/3/5-day duration, fitting years, replay-year exclusion, return period and confidence level. The visx return-level curve shows pointwise bootstrap uncertainty and extrapolation; threshold probabilities and Q–Q/time diagnostics help inspect the fit. Computation stays in a browser worker, including on GitHub Pages.
 
 The lab estimates rainfall hazard, not flood depths or insured losses. Its conditional sampling intervals exclude climate change and model-choice uncertainty. See [the full modelling method](docs/modelling.md) for assumptions, fitting equations, failed fits, infinite bounds and verification against independent scientific references.
+
+### GPD / SMEV and held-out comparison
+
+The Model lab also compares GEV, Gumbel, GPD and SMEV using earlier complete years for training and the latest 5/10/15 for testing. Inspect training-only return curves, year-bootstrap intervals, paired model differences and held-out Brier/quantile scores. Storm separation and tail-fitting settings are explicit. Computation stays in a bundled browser worker; only recorded Swiss observations and resampled observed year blocks are used. See [model methods](docs/modelling.md).

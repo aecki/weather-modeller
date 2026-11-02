@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { ReturnLevelChart, DiagnosticChart } from './ModelCharts';
+import { ModelComparison } from './ModelComparison';
 import {
   fitModel,
   returnLevel,
@@ -42,6 +43,7 @@ function ResponsiveChart({ component: Component, ...props }) {
 }
 
 export function ModelLab({
+  dates,
   annual,
   station,
   stations,
@@ -208,11 +210,15 @@ export function ModelLab({
           <h2>Return-period estimation</h2>
           <p>
             Fit GEV or Gumbel distributions to observed annual rainfall maxima. Estimate return
-            levels and sampling uncertainty.
+            levels and sampling uncertainty. Compare GPD and SMEV with these models using held-out
+            years below.
           </p>
         </div>
         <span className="model-badge">STATIONARY HAZARD MODEL</span>
       </div>
+      <a className="comparison-jump" href="#model-comparison">
+        Compare four models on held-out years ↓
+      </a>
       <div className="model-controls">
         <label>
           Weather station
@@ -243,7 +249,7 @@ export function ModelLab({
           </select>
         </label>
         <label>
-          Distribution
+          Full-record distribution
           <select
             aria-label="Extreme-value distribution"
             value={model}
@@ -573,7 +579,7 @@ export function ModelLab({
         </>
       )}
       <div className="model-method">
-        <strong>Uncertainty interpretation</strong>
+        <strong>Full-record uncertainty interpretation</strong>
         <p>
           We keep the measured rainfall fixed, take one maximum from each complete year, and
           repeatedly resample those observed yearly maxima. Each resample is refitted. The central{' '}
@@ -588,6 +594,23 @@ export function ModelLab({
           periods.
         </p>
       </div>
+      <ModelComparison
+        stations={stations}
+        onStation={onStation}
+        onDuration={onDuration}
+        onConfidence={setConfidence}
+        dates={dates}
+        station={station}
+        days={days}
+        selectedYears={annual
+          .filter((row) => +row.year >= from && +row.year <= to)
+          .map((row) => row.year)}
+        excludeTrainingYear={exclude ? eventYear : null}
+        confidence={confidence}
+        repetitions={repetitions}
+        period={period}
+        onPeriod={setPeriod}
+      />
     </div>
   );
 }

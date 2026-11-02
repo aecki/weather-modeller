@@ -1693,3 +1693,121 @@ input[type='range'] {
     font-size: 10px;
   }
 }
+
+.comparison-jump {
+  display: inline-block;
+  margin-top: 15px;
+  color: #2563a6;
+  font-size: 13px;
+}
+.comparison-lab {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  padding-top: 30px;
+  scroll-margin-top: 20px;
+}
+.comparison-lab h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+.comparison-lab > p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: #475569;
+}
+.comparison-settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 20px 0;
+}
+.comparison-settings label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+  color: #475569;
+}
+.comparison-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  gap: 20px;
+  padding: 16px;
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.comparison-split p {
+  margin: 0;
+}
+.comparison-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  margin: 16px 0;
+}
+.comparison-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.comparison-legend i {
+  width: 20px;
+  height: 3px;
+}
+.comparison-curve {
+  height: 350px;
+  border: 1px solid var(--line);
+}
+.comparison-history {
+  height: 250px;
+  border: 1px solid var(--line);
+}
+.comparison-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 20px 0 30px;
+}
+.comparison-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.comparison-table caption {
+  text-align: left;
+  padding: 10px 0;
+  color: #475569;
+}
+.comparison-table th,
+.comparison-table td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.comparison-table thead {
+  background: #f4f6f8;
+}
+.comparison-table small {
+  display: block;
+  color: #596575;
+  font-size: 11px;
+  margin-top: 5px;
+}
+.comparison-lab pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .comparison-settings,
+  .comparison-split {
+    grid-template-columns: 1fr;
+  }
+  .comparison-lab h2 {
+    font-size: 22px;
+  }
+}

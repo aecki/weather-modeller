@@ -1,3 +1,5 @@
+import { ComparisonCurve, HoldoutHistory } from '../web/graphics/ComparisonCharts';
+import { fitStormModel, modelLevel } from '../web/modelling/comparison.mjs';
 import { layout, pan, zoomAt, project } from '../web/graphics/map-viewport.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -111,3 +113,38 @@ for (let i = 0; i < 2; i++) {
   );
 }
 console.log('Map navigation verified: bounded panning, zoom limits and cursor anchoring.');
+
+const comparisonReference = JSON.parse(
+  readFileSync('tests/fixtures/comparison-reference.json', 'utf8'),
+).cases[0];
+const trainBlocks = comparisonReference.blocks.slice(0, -10),
+  testBlocks = comparisonReference.blocks.slice(-10);
+const predictions = ['gev', 'gumbel', 'gpd', 'smev'].map((model) => ({
+  model,
+  fit: fitStormModel(trainBlocks, model),
+}));
+const comparisonPlot = renderToStaticMarkup(
+  <ComparisonCurve
+    width={800}
+    bandModel="gpd"
+    years={35}
+    period={100}
+    curves={predictions.map((p) => ({
+      model: p.model,
+      rows: [2, 10, 100, 500].map((t) => ({ period: t, value: modelLevel(p.fit, t) })),
+    }))}
+  />,
+);
+assert.ok(comparisonPlot.includes('data-renderer="visx"'));
+assert.ok(!comparisonPlot.includes('NaN'));
+const heldoutPlot = renderToStaticMarkup(
+  <HoldoutHistory
+    width={800}
+    training={trainBlocks}
+    test={testBlocks}
+    predictions={predictions.map((p) => ({ model: p.model, level: modelLevel(p.fit, 10) }))}
+  />,
+);
+assert.ok(heldoutPlot.includes('held-out observation'));
+assert.ok(heldoutPlot.includes('training-only 10-year'));
+assert.ok(!heldoutPlot.includes('NaN'));

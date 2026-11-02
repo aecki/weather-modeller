@@ -16,3 +16,5 @@
 
 - The Model lab uses stationary annual-maxima GEV/Gumbel fits, with xi = -SciPy c. Read docs/modelling.md before altering the mathematics or confidence bands. Preserve worker cancellation, bootstrap failures, infinite bounds and model/observation separation.
 - Verify mathematical changes against the versioned lmoments3/SciPy real-data references. Optional requirements-science.txt is only for fixture generation; do not add a scientific Python runtime dependency to the hosted site.
+
+- The four-model comparison uses daily storm peaks for GPD/SMEV and forward held-out complete years. Preserve training-only thresholds/seeds, paired whole-year resampling, no overlapping retained peak windows, and null GPD estimates below its threshold. Run both reference suites, including `tests/test_comparison.mjs`; see docs/modelling.md.

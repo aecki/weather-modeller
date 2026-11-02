@@ -109,6 +109,7 @@ function updateAnalysis() {
     selectedId: event.id,
   });
   LabGraphics.modelLab({
+    dates: data.dates,
     annual,
     station,
     stations: data.stations,

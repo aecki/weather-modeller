@@ -22,6 +22,7 @@ def check(root):
     subprocess.run([node, str(root / "scripts/test_graphics.mjs")], cwd=root, check=True)
     build(root)
     subprocess.run([node, str(root / "tests/test_models.mjs")], cwd=root, check=True)
+    subprocess.run([node, str(root / "tests/test_comparison.mjs")], cwd=root, check=True)
     print("All local checks passed.")
 
 
@@ -48,6 +49,7 @@ def quality(root):
             "scripts/test_graphics.mjs",
             "tests/test_graphics.jsx",
             "tests/test_models.mjs",
+            "tests/test_comparison.mjs",
             "web/modelling",
         ],
         cwd=root,
