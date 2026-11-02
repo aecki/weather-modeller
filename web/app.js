@@ -154,8 +154,8 @@ function updateCursor() {
     ending: date,
   });
 }
-function initMap(countries, lakes, classicMap) {
-  geography = { countries, lakes, classicMap };
+function initMap(classicMap) {
+  geography = { classicMap };
 }
 function resetMap() {
   mapResetCount++;
@@ -235,16 +235,10 @@ async function exportSelection() {
 }
 async function init() {
   try {
-    const urls = [
-      'data/observations.json',
-      'geography/countries.geojson',
-      'geography/lakes.geojson',
-      'geography/classic-map.json',
-      'runtime-config.json',
-    ];
+    const urls = ['data/observations.json', 'geography/classic-map.json', 'runtime-config.json'];
     const responses = await Promise.all(urls.map((url) => fetch(url)));
     for (const res of responses) if (!res.ok) throw Error('HTTP ' + res.status);
-    const [observations, countries, lakes, classicMap, config] = await Promise.all(
+    const [observations, classicMap, config] = await Promise.all(
       responses.map((res) => res.json()),
     );
     data = observations;
@@ -316,7 +310,7 @@ async function init() {
       new Date(data.generatedAt).toLocaleDateString('en-GB', { timeZone: 'Europe/Zurich' });
     $('loading').hidden = true;
     $('content').hidden = false;
-    initMap(countries, lakes, classicMap);
+    initMap(classicMap);
     setEvent(data.events[0].id);
     if (['#how-it-works', '#model-lab'].includes(location.hash))
       document.querySelector(location.hash).scrollIntoView({ behavior: 'instant' });

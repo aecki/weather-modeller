@@ -7,27 +7,32 @@
   "downloadUrl": "https://data.geo.admin.ch/ch.swisstopo.pixelkarte-farbe-pk500.noscale/swiss-map-raster500_500/swiss-map-raster500_500_komb_25_2056.tif",
   "sourceUpdated": "2025-12-31T11:59:07.033605Z",
   "inputSha256": "92519de59e0ef7a3742b377984bafe1e45c7293bd6e323f292cca4774825afef",
-  "preparedAt": "2026-11-02T12:37:49.190168+00:00",
+  "preparedAt": "2026-11-02T12:48:40.705841+00:00",
   "processing": {
     "sourceCRS": "EPSG:2056",
     "sourcePixelMetres": 25,
     "mapScale": "1:500000",
     "imageCRS": "EPSG:3857",
     "bounds": [
-      4.7,
-      45.2,
-      11.7,
-      48.3
+      5.5,
+      45.5,
+      10.95,
+      48.0
     ],
-    "width": 4000,
-    "height": 2586,
+    "width": 8000,
+    "height": 5357,
     "resampling": "bilinear",
     "output": "WebP quality 85, method 6",
     "outsideSource": "white; no extrapolated cartography"
   },
   "output": {
     "file": "classic-map.webp",
-    "sha256": "29c2b30f44ac222969cc881e43e2c743bdd6aa9506911f83103f9a73b7d6546d"
+    "sha256": "8ef06a2e938aa4976a80b3135e413ceb738e82d894d6a5fdb94bc2c45a29d1cc"
+  },
+  "overview": {
+    "file": "classic-map-overview.webp",
+    "width": 2000,
+    "sha256": "6be07971c01bd21fb17dddec5c2bce3ff55173c91d9bbb93d5ec2f7a96e08f23"
   },
   "note": "Fixed-resolution national map for geographic context. Does not stream higher-detail tiles when zoomed. Current downloaded cartography is used for all historical events; it does not define catchments or inundation."
 }

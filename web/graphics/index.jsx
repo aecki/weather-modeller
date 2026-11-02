@@ -14,7 +14,13 @@ function mount(id, Component, props) {
     .get(element)
     .render(
       <ParentSize debounceTime={20}>
-        {({ width }) => <Component {...props} width={Math.max(width, 100)} />}
+        {({ width, height }) => (
+          <Component
+            {...props}
+            width={Math.max(width, 100)}
+            {...(id === 'map' ? { height: Math.max(height, 100) } : {})}
+          />
+        )}
       </ParentSize>,
     );
 }

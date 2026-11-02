@@ -19,11 +19,9 @@ REQUIRED_ASSETS = (
     "model-worker.js",
     "third-party-notices.txt",
     "runtime-config.json",
-    "geography/countries.geojson",
-    "geography/lakes.geojson",
     "geography/classic-map.json",
     "geography/classic-map.webp",
-    "geography/provenance.json",
+    "geography/classic-map-overview.webp",
     "data/observations.json",
     "data/provenance.json",
 )

@@ -45,7 +45,7 @@ weather-modeller/
 ├── config/catalog.json    # Station selection, history range, event windows
 ├── src/weather_modeller/  # Python ingestion, aggregation and app commands
 ├── web/                   # Editable HTML, CSS and JavaScript
-│   ├── geography/         # Bundled real country/lake boundaries + provenance
+│   ├── geography/         # Bundled topographic map + provenance
 │   └── graphics/          # React + visx map, charts and interactive explanation
 ├── data/
 │   ├── processed/         # Tracked observations and source provenance
@@ -76,7 +76,7 @@ Python 3.12 and Node.js 22 are constrained in `environment.yml`, using conda-for
 
 Every source response has its exact URL/request, retrieval time and SHA256 recorded in `data/processed/provenance.json`. Missing observations stay missing. See [data methodology](docs/data.md) for time boundaries and limitations.
 
-Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, bundled Swiss Map Raster 500 with relief and rivers. Outline geography: © swisstopo, derived from swissBOUNDARIES3D 2026 and swissTLMRegio 2026; bundled locally with source attribution and provenance. Graphics use React and visx, bundled with dependency notices in the generated site.
+Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, bundled Swiss Map Raster 500 with relief and rivers. Source attribution and provenance are bundled locally. Graphics use React and visx, bundled with dependency notices in the generated site.
 
 ## Development
 

@@ -1647,23 +1647,49 @@ input[type='range'] {
   color: inherit;
 }
 
-.map-layers {
+/* Full-width, bounded topographic exploration. */
+.workspace {
+  grid-template-columns: minmax(0, 1fr);
+}
+#map {
+  height: clamp(560px, 70vh, 800px);
+  background: #fff;
+}
+.visx-map svg {
+  touch-action: none;
+  cursor: grab;
+}
+.visx-map svg:active {
+  cursor: grabbing;
+}
+.map-controls {
+  z-index: 1;
+}
+.map-controls button {
+  width: 36px;
+  height: 36px;
+}
+.map-hint {
   position: absolute;
-  right: 8px;
-  top: 8px;
-  display: flex;
-  background: #ffffffed;
-  border: 1px solid var(--line);
-  padding: 6px 8px;
+  top: 12px;
+  right: 12px;
+  background: #fffffff0;
+  padding: 6px 9px;
   font-size: 11px;
   color: #475569;
+  pointer-events: none;
 }
-.map-layers label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.map-credit {
+  background: #fffffff0;
+  font-size: 10px;
+  padding: 4px 6px;
 }
-.map-layers input {
-  margin: 0;
-  accent-color: #2563a6;
+@media (max-width: 760px) {
+  #map {
+    height: 460px;
+  }
+  .map-hint {
+    max-width: 185px;
+    font-size: 10px;
+  }
 }

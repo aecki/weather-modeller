@@ -1,3 +1,4 @@
+import { layout, pan, zoomAt, project } from '../web/graphics/map-viewport.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import assert from 'node:assert/strict';
@@ -35,15 +36,8 @@ const missing = renderToStaticMarkup(
 );
 assert.ok(missing.includes('missing observation'));
 assert.ok(!missing.includes('NaN'));
-const empty = { type: 'FeatureCollection', features: [] };
 const map = renderToStaticMarkup(
-  <StationMap
-    width={600}
-    countries={empty}
-    lakes={empty}
-    stations={[{ ...station, value: null }]}
-    selected="MER"
-  />,
+  <StationMap width={600} stations={[{ ...station, value: null }]} selected="MER" />,
 );
 assert.ok(map.includes('missing rainfall'));
 assert.ok(map.includes('tabindex="0"'));
@@ -67,15 +61,53 @@ const classicMap = JSON.parse(readFileSync('web/geography/classic-map.json', 'ut
 const classic = renderToStaticMarkup(
   <StationMap
     width={600}
-    countries={empty}
-    lakes={empty}
     classicMap={classicMap}
     stations={[{ ...station, value: observed[2] }]}
     selected="MER"
   />,
 );
-assert.ok(classic.includes('href="geography/classic-map.webp"'));
-assert.ok(classic.includes('Topographic map'));
+assert.ok(classic.includes('href="geography/classic-map-overview.webp"'));
+assert.ok(!classic.includes('Topographic map'));
+assert.ok(classic.includes('Reset map view'));
+assert.ok(classic.includes('Drag to pan'));
 assert.ok(classic.includes('© swisstopo'));
 assert.ok(classic.includes('110.9 mm'));
 assert.ok(!classic.includes('NaN'));
+
+// Navigation must never expose the bundled raster edge, even on narrow screens.
+
+const bounds = classicMap.processing.bounds;
+for (const [width, height] of [
+  [1000, 560],
+  [350, 460],
+  [1600, 500],
+]) {
+  let camera = layout(bounds, width, height);
+  for (let i = 0; i < 60; i++) {
+    camera = zoomAt(bounds, width, height, camera, i % 3 ? 1.7 : 0.2, [
+      (i * 31) % width,
+      (i * 47) % height,
+    ]);
+    camera = pan(bounds, width, height, camera, i % 2 ? 100000 : -100000, i % 3 ? -100000 : 100000);
+    const a = project(bounds.slice(0, 2)),
+      b = project(bounds.slice(2));
+    const [tx, ty] = camera.translate;
+    assert.ok(a[0] * camera.scale + tx <= 1e-6);
+    assert.ok(b[0] * camera.scale + tx >= width - 1e-6);
+    assert.ok(b[1] * camera.scale + ty <= 1e-6);
+    assert.ok(a[1] * camera.scale + ty >= height - 1e-6);
+    assert.ok(camera.zoom >= 1 && camera.zoom <= 8);
+  }
+}
+const initial = layout(bounds, 1000, 560, { zoom: 2 });
+const anchor = [550, 300];
+const zoomed = zoomAt(bounds, 1000, 560, initial, 1.4, anchor);
+for (let i = 0; i < 2; i++) {
+  assert.ok(
+    Math.abs(
+      (anchor[i] - initial.translate[i]) / initial.scale -
+        (anchor[i] - zoomed.translate[i]) / zoomed.scale,
+    ) < 1e-10,
+  );
+}
+console.log('Map navigation verified: bounded panning, zoom limits and cursor anchoring.');

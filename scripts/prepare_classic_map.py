@@ -27,9 +27,9 @@ source = raw / "classic-map.tif"
 digest = hashlib.sha256(source.read_bytes()).hexdigest()
 if asset["checksum:multihash"].lower() != "1220" + digest:
     raise ValueError("Official map checksum mismatch; review the source download.")
-bounds = [4.7, 45.2, 11.7, 48.3]
+bounds = [5.5, 45.5, 10.95, 48.0]
 projected = transform_bounds("EPSG:4326", "EPSG:3857", *bounds)
-width = 4000
+width = 8000
 height = round(width * (projected[3] - projected[1]) / (projected[2] - projected[0]))
 target_transform = from_bounds(*projected, width, height)
 rgb = np.full((height, width, 3), 255, dtype=np.uint8)
@@ -48,7 +48,11 @@ with rasterio.open(source) as src:
             dst_nodata=255,
             resampling=Resampling.bilinear,
         )
-Image.fromarray(rgb).save(out / "classic-map.webp", quality=85, method=6)
+image = Image.fromarray(rgb)
+image.save(out / "classic-map.webp", quality=85, method=6)
+image.resize((2000, round(height / 4)), Image.Resampling.LANCZOS).save(
+    out / "classic-map-overview.webp", quality=85, method=6
+)
 provenance = dict(
     source="Federal Office of Topography swisstopo",
     attribution="© swisstopo",
@@ -74,6 +78,11 @@ provenance = dict(
     output=dict(
         file="classic-map.webp",
         sha256=hashlib.sha256((out / "classic-map.webp").read_bytes()).hexdigest(),
+    ),
+    overview=dict(
+        file="classic-map-overview.webp",
+        width=2000,
+        sha256=hashlib.sha256((out / "classic-map-overview.webp").read_bytes()).hexdigest(),
     ),
     note="Fixed-resolution national map for geographic context. Does not stream higher-detail tiles when zoomed. Current downloaded cartography is used for all historical events; it does not define catchments or inundation.",
 )

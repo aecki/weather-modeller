@@ -36,13 +36,7 @@ The processed JSON includes original hourly river records so derived values can 
 
 ## Geography
 
-Map geography: **© swisstopo**. The Swiss national boundary comes from swissBOUNDARIES3D (January 2026); neighbouring country polygons and lakes come from swissTLMRegio 2026. These are geographic display layers, not rainfall observations or model outputs. Current geography is used for all historical events.
-
-The bundled GeoJSON is derived from official LV95/EPSG:2056 shapefiles, simplified with a topology-preserving 100-metre tolerance, transformed to WGS84 longitude/latitude, and clipped to 5.7–10.7° E, 45.7–48.0° N. Lakes smaller than 0.5 km² are omitted at this national display scale. Polygon exteriors are clockwise for d3/visx spherical rendering. These generalised boundaries must not be used for cadastral or hydrological analysis.
-
-Exact download URLs, archive SHA256 hashes (verified against the provider's STAC checksums), processing parameters and output hashes are recorded in `web/geography/provenance.json`. [swisstopo OGD conditions](https://www.swisstopo.admin.ch/en/conditions-geodata) allow free use with attribution. The map displays © swisstopo and links to the source record. No remote tiles, map API or runtime downloads are used.
-
-To regenerate explicitly, download the two archives and their STAC item JSON metadata listed in the provenance into `data/raw/geography/`, named by version (`swisstlmregio_2026.zip`/`.json`, `swissboundaries3d_2026-01.zip`/`.json`). In the repository environment, install optional tools with `python -m pip --isolated install --no-user --cache-dir .cache/pip -r requirements-geography.txt`, then run `python scripts/prepare_geography.py`. The script verifies archive checksums before processing. These tools and the ignored source downloads are not required for normal setup, build, tests or serving.
+Map geography is bundled locally from the official Swiss Map Raster 500 download, with **© swisstopo** attribution. Exact source URLs, provider-verified archive checksums and derived image checksums are recorded in `web/geography/classic-map.json`. [swisstopo OGD conditions](https://www.swisstopo.admin.ch/en/conditions-geodata) allow free use with attribution. No remote map tiles or API are required. See the preparation details below.
 
 ## Model estimates are separate from observations
 
@@ -51,10 +45,12 @@ The Model lab now fits stationary GEV/Gumbel distributions to selected complete-
 
 ### Classic topographic background
 
-The default map background uses **Swiss Map Raster 500, colour combination (`komb`)**, © swisstopo, downloaded directly from the official STAC download service. It includes terrain relief, rivers and place names. The downloaded asset was last updated 31 December 2025; it is current cartographic context for every replay, not a historical-event map. A single bundled image replaces remote map tiles. Turning off “Topographic map” restores the bundled boundary/lake view.
+The default map background uses **Swiss Map Raster 500, colour combination (`komb`)**, © swisstopo, downloaded directly from the official STAC download service. It includes terrain relief, rivers and place names. The downloaded asset was last updated 31 December 2025; it is current cartographic context for every replay, not a historical-event map. A single bundled image replaces remote map tiles. The topographic map is the only view. Drag to pan; wheel, pinch, double-click and +/− buttons zoom (1–8×); arrow keys pan and Home resets. The camera is constrained to the bundled extent, preventing empty borders.
 
-The source is a paletted 25-metre EPSG:2056 GeoTIFF representing a 1:500,000 map. `scripts/prepare_classic_map.py` checks its provider SHA256, expands the colour palette, reprojects with bilinear resampling to EPSG:3857 over 4.7–11.7° E and 45.2–48.3° N, and writes a 4,000-pixel-wide WebP (quality 85, method 6). The image is positioned using the same visx Mercator projection as the station markers, including zoom. Areas outside the source map are white. Zoom enlarges a fixed-resolution image; it does not fetch more detailed maps. Rainfall marker colours remain unchanged.
+The source is a paletted 25-metre EPSG:2056 GeoTIFF representing a 1:500,000 map. `scripts/prepare_classic_map.py` checks its provider SHA256, expands the colour palette, reprojects with bilinear resampling to EPSG:3857 over 5.5–10.95° E and 45.5–48.0° N, and writes an 8,000-pixel-wide WebP (quality 85, method 6). The image is positioned using the same visx Mercator projection as the station markers, including zoom. This interior crop stays inside the official source image, excluding sheet-edge margins. Zoom enlarges a fixed-resolution image; it does not fetch more detailed maps. Rainfall marker colours remain unchanged.
 
 `web/geography/classic-map.json` records exact source and metadata URLs, update time, input/output checksums and processing. This cartography supports geographic orientation; it is not an elevation analysis, catchment model or inundation map.
 
 To regenerate, download the `komb` GeoTIFF from the STAC item linked in that JSON into `data/raw/geography/classic-map.tif`, and save the STAC item as `classic-map.json` in the same ignored directory. Install `requirements-geography.txt` inside the repository environment, then run `python scripts/prepare_classic_map.py`. Normal setup, build, serving and tests do not require these optional GIS/image preparation packages or raw downloads.
+
+A 2,000-pixel overview loads initially; the bundled 8,000-pixel crop is requested from the same local origin only at 2× zoom and above. Both images have identical geographic bounds, so switching resolution preserves station alignment.
