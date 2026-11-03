@@ -229,6 +229,30 @@ async function exportSelection() {
     button.disabled = false;
   }
 }
+let proStarted = false;
+function applyMode() {
+  const pro = [
+    '#pro',
+    '#pro-daily',
+    '#station-lab',
+    '#model-lab',
+    '#model-comparison',
+    '#how-it-works',
+    '#explorer',
+  ].includes(location.hash);
+  document.body.dataset.mode = pro ? 'pro' : 'overview';
+  $('overview-mode').toggleAttribute('aria-current', !pro);
+  $('pro-mode').toggleAttribute('aria-current', pro);
+  (pro ? $('pro-mode') : $('overview-mode')).setAttribute('aria-current', 'page');
+  LabGraphics.daily({ mode: pro ? 'pro' : 'overview' });
+  if (!pro && playing) stop();
+  if (pro && !proStarted) {
+    proStarted = true;
+    init();
+  }
+  if (['#overview', '#pro', ''].includes(location.hash)) window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', applyMode);
 async function init() {
   try {
     const urls = ['data/observations.json', 'runtime-config.json'];
@@ -305,7 +329,9 @@ async function init() {
     $('loading').hidden = true;
     $('content').hidden = false;
     setEvent(data.events[0].id);
-    if (['#how-it-works', '#model-lab'].includes(location.hash))
+    if (
+      ['#station-lab', '#how-it-works', '#model-lab', '#model-comparison'].includes(location.hash)
+    )
       document.querySelector(location.hash).scrollIntoView({ behavior: 'instant' });
   } catch (err) {
     $('loading').textContent =
@@ -313,4 +339,4 @@ async function init() {
     console.error(err);
   }
 }
-init();
+applyMode();

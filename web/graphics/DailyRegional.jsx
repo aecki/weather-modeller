@@ -32,11 +32,13 @@ function assetURL(path) {
   return new URL(`data/regional/${path}`, document.baseURI);
 }
 
-export function DailyRegional() {
+export function DailyRegional({ mode = 'overview' }) {
   const [manifest, setManifest] = useState(null),
     [releaseError, setReleaseError] = useState('');
   const [reload, setReload] = useState(0),
-    [date, setDate] = useState('');
+    [analysisDate, setDate] = useState('');
+  const expected = expectedRainDay();
+  const date = mode === 'overview' ? expected : analysisDate;
   const [query, setQuery] = useState(''),
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
@@ -60,12 +62,12 @@ export function DailyRegional() {
       });
       if (!response.ok)
         throw new Error(
-          'Daily regional data is temporarily unavailable. Station analysis remains available below.',
+          'Daily regional data is temporarily unavailable. Switch to Pro Mode for station analysis.',
         );
       const data = await response.json();
       if (data.schemaVersion !== 1 || !data.days?.length)
         throw new Error(
-          'Daily regional data is temporarily unavailable. Station analysis remains available below.',
+          'Daily regional data is temporarily unavailable. Switch to Pro Mode for station analysis.',
         );
       if (
         data.grid?.crs !== 'EPSG:2056' ||
@@ -215,7 +217,6 @@ export function DailyRegional() {
   }, [query, selected]);
   const active = result?.key === resultKey ? result : null;
   const source = record && manifest.sources[record.sourceId];
-  const expected = expectedRainDay();
   const dates = [];
   if (manifest)
     for (
@@ -227,7 +228,13 @@ export function DailyRegional() {
   return (
     <section className="daily-regional" aria-labelledby="daily-title">
       <p className="eyebrow">Daily regional precipitation</p>
-      <h2 id="daily-title">Rainfall near your address: how does it compare?</h2>
+      <h2 id="daily-title">
+        {mode === 'overview'
+          ? new Date().getUTCHours() >= 6
+            ? 'How much did it rain yesterday?'
+            : 'Rainfall on the latest completed day'
+          : 'Daily rainfall by address'}
+      </h2>
       <p>
         Observation-based estimates for the surrounding area. These include rain and snowfall water
         equivalent; they are not measurements at individual buildings.
@@ -307,7 +314,7 @@ export function DailyRegional() {
         <p role="status">Loading the daily data release…</p>
       ) : (
         <>
-          <div className="daily-date">
+          <div className="daily-date pro-only">
             <label htmlFor="daily-date">Rainfall day</label>
             <select id="daily-date" value={date} onChange={(event) => setDate(event.target.value)}>
               {dates.map((day) => (
@@ -328,7 +335,8 @@ export function DailyRegional() {
           {selected && <h3>{selected.label}</h3>}
           {!record ? (
             <p role="status">
-              No published field is available for this rainfall day. Select an available day above.
+              No published field is available for {dateText(date)} yet. We will show its estimate
+              here when it becomes available. Pro Mode lets you explore earlier available days.
             </p>
           ) : !selected ? (
             <p>Select an address to see its regional estimate.</p>
@@ -420,9 +428,9 @@ export function DailyRegional() {
       <button className="outline-button" onClick={() => setReload(reload + 1)}>
         Reload daily data
       </button>
-      <p className="daily-station-link">
-        <a href="#station-lab">
-          Pro Mode: historical station observations and all four extreme-value models ↓
+      <p className="daily-station-link overview-only">
+        <a href="#pro">
+          Open Pro Mode for other dates, station observations and extreme-value models →
         </a>
       </p>
     </section>

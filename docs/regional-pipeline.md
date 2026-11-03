@@ -4,7 +4,7 @@ The online page has a daily regional lookup and a separate historical station/Pr
 
 ## Published scope
 
-A release requests the latest 90 complete rainfall-day labels by default. Recent data come from RprelimD; consolidated dates use RhiresD. These are observation-based regional estimates, including snowfall water equivalent, not measurements at buildings. Daily periods remain 06:00 UTC on D to 06:00 UTC on D+1. Dates missing from the provider inventory remain explicitly unavailable. The page defaults to the latest available day, rather than inventing yesterday's amount.
+A release requests the latest 90 complete rainfall-day labels by default. Recent data come from RprelimD; consolidated dates use RhiresD. These are observation-based regional estimates, including snowfall water equivalent, not measurements at buildings. Daily periods remain 06:00 UTC on D to 06:00 UTC on D+1. Dates missing from the provider inventory remain explicitly unavailable. Overview targets the latest completed rainfall day and explicitly reports when it has not been published. Pro Mode defaults its independent date selector to the latest available day.
 
 The lookup now supplies same-month historical context and sampling ranges from the versioned 1961–2025 regional reference; see [historical comparison](regional-history.md). It does not infer building-specific extreme return periods. Pro Mode retains the independently versioned 1981–2025 station snapshot. The full national historical archive remains outside the browser bundle; see the [audit](rainfall-audit.md).
 

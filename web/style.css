@@ -2062,3 +2062,56 @@ input[type='range'] {
     max-width: 290px;
   }
 }
+
+/* Overview is the entry point; analysis stays mounted when switching modes. */
+body[data-mode='overview'] .pro-only,
+body[data-mode='pro'] .overview-only {
+  display: none !important;
+}
+body[data-mode='overview'] .app {
+  display: block;
+}
+body[data-mode='overview'] main {
+  max-width: 1040px;
+}
+.overview-brand {
+  color: var(--ink);
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.mode-switch {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.mode-switch a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+.mode-switch a[aria-current='page'] {
+  color: var(--ink);
+  background: #e9eef5;
+  font-weight: 600;
+}
+.pro-nav {
+  display: flex;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 600px) {
+  .topbar {
+    height: auto;
+    min-height: 70px;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 0;
+  }
+  .mode-switch a {
+    padding: 8px 10px;
+  }
+}

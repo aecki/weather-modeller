@@ -26,6 +26,11 @@ function mount(id, Component, props) {
     );
 }
 window.LabGraphics = {
+  daily: (props) => {
+    const element = document.getElementById('regional-daily');
+    if (!roots.has(element)) roots.set(element, createRoot(element));
+    roots.get(element).render(<DailyRegional {...props} />);
+  },
   modelLab: (props) => {
     const element = document.getElementById('model-lab');
     if (!roots.has(element)) roots.set(element, createRoot(element));
@@ -38,6 +43,3 @@ window.LabGraphics = {
   comparisons: (props) => mount('compare-bars', HorizontalBars, props),
   explanation: (props) => mount('window-explanation', WindowExplanation, props),
 };
-
-const regionalElement = document.getElementById('regional-daily');
-if (regionalElement) createRoot(regionalElement).render(<DailyRegional />);
