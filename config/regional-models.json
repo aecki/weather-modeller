@@ -1,0 +1,8 @@
+{
+  "repository": "aecki/weather-modeller",
+  "releaseTag": "data-regional-models-ef242b515478",
+  "archiveSha256": "80f77cf98a6e8bf7e68daedaa150e445af4c5413a91017d894bf3267810b060b",
+  "referenceId": "ef242b51547836d5099c0ebf2ac05fb51c0e4b168cafaebd2a58c4120825673b",
+  "manifestSha256": "40f572d41c19b92c6f1ab65f59dd972400dfbb16a3d840336ffb078bdb07b0b7",
+  "assetName": "regional-models.tar.gz"
+}

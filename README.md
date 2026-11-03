@@ -118,3 +118,5 @@ For local preparation, run `python run.py regional-deps`, then `python run.py fe
 The overview compares each supported address with real same-month regional days from 1961–2025, explains historical frequency in plain language and shows year-resampling uncertainty. [Historical method and pinned data reference](docs/regional-history.md). Address suggestions appear while typing. Normal scrolling over the online swisstopo map scrolls the page; Ctrl/Command + wheel zooms, and touch exploration is opt-in.
 
 There is no bundled offline map or separate offline distribution. Conda, local preview and network-free tests are retained for development and reproducibility. Visitors use the online site.
+
+Address-selected Pro Mode fits regional-average rainfall extremes from the real 1961–2025 archive, with GEV/Gumbel, 1/3/5-day windows and sampling ranges. Station analysis remains separate with all four models. Overview and Pro Mode share a selectable rainfall day; Overview adds clear historical context and regional rainfall facts. See [regional model methods](docs/regional-modelling.md).

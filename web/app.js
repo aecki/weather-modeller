@@ -240,13 +240,21 @@ function applyMode() {
     '#how-it-works',
     '#explorer',
   ].includes(location.hash);
+  const stationMode = [
+    '#station-lab',
+    '#model-lab',
+    '#model-comparison',
+    '#how-it-works',
+    '#explorer',
+  ].includes(location.hash);
   document.body.dataset.mode = pro ? 'pro' : 'overview';
+  document.body.dataset.analysis = stationMode ? 'station' : 'address';
   $('overview-mode').toggleAttribute('aria-current', !pro);
   $('pro-mode').toggleAttribute('aria-current', pro);
   (pro ? $('pro-mode') : $('overview-mode')).setAttribute('aria-current', 'page');
   LabGraphics.daily({ mode: pro ? 'pro' : 'overview' });
   if (!pro && playing) stop();
-  if (pro && !proStarted) {
+  if (stationMode && !proStarted) {
     proStarted = true;
     init();
   }

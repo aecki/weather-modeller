@@ -43,6 +43,7 @@ function ResponsiveChart({ component: Component, ...props }) {
 }
 
 export function ModelLab({
+  regional = false,
   dates,
   annual,
   station,
@@ -58,7 +59,7 @@ export function ModelLab({
   const [model, setModel] = useState('gev'),
     [from, setFrom] = useState(+historyStart.slice(0, 4)),
     [to, setTo] = useState(+historyEnd.slice(0, 4));
-  const [exclude, setExclude] = useState(false),
+  const [exclude, setExclude] = useState(regional),
     [confidence, setConfidence] = useState(95),
     [period, setPeriod] = useState(100),
     [repetitions, setRepetitions] = useState(500);
@@ -210,30 +211,36 @@ export function ModelLab({
           <h2>Return-period estimation</h2>
           <p>
             Fit GEV or Gumbel distributions to observed annual rainfall maxima. Estimate return
-            levels and sampling uncertainty. Compare GPD and SMEV with these models using held-out
-            years below.
+            levels and sampling uncertainty.{' '}
+            {regional
+              ? 'These maxima describe regional-average precipitation, not station measurements.'
+              : 'Compare GPD and SMEV with these models using held-out years below.'}
           </p>
         </div>
         <span className="model-badge">STATIONARY HAZARD MODEL</span>
       </div>
-      <a className="comparison-jump" href="#model-comparison">
-        Compare four models on held-out years ↓
-      </a>
+      {!regional && (
+        <a className="comparison-jump" href="#model-comparison">
+          Compare four models on held-out years ↓
+        </a>
+      )}
       <div className="model-controls">
-        <label>
-          Weather station
-          <select
-            aria-label="Model weather station"
-            value={station.id}
-            onChange={(e) => onStation(e.target.value)}
-          >
-            {stations.map((entry) => (
-              <option key={entry.id} value={entry.id}>
-                {entry.name}
-              </option>
-            ))}
-          </select>
-        </label>
+        {!regional && (
+          <label>
+            Weather station
+            <select
+              aria-label="Model weather station"
+              value={station.id}
+              onChange={(e) => onStation(e.target.value)}
+            >
+              {stations.map((entry) => (
+                <option key={entry.id} value={entry.id}>
+                  {entry.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <label>
           Rainfall window
           <select
@@ -283,7 +290,7 @@ export function ModelLab({
       <div className="model-settings">
         <label className="model-check">
           <input type="checkbox" checked={exclude} onChange={(e) => setExclude(e.target.checked)} />
-          Leave replay year {eventYear} out of the fit
+          Leave {regional ? 'selected year' : 'replay year'} {eventYear} out of the fit
         </label>
         <label>
           Interval
@@ -313,9 +320,9 @@ export function ModelLab({
       </div>
       <p className="model-coverage">
         <strong>{used.length} complete annual maxima</strong> selected from {from}–{to}.{' '}
-        {Math.max(0, to - from + 1 - used.length)} year(s) omitted for missing data or the
-        replay-year exclusion. One maximum per year; multi-day windows stay within that calendar
-        year.
+        {Math.max(0, to - from + 1 - used.length)} year(s) omitted for missing data or the{' '}
+        {regional ? 'selected-year' : 'replay-year'} exclusion. One maximum per year; multi-day
+        windows stay within that calendar year.
       </p>
       {(status.pending || status.fitKey !== key) && (
         <div className="model-state" role="status">
@@ -371,7 +378,7 @@ export function ModelLab({
               Return period <strong>{period} years</strong>
             </label>
             <input
-              id="model-period"
+              id={regional ? 'regional-model-period' : 'model-period'}
               aria-label="Target return period"
               aria-valuetext={`${period} years`}
               type="range"
@@ -459,8 +466,12 @@ export function ModelLab({
                 />
               </label>
               <div className="model-shortcuts">
-                <button onClick={() => setThreshold(String(eventPeak?.value ?? 100))}>
-                  Use event maximum ({number(eventPeak?.value)} mm)
+                <button
+                  disabled={!Number.isFinite(eventPeak?.value)}
+                  onClick={() => setThreshold(String(eventPeak.value))}
+                >
+                  Use {regional ? 'selected regional amount' : 'event maximum'} (
+                  {number(eventPeak?.value)} mm)
                 </button>
                 <button onClick={() => setThreshold(calculations.amount.toFixed(1))}>
                   Use selected return level
@@ -581,10 +592,10 @@ export function ModelLab({
       <div className="model-method">
         <strong>Full-record uncertainty interpretation</strong>
         <p>
-          We keep the measured rainfall fixed, take one maximum from each complete year, and
-          repeatedly resample those observed yearly maxima. Each resample is refitted. The central{' '}
-          {confidence}% of its return-level estimates gives the pointwise percentile interval. No
-          synthetic storm catalogue is used.
+          We keep the {regional ? 'regional precipitation estimates' : 'measured rainfall'} fixed,
+          take one maximum from each complete year, and repeatedly resample those observed yearly
+          maxima. Each resample is refitted. The central {confidence}% of its return-level estimates
+          gives the pointwise percentile interval. No synthetic storm catalogue is used.
         </p>
         <p>
           A T-year level has annual exceedance probability 1/T under this stationary model. Across h
@@ -594,23 +605,25 @@ export function ModelLab({
           periods.
         </p>
       </div>
-      <ModelComparison
-        stations={stations}
-        onStation={onStation}
-        onDuration={onDuration}
-        onConfidence={setConfidence}
-        dates={dates}
-        station={station}
-        days={days}
-        selectedYears={annual
-          .filter((row) => +row.year >= from && +row.year <= to)
-          .map((row) => row.year)}
-        excludeTrainingYear={exclude ? eventYear : null}
-        confidence={confidence}
-        repetitions={repetitions}
-        period={period}
-        onPeriod={setPeriod}
-      />
+      {!regional && (
+        <ModelComparison
+          stations={stations}
+          onStation={onStation}
+          onDuration={onDuration}
+          onConfidence={setConfidence}
+          dates={dates}
+          station={station}
+          days={days}
+          selectedYears={annual
+            .filter((row) => +row.year >= from && +row.year <= to)
+            .map((row) => row.year)}
+          excludeTrainingYear={exclude ? eventYear : null}
+          confidence={confidence}
+          repetitions={repetitions}
+          period={period}
+          onPeriod={setPeriod}
+        />
+      )}
     </div>
   );
 }

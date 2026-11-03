@@ -57,6 +57,13 @@ def main():
         "restore-history",
         help="Restore the pinned reference artifact for Pages (requires GitHub token)",
     )
+    commands.add_parser(
+        "prepare-regional-models",
+        help="Prepare regional annual maxima from the pinned real archive",
+    )
+    commands.add_parser(
+        "restore-regional-models", help="Restore the pinned regional modelling reference"
+    )
     serve = commands.add_parser("serve", help="Build and serve on localhost; no external services")
     serve.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
@@ -102,6 +109,14 @@ def main():
             from .regional_history import restore_history
 
             restore_history(root)
+        elif args.command == "prepare-regional-models":
+            from .regional_models import prepare_models
+
+            prepare_models(root)
+        elif args.command == "restore-regional-models":
+            from .regional_history import restore_history
+
+            restore_history(root, "regional-models")
         elif args.command == "build":
             build(root)
         elif args.command == "check":

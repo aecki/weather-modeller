@@ -241,6 +241,11 @@ export function HistoricalOverview({ cell, amount, date, status }) {
                   </>
                 )}
               </p>
+              <p className="everyday-context">
+                {result.dry
+                  ? `Think of a typical ${name}: around ${Math.round((result.estimate * result.total) / result.yearCount)} days had less than 1 mm.`
+                  : `In everyday terms, about 1 in ${Math.max(1, Math.round(1 / result.estimate))} historical ${name} days was at least this wet. This counts days, not years between storms.`}
+              </p>
               <p className="historical-range">
                 <strong>
                   Uncertainty range (95%): {frequency(result.interval[0])}–

@@ -1,3 +1,4 @@
+import { RegionalAddress } from './RegionalAddress';
 import { HistoricalOverview } from './HistoricalOverview';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -38,7 +39,7 @@ export function DailyRegional({ mode = 'overview' }) {
   const [reload, setReload] = useState(0),
     [analysisDate, setDate] = useState('');
   const expected = expectedRainDay();
-  const date = mode === 'overview' ? expected : analysisDate;
+  const date = analysisDate || expected;
   const [query, setQuery] = useState(''),
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
@@ -78,11 +79,7 @@ export function DailyRegional({ mode = 'overview' }) {
         throw new Error('Unsupported daily data release.');
       if (controller.signal.aborted) return;
       setManifest(data);
-      setDate((current) =>
-        current >= data.requestedFrom && current <= data.requestedThrough
-          ? current
-          : data.latestAvailable,
-      );
+      setDate((current) => current || expectedRainDay());
     })().catch((error) => {
       if (!controller.signal.aborted) setReleaseError(error.message);
     });
@@ -130,6 +127,7 @@ export function DailyRegional({ mode = 'overview' }) {
       return {
         key: resultKey,
         value,
+        buffer,
         cell,
         coverage,
         unavailable:
@@ -230,9 +228,11 @@ export function DailyRegional({ mode = 'overview' }) {
       <p className="eyebrow">Daily regional precipitation</p>
       <h2 id="daily-title">
         {mode === 'overview'
-          ? new Date().getUTCHours() >= 6
-            ? 'How much did it rain yesterday?'
-            : 'Rainfall on the latest completed day'
+          ? date !== expected
+            ? 'How much did it rain that day?'
+            : new Date().getUTCHours() >= 6
+              ? 'How much did it rain yesterday?'
+              : 'Rainfall on the latest completed day'
           : 'Daily rainfall by address'}
       </h2>
       <p>
@@ -314,7 +314,7 @@ export function DailyRegional({ mode = 'overview' }) {
         <p role="status">Loading the daily data release…</p>
       ) : (
         <>
-          <div className="daily-date pro-only">
+          <div className="daily-date">
             <label htmlFor="daily-date">Rainfall day</label>
             <select id="daily-date" value={date} onChange={(event) => setDate(event.target.value)}>
               {dates.map((day) => (
@@ -324,6 +324,13 @@ export function DailyRegional({ mode = 'overview' }) {
                 </option>
               ))}
             </select>
+            <button
+              className="text-button"
+              onClick={() => setDate(expected)}
+              disabled={date === expected}
+            >
+              Latest completed day
+            </button>
           </div>
           <p className="daily-freshness">
             Latest available rainfall day: <strong>{dateText(manifest.latestAvailable)}</strong>.{' '}
@@ -336,7 +343,8 @@ export function DailyRegional({ mode = 'overview' }) {
           {!record ? (
             <p role="status">
               No published field is available for {dateText(date)} yet. We will show its estimate
-              here when it becomes available. Pro Mode lets you explore earlier available days.
+              here when it becomes available. Choose an earlier available day above to explore the
+              history.
             </p>
           ) : !selected ? (
             <p>Select an address to see its regional estimate.</p>
@@ -374,12 +382,21 @@ export function DailyRegional({ mode = 'overview' }) {
                 date={date}
                 status={record.status}
               />
+              <RegionalAddress
+                cell={active.cell}
+                selected={selected}
+                date={date}
+                fieldBuffer={active.buffer}
+                release={manifest}
+                mode={mode}
+              />
             </div>
           )}
           <p className="regional-limit">
             The rainfall day runs from 06:00 UTC on {dateText(date)} to 06:00 UTC the following day.
             A 1 km grid does not provide building-level accuracy: interpret recent estimates over
-            roughly a 20–30 km neighbourhood. No address-specific return period is inferred here.
+            roughly a 20–30 km neighbourhood. These gridded estimates do not measure rainfall at
+            individual buildings.
           </p>
           {source && (
             <details>
@@ -429,9 +446,7 @@ export function DailyRegional({ mode = 'overview' }) {
         Reload daily data
       </button>
       <p className="daily-station-link overview-only">
-        <a href="#pro">
-          Open Pro Mode for other dates, station observations and extreme-value models →
-        </a>
+        <a href="#pro">Explore regional return periods and uncertainty in Pro Mode →</a>
       </p>
     </section>
   );

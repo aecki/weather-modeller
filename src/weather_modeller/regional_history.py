@@ -232,7 +232,11 @@ def prepare_history(root, start=1961, end=2025):
         output.parent.mkdir(parents=True, exist_ok=True)
         promote(staging, output)
         del counts
-    archive = root / "outputs/regional-history.tar.gz"
+    return package_reference(root, output, "regional-history", reference_id)
+
+
+def package_reference(root, output, name, reference_id):
+    archive = root / f"outputs/{name}.tar.gz"
     archive.parent.mkdir(parents=True, exist_ok=True)
     with (
         archive.open("wb") as raw,
@@ -253,7 +257,7 @@ def prepare_history(root, start=1961, end=2025):
         "archiveBytes": archive.stat().st_size,
         "fileCount": sum(1 for p in output.rglob("*") if p.is_file()),
     }
-    write_json(root / "outputs/regional-history-build.json", metadata)
+    write_json(root / f"outputs/{name}-build.json", metadata)
     print(json.dumps(metadata), flush=True)
     return metadata
 
@@ -311,12 +315,19 @@ def validate_history(directory, expected_manifest_sha=None):
     return m
 
 
-def restore_history(root):
+def restore_history(root, name="regional-history"):
+    validator = validate_history
+    if name == "regional-models":
+        from .regional_models import validate_models
+
+        validator = validate_models
+    elif name != "regional-history":
+        raise ValueError("Unknown reference")
     root = Path(root)
-    config = json.loads((root / "config/regional-history.json").read_text())
-    output = root / "data/processed/regional-history"
+    config = json.loads((root / f"config/{name}.json").read_text())
+    output = root / f"data/processed/{name}"
     if output.exists():
-        m = validate_history(output, config["manifestSha256"])
+        m = validator(output, config["manifestSha256"])
         if m["referenceId"] == config["referenceId"]:
             return m
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
@@ -324,7 +335,22 @@ def restore_history(root):
         raise RuntimeError(
             "A GitHub token is required to restore the private reference asset; local preparation is also supported"
         )
-    url = f"https://api.github.com/repos/aecki/weather-modeller/releases/assets/{int(config['assetId'])}"
+    asset_id = config.get("assetId")
+    if not asset_id:
+        from urllib.parse import quote
+
+        tag = quote(config["releaseTag"], safe="")
+        request = urllib.request.Request(
+            f"https://api.github.com/repos/aecki/weather-modeller/releases/tags/{tag}",
+            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
+        )
+        with urllib.request.urlopen(request, timeout=30) as response:
+            release = json.load(response)
+        assets = [asset for asset in release["assets"] if asset["name"] == config["assetName"]]
+        if len(assets) != 1:
+            raise ValueError("Pinned reference release asset is missing or ambiguous")
+        asset_id = assets[0]["id"]
+    url = f"https://api.github.com/repos/aecki/weather-modeller/releases/assets/{int(asset_id)}"
 
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self, *args, **kwargs):
@@ -355,7 +381,7 @@ def restore_history(root):
         staged.mkdir()
         with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as tar:
             tar.extractall(staged, filter="data")
-        m = validate_history(staged, config["manifestSha256"])
+        m = validator(staged, config["manifestSha256"])
         if m["referenceId"] != config["referenceId"]:
             raise ValueError("Historical reference identity mismatch")
         output.parent.mkdir(parents=True, exist_ok=True)

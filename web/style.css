@@ -2115,3 +2115,52 @@ body[data-mode='overview'] main {
     padding: 8px 10px;
   }
 }
+
+body[data-analysis='address'] .station-only,
+body[data-mode='overview'] .station-only {
+  display: none !important;
+}
+body[data-analysis='address'] .app {
+  display: block;
+}
+body[data-analysis='address'] main {
+  max-width: 1150px;
+}
+.rain-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.rain-facts article {
+  padding: 16px;
+  border: 1px solid var(--line);
+}
+.rain-facts strong {
+  font-size: 21px;
+}
+.rain-facts p {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.regional-address {
+  margin-top: 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+.regional-address details {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .rain-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+body[data-analysis='station'] #regional-daily {
+  display: none;
+}
+
+body[data-mode='pro'] .historical-overview {
+  display: none;
+}

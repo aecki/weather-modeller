@@ -22,3 +22,5 @@
 - Daily regional ingestion is explicit (`fetch-regional`) and scheduled by the Pages workflow. Read docs/regional-pipeline.md before altering source precedence, time/axis conventions, release schemas or address lookup. Keep regional data separate from the station snapshot and modelling worker; do not commit generated releases or raw sources.
 
 - Historical regional summaries and year-bootstrap overview follow docs/regional-history.md. Preserve completeness, same-month comparisons, threshold bounds, sparse-tail guards, selected-year exclusion and immutable artifact/manifest hashes. Keep all station models separate. The bundled offline map was explicitly removed by the user; preserve development tools.
+
+- Regional address models follow docs/regional-modelling.md: fixed ≥400-cell Swiss footprints, complete daily area means before 1/3/5-day maxima, no year-crossing windows, GEV/Gumbel only. Keep area-average thresholds separate from containing-cell daily values and all station analyses. Preserve pinned reference hashes and the independent regional fixtures.

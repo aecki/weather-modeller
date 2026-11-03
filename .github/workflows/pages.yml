@@ -11,7 +11,44 @@ concurrency:
   group: github-pages
   cancel-in-progress: false
 jobs:
+  regional-reference:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check for the pinned regional model release
+        id: reference
+        run: python scripts/regional_reference_release.py inspect
+      - uses: conda-incubator/setup-miniconda@be893c923ea9cf1cf7cd510fbdde27c7e18cbdcb # v4.1.0
+        if: steps.reference.outputs.exists != 'true'
+        with:
+          auto-activate-base: false
+          activate-environment: ''
+          miniforge-version: latest
+      - name: Prepare the real historical reference once
+        if: steps.reference.outputs.exists != 'true'
+        shell: bash
+        run: |
+          python run.py setup
+          python run.py regional-deps
+          python run.py restore-history
+          python run.py prepare-regional-models
+          python scripts/regional_reference_release.py verify
+      - name: Publish the verified immutable data artifact
+        if: steps.reference.outputs.exists != 'true'
+        run: |
+          if ! gh release view "$REFERENCE_TAG" >/dev/null 2>&1; then
+            gh release create "$REFERENCE_TAG" --target "$GITHUB_SHA" --prerelease --title "Regional rainfall model reference 1961–2025" --notes "Real MeteoSwiss RhiresD annual regional totals, wet-day counts and 1/3/5-day maxima, 1961–2025. Fixed Swiss footprints of at least 400 nominal square kilometres; only complete years. Source: MeteoSwiss; boundary © swisstopo. Manifest includes provider versions and source checksums."
+          fi
+          gh release upload "$REFERENCE_TAG" outputs/regional-models.tar.gz
   build:
+    needs: regional-reference
     permissions:
       contents: read
       pages: write
@@ -50,6 +87,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: python run.py restore-history
+      - name: Cache the immutable regional modelling reference
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: data/processed/regional-models
+          key: regional-models-${{ hashFiles('config/regional-models.json') }}
+      - name: Restore regional annual maxima and source versions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: python run.py restore-regional-models
       - name: Prepare a complete daily regional release
         shell: bash
         run: python run.py fetch-regional --days 90

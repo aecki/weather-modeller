@@ -33,3 +33,6 @@ data/processed/regional/
 
 # Prepared versioned historical reference, distributed as a release asset
 data/processed/regional-history/
+
+# Prepared regional modelling reference
+data/processed/regional-models/

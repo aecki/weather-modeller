@@ -1,0 +1,3 @@
+# Regional model references
+
+Real RhiresD records from the same pinned 1961–2025 archive as the monthly comparison. Four public Swiss grid coordinates span Bern, Geneva, Lugano and Davos. Independent Rasterio window reads, direct spatial NumPy means and explicit convolutions verified all 65 annual records (totals, wet-day counts, 1/3/5-day maxima and ending dates), without using the production summed-area calculation. `reference.json` preserves source hashes and versions plus 24 lmoments3/SciPy fit references. The compressed float64 file preserves all 65 independent Bern daily regional means for ongoing annual-completeness and accumulation tests. No generated weather is used.

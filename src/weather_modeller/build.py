@@ -9,6 +9,7 @@ from pathlib import Path
 
 from .regional import validate_release
 from .regional_history import validate_history
+from .regional_models import validate_models
 from .storage import write_json
 from .validation import validate_snapshot
 
@@ -67,6 +68,9 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
             else None
         )
         validate_history(data / "regional-history", expected)
+    if (data / "regional-models").exists():
+        config = json.loads((root / "config/regional-models.json").read_text())
+        validate_models(data / "regional-models", config["manifestSha256"])
     if output.is_symlink():
         raise ValueError("Refusing to build into a symlinked dist directory")
     staging_root = root / ".cache/build"
