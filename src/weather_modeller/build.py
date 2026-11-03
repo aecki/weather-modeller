@@ -1,5 +1,6 @@
 """Stage and verify complete builds before replacing the last usable app."""
 
+import hashlib
 import json
 import shutil
 import subprocess
@@ -38,6 +39,16 @@ def compile_frontend(root: Path, destination: Path) -> None:
     )
 
 
+def version_entry_assets(destination: Path) -> None:
+    """Keep a cached page from mixing scripts and styles from different deployments."""
+    entry = destination / "index.html"
+    html = entry.read_text(encoding="utf-8")
+    for name in ("style.css", "graphics.js", "data-core.js", "app.js"):
+        digest = hashlib.sha256((destination / name).read_bytes()).hexdigest()[:16]
+        html = html.replace(f'"{name}"', f'"{name}?v={digest}"')
+    entry.write_text(html, encoding="utf-8")
+
+
 def build(root: Path, *, export_mode: str = "download") -> Path:
     if export_mode not in ("download", "repository"):
         raise ValueError("Unsupported export mode")
@@ -72,6 +83,7 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
         for asset in REQUIRED_ASSETS:
             if not (staged / asset).is_file():
                 raise ValueError(f"Missing application asset: {asset}")
+        version_entry_assets(staged)
         had_previous = output.exists()
         if had_previous:
             output.rename(previous)
