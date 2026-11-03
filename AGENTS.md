@@ -18,3 +18,5 @@
 - Verify mathematical changes against the versioned lmoments3/SciPy real-data references. Optional requirements-science.txt is only for fixture generation; do not add a scientific Python runtime dependency to the hosted site.
 
 - The four-model comparison uses daily storm peaks for GPD/SMEV and forward held-out complete years. Preserve training-only thresholds/seeds, paired whole-year resampling, no overlapping retained peak windows, and null GPD estimates below its threshold. Run both reference suites, including `tests/test_comparison.mjs`; see docs/modelling.md.
+
+- Daily regional ingestion is explicit (`fetch-regional`) and scheduled by the Pages workflow. Read docs/regional-pipeline.md before altering source precedence, time/axis conventions, release schemas or address lookup. Keep regional data separate from the station snapshot and modelling worker; do not commit generated releases or raw sources.

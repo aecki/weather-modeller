@@ -47,3 +47,7 @@ Architecture and methodology: [docs/architecture.md](docs/architecture.md), [doc
 `python run.py check` also verifies the browser EVT calculations against the versioned real-data fixtures and executes the bundled worker. To regenerate those fixtures only, activate the local environment, run `python -m pip install --isolated --no-user --cache-dir .cache/pip -r requirements-science.txt`, then `python scripts/reference_models.py`. SciPy/lmoments3 are optional and are not runtime or routine CI dependencies. Read [docs/modelling.md](docs/modelling.md) before changing the estimator, resampling, supports, plotting positions or uncertainty language.
 
 The GPD/SMEV comparison reference set is regenerated separately with `python scripts/reference_comparison.py` in the same optional science environment. Preserve the temporal split and confirm held-out data cannot influence point fits, fitting thresholds, rate parameters or training resample seeds.
+
+## Regional ingestion
+
+`fetch-regional` is an explicit network operation; install optional `requirements-regional.txt` only in the repository environment. Keep generated regional releases and raw caches out of Git. Preserve annual → monthly → preliminary precedence, containing-cell lookup, UTC 06:00 windows, missingness, per-file versions/checksums and atomic publication. Regional estimates must never be passed off as station measurements or fed into the existing station models. See [regional-pipeline.md](docs/regional-pipeline.md).

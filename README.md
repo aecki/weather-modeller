@@ -1,6 +1,6 @@
 # aecki’s catastrophe lab
 
-A static web app (with an optional local development and offline setup) for exploring **real Swiss rainfall and river observations**. The application, Conda environment, package caches, data and build output stay inside this repository. No database, API key or internet connection is needed to explore the included snapshot after setup. The static build can also be published on GitHub Pages.
+A static web app for **daily regional Swiss precipitation estimates** and a separate laboratory for **real historical station rainfall and river observations**. The published GitHub Pages site needs only a browser. Address estimates carry preliminary/consolidated status and source versions; station models remain separate. The development environment, caches, data and build output stay inside this repository.
 
 ## Start here
 
@@ -107,3 +107,9 @@ The lab estimates rainfall hazard, not flood depths or insured losses. Its condi
 The Model lab also compares GEV, Gumbel, GPD and SMEV using earlier complete years for training and the latest 5/10/15 for testing. Inspect training-only return curves, year-bootstrap intervals, paired model differences and held-out Brier/quantile scores. Storm separation and tail-fitting settings are explicit. Computation stays in a bundled browser worker; only recorded Swiss observations and resampled observed year blocks are used. See [model methods](docs/modelling.md).
 
 The published GitHub Pages site needs only a browser. Conda/Python are for local preparation, development and serving, not for visitors. Online map detail uses the official swisstopo XYZ service; turn off Online detail for bundled geography. Tile failure switches to that fallback. All observations and model calculations remain local to the browser.
+
+## Daily regional data
+
+The [daily pipeline](docs/regional-pipeline.md) publishes a rolling 90-day release. Pages refreshes at 12:45 and 18:45 UTC (best-effort scheduling), with source checksums, consolidation precedence and atomic publication. Address searches use swisstopo; estimates describe the surrounding region, not individual buildings. Pro Mode retains the historical station snapshot and all four models.
+
+For local preparation, activate the repository environment, install `requirements-regional.txt` with a repository pip cache, then run `python run.py fetch-regional`. Ordinary builds remain network-free.

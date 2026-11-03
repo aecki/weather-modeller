@@ -1,0 +1,152 @@
+{
+  "bbox": [
+    2600423.2569999993,
+    1199521.109000001,
+    2600423.2569999993,
+    1199521.109000001
+  ],
+  "features": [
+    {
+      "bbox": [
+        2600423.2569999993,
+        1199521.109000001,
+        2600423.2569999993,
+        1199521.109000001
+      ],
+      "geometry": {
+        "coordinates": [
+          1199521.125,
+          2600423.25
+        ],
+        "type": "Point"
+      },
+      "id": 1007031,
+      "properties": {
+        "detail": "bundesplatz 3 3011 bern 351 bern ch be",
+        "featureId": "2242547_0",
+        "geom_quadindex": "021300202201312213122",
+        "geom_st_box2d": "BOX(2600423.2569999993 1199521.109000001,2600423.2569999993 1199521.109000001)",
+        "id": 1007031,
+        "label": "Bundesplatz 3 <b>3011 Bern</b>",
+        "lat": 46.946773529052734,
+        "links": [
+          {
+            "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/101002312",
+            "rel": "related",
+            "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+          },
+          {
+            "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/2242547_0",
+            "rel": "related",
+            "title": "ch.bfs.gebaeude_wohnungs_register"
+          }
+        ],
+        "lon": 7.444191932678223,
+        "num": 3,
+        "objectclass": "",
+        "origin": "address",
+        "rank": 7,
+        "weight": 7,
+        "x": 1199521.125,
+        "y": 2600423.25,
+        "zoomlevel": 10
+      },
+      "type": "Feature"
+    },
+    {
+      "bbox": [
+        2600472.4640000015,
+        1199555.5089999996,
+        2600472.4640000015,
+        1199555.5089999996
+      ],
+      "geometry": {
+        "coordinates": [
+          1199555.5,
+          2600472.5
+        ],
+        "type": "Point"
+      },
+      "id": 1265863,
+      "properties": {
+        "detail": "bundesplatz 1 3011 bern 351 bern ch be",
+        "featureId": "1230564_0",
+        "geom_quadindex": "021300202210200200111",
+        "geom_st_box2d": "BOX(2600472.4640000015 1199555.5089999996,2600472.4640000015 1199555.5089999996)",
+        "id": 1265863,
+        "label": "Bundesplatz 1 <b>3011 Bern</b>",
+        "lat": 46.94708251953125,
+        "links": [
+          {
+            "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/100776713",
+            "rel": "related",
+            "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+          },
+          {
+            "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/1230564_0",
+            "rel": "related",
+            "title": "ch.bfs.gebaeude_wohnungs_register"
+          }
+        ],
+        "lon": 7.444838523864746,
+        "num": 1,
+        "objectclass": "",
+        "origin": "address",
+        "rank": 7,
+        "weight": 1,
+        "x": 1199555.5,
+        "y": 2600472.5,
+        "zoomlevel": 10
+      },
+      "type": "Feature"
+    },
+    {
+      "bbox": [
+        2600464.6950000003,
+        1199592.0960000008,
+        2600464.6950000003,
+        1199592.0960000008
+      ],
+      "geometry": {
+        "coordinates": [
+          1199592.125,
+          2600464.75
+        ],
+        "type": "Point"
+      },
+      "id": 1609120,
+      "properties": {
+        "detail": "bundesplatz 2 3011 bern 351 bern ch be",
+        "featureId": "2242546_0",
+        "geom_quadindex": "021300202201133130110",
+        "geom_st_box2d": "BOX(2600464.6950000003 1199592.0960000008,2600464.6950000003 1199592.0960000008)",
+        "id": 1609120,
+        "label": "Bundesplatz 2 <b>3011 Bern</b>",
+        "lat": 46.94741439819336,
+        "links": [
+          {
+            "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/101002311",
+            "rel": "related",
+            "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+          },
+          {
+            "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/2242546_0",
+            "rel": "related",
+            "title": "ch.bfs.gebaeude_wohnungs_register"
+          }
+        ],
+        "lon": 7.444736480712891,
+        "num": 2,
+        "objectclass": "",
+        "origin": "address",
+        "rank": 7,
+        "weight": 1,
+        "x": 1199592.125,
+        "y": 2600464.75,
+        "zoomlevel": 10
+      },
+      "type": "Feature"
+    }
+  ],
+  "type": "FeatureCollection"
+}

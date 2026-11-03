@@ -6,6 +6,7 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from .regional import validate_release
 from .storage import write_json
 from .validation import validate_snapshot
 
@@ -24,6 +25,7 @@ REQUIRED_ASSETS = (
     "geography/classic-map-overview.webp",
     "data/observations.json",
     "data/provenance.json",
+    "data/regional/manifest.json",
 )
 
 
@@ -46,6 +48,8 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
     snapshot = json.loads((data / "observations.json").read_text(encoding="utf-8"))
     validate_snapshot(snapshot)
     json.loads((data / "provenance.json").read_text(encoding="utf-8"))
+    if (data / "regional").exists():
+        validate_release(data / "regional")
     if output.is_symlink():
         raise ValueError("Refusing to build into a symlinked dist directory")
     staging_root = root / ".cache/build"
@@ -54,6 +58,8 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
         staged, previous = Path(directory) / "dist", Path(directory) / "previous"
         shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics", "modelling"))
         shutil.copytree(data, staged / "data")
+        if not (staged / "data/regional/manifest.json").exists():
+            write_json(staged / "data/regional/manifest.json", {"schemaVersion": 1, "days": []})
         compile_frontend(root, staged)
         write_json(staged / "runtime-config.json", {"exportMode": export_mode})
         (staged / ".nojekyll").touch()

@@ -58,3 +58,7 @@ A 2,000-pixel overview loads initially; the bundled 8,000-pixel crop is requeste
 ## Nationwide data investigation
 
 The current production snapshot remains unchanged. The [full archive audit](rainfall-audit.md) covers 65 annual files, all listed Swiss address coordinates, and available preliminary/consolidated overlaps. It records revision and spatial-interpretation limits before any interface migration.
+
+## Daily regional estimates
+
+The online address lookup uses a generated, separately versioned release of RprelimD/RhiresD regional estimates. It preserves precipitation-day windows, masked cells and consolidation tiers. It does not extend or relabel the station snapshot. [Daily pipeline and address methodology](regional-pipeline.md).

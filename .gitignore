@@ -27,3 +27,6 @@ outputs/
 .ruff_cache/
 .coverage
 htmlcov/
+
+# Generated daily regional release; published by Actions, never committed
+data/processed/regional/

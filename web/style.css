@@ -1852,3 +1852,167 @@ input[type='range'] {
   background: #ffffffd9;
   color: #334155;
 }
+
+.daily-regional {
+  padding: 28px;
+  margin: 20px 0 30px;
+  border: 1px solid var(--line);
+  background: #fff;
+  scroll-margin-top: 20px;
+}
+.daily-regional h2 {
+  margin: 7px 0 12px;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+}
+.daily-regional p {
+  line-height: 1.6;
+  max-width: 850px;
+  color: #475569;
+}
+.address-search {
+  margin: 22px 0 12px;
+  max-width: 800px;
+}
+.address-search label,
+.daily-date label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.address-search > div {
+  display: flex;
+  gap: 8px;
+}
+.address-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 3px;
+  font: inherit;
+  font-size: 14px;
+}
+.address-search button {
+  padding: 9px 16px;
+  border: 1px solid #64748b;
+  border-radius: 3px;
+  background: #f8fafc;
+  white-space: nowrap;
+}
+.address-search small {
+  display: block;
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.address-results {
+  max-width: 800px;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #cbd5e1;
+}
+.address-results button {
+  text-align: left;
+  width: 100%;
+  background: #fff;
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.address-results button:hover,
+.address-results button:focus {
+  background: #f1f5f9;
+}
+.daily-date {
+  margin-top: 22px;
+  max-width: 360px;
+}
+.daily-date select {
+  width: 100%;
+  padding: 10px;
+  font: inherit;
+  font-size: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 3px;
+  background: #fff;
+}
+.daily-freshness,
+.regional-limit {
+  font-size: 12px;
+}
+.daily-result {
+  padding: 20px 0;
+}
+.regional-status {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+.regional-status.preliminary {
+  color: #8a4b17;
+}
+.daily-amount {
+  display: block;
+  margin-top: 8px;
+  font-size: 42px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.daily-amount span {
+  font-size: 20px;
+  font-weight: 400;
+}
+.regional-provenance {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 8px 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.regional-provenance dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.regional-provenance dt {
+  color: #64748b;
+}
+.daily-regional details {
+  margin: 18px 0;
+}
+.daily-regional summary {
+  font-size: 13px;
+  cursor: pointer;
+}
+.daily-station-link {
+  font-size: 13px;
+  margin-top: 20px;
+}
+.station-lab-intro {
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+  scroll-margin-top: 20px;
+}
+.station-lab-intro > p:last-child {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (max-width: 600px) {
+  .daily-regional {
+    padding: 18px 14px;
+  }
+  .address-search > div {
+    flex-direction: column;
+  }
+  .regional-provenance {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .regional-provenance dd {
+    margin-bottom: 8px;
+  }
+}

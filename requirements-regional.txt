@@ -1,0 +1,4 @@
+# Daily ingestion only; not needed by visitors or offline builds.
+numpy==2.5.4
+netCDF4==1.7.4
+cftime==1.6.6.1

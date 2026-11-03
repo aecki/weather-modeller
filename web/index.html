@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self' https://api3.geo.admin.ch; worker-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <meta
       name="description"
-      content="Explore real Swiss extreme rainfall and river observations from MeteoSwiss and FOEN."
+      content="Daily regional Swiss precipitation estimates and separate station-based extreme-value analysis from MeteoSwiss and FOEN."
     />
     <title>aecki’s catastrophe lab</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -26,12 +26,12 @@
         >
         <div class="side-intro">
           <span class="eyebrow">SWISS WEATHER DATA</span>
-          <h1>Rainfall and discharge analysis</h1>
-          <p>Historical observations and statistical modelling of rainfall extremes.</p>
+          <h1>Swiss precipitation explorer</h1>
+          <p>Daily regional estimates and historical station analysis.</p>
         </div>
         <div class="eyebrow section-label">Historical event</div>
         <nav id="events" aria-label="Historical event"></nav>
-        <div class="eyebrow section-label">Observation settings</div>
+        <div class="eyebrow section-label">Station lab settings</div>
         <span class="field-label">Rainfall accumulation</span>
         <div class="segmented" id="durations" role="group" aria-label="Rainfall accumulation">
           <button data-days="1" class="active" aria-pressed="true">1 day</button
@@ -42,18 +42,28 @@
         ><select id="station" aria-label="Weather station"></select>
         <button class="source-button" id="source-open">Data and methodology</button>
         <div class="side-footer">
-          <span class="live-dot"></span> HISTORICAL OBSERVATIONS
+          <span class="live-dot"></span> DAILY DATA · STATION ARCHIVE
           <p>Source: MeteoSwiss · FOEN<br />No generated weather or loss data.</p>
         </div>
       </aside>
       <main id="explorer">
         <header class="topbar">
           <nav class="page-nav" aria-label="Page sections">
-            <a href="#explorer">Observations</a><a href="#model-lab">Extreme-value models</a
-            ><a href="#how-it-works">Methods</a>
+            <a href="#regional-daily">Daily rainfall</a
+            ><a href="#station-lab">Pro Mode · stations</a
+            ><a href="#model-lab">Extreme-value models</a><a href="#how-it-works">Methods</a>
           </nav>
           <span class="data-badge">MeteoSwiss · FOEN</span>
         </header>
+        <div id="regional-daily"></div>
+        <div id="station-lab" class="station-lab-intro">
+          <p class="eyebrow">Pro Mode · station measurements</p>
+          <p>
+            The historical station snapshot (1981–2025), river observations and model laboratory
+            below are separate from the daily regional estimates. Address selection does not change
+            station measurements or model fits.
+          </p>
+        </div>
         <div id="loading" role="status">Loading official Swiss measurements…</div>
         <div id="content" hidden>
           <section class="heading">

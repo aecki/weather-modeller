@@ -45,3 +45,7 @@ Graphics use visx geometry, scales, axes, grids and shapes throughout. The UI co
 The generated worker is a required build asset. Node checks execute that worker and compare calculations to 108 versioned lmoments3/SciPy reference cases. No scientific Python dependency is needed to build, run or check the site; pinned optional science packages only regenerate the checked-in references. See [modelling.md](modelling.md).
 
 `comparison.mjs` extracts daily storm/year blocks and implements GPD/SMEV annual tails, paired training-year bootstrap and forward-held-out scoring. The existing bundled worker dispatches comparison jobs separately from full-record GEV/Gumbel jobs. `ModelComparison.jsx` cancels stale jobs and caches limited results; `ComparisonCharts.jsx` renders model disagreement and held-out observations with visx. Independent SciPy/lmoments3 real-data comparisons run through `tests/test_comparison.mjs`.
+
+## Daily regional release
+
+`regional.py` discovers the current STAC inventory, selects annual/monthly/preliminary sources per date, verifies and decodes them with netCDF4, and stages a content-addressed static release. `build.py` validates any prepared release before copying it. The Pages workflow performs the explicit refresh before its normal offline checks/build. `DailyRegional.jsx` mounts independently of the station controller; `regional-data.mjs` owns coordinate, boundary and binary lookup logic. No regional values enter the station modelling worker. See [pipeline contracts and failure handling](regional-pipeline.md).

@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-16",
+  "provider": "MeteoSwiss",
+  "product": "RprelimD",
+  "version": "v3.0",
+  "source": {
+    "type": "application/x-netcdf",
+    "href": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/20260916-ch/ogd-surface-derived-grid.rprelimd_ch01h.swiss.lv95_20260916000000_20260916000000.nc",
+    "created": "2026-09-17T12:17:45.594149Z",
+    "updated": "2026-09-17T12:17:46.389485Z",
+    "file:checksum": "12208ed9040197fc01c02814f5d7d6edabfba561063ddbc2c66eceebae76a93523af"
+  },
+  "sourceSha256": "8ed9040197fc01c02814f5d7d6edabfba561063ddbc2c66eceebae76a93523af",
+  "payloadSha256": "6036c5f908e330e8422c953acd501366809302ecf446fa6ff563470f869a7a15",
+  "points": [
+    {
+      "label": "Bundesplatz 3 Bern",
+      "easting": 2600423.25,
+      "northing": 1199521.125,
+      "row": 124,
+      "col": 126,
+      "value": 1.8687682151794434
+    },
+    {
+      "label": "Grid cell near Meiringen",
+      "easting": 2656000,
+      "northing": 1176000,
+      "row": 148,
+      "col": 182,
+      "value": 11.23597526550293
+    },
+    {
+      "label": "missing northwest",
+      "easting": 2474500,
+      "northing": 1323500,
+      "row": 0,
+      "col": 0,
+      "value": null
+    },
+    {
+      "label": "Observed zero grid cell",
+      "row": 21,
+      "col": 204,
+      "easting": 2678500,
+      "northing": 1302500,
+      "value": 0
+    }
+  ],
+  "addressResponseUrl": "https://api3.geo.admin.ch/rest/services/ech/SearchServer?type=locations&origins=address&searchText=Bundesplatz+3+Bern&sr=2056&geometryFormat=geojson&returnGeometry=true&limit=3",
+  "fixtureSha256": "13d98dcf9c0a6e7c8a725ccde23003145fc8dc765b3fe7fbad945891ce0d6310",
+  "fixtureDerivation": "NetCDF copy of time, N, E, CRS and RprelimD, preserving all numerical values and fill masks; lon/lat arrays omitted; compressed. Independent float32 reference exported using Rasterio 1.4.3."
+}

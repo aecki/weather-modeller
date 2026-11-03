@@ -36,7 +36,7 @@ Conda environments embed absolute installation prefixes. Clone on another device
 
 ## Serving
 
-`python run.py serve` dispatches into the checkout's Python interpreter, builds `dist/`, and binds only `127.0.0.1`. Its only write endpoint saves a validated observation selection to the repository’s `outputs/` directory; it rejects cross-origin requests and caller-provided paths. HTML, bundled React/visx graphics, JavaScript, CSS, map geography and observations are served from this directory. A content security policy restricts automatic asset requests to the local origin. Internet access is needed only for initial dependency setup, an explicit data fetch, optional developer-tool installation, or manually opening source links.
+`python run.py serve` dispatches into the checkout's Python interpreter, builds `dist/`, and binds only `127.0.0.1`. Its only write endpoint saves a validated observation selection to the repository’s `outputs/` directory; it rejects cross-origin requests and caller-provided paths. HTML, bundled React/visx graphics, JavaScript, CSS, map geography and observations are served from this directory. A content security policy restricts automatic asset requests to the local origin. The online map and address search use official swisstopo services. Regional ingestion is an explicit network operation with optional repository-local dependencies; ordinary build/check commands remain network-free. See [daily pipeline](regional-pipeline.md).
 
 ## Optional developer dependencies
 

@@ -25,6 +25,9 @@ jobs:
       - name: Create environment inside checkout
         shell: bash
         run: python run.py setup
+      - name: Install pipeline dependencies for real NetCDF regression checks
+        shell: bash
+        run: conda run -p .environments/weather-modeller python -m pip install --isolated --no-user --cache-dir .cache/pip -r requirements-regional.txt
       - name: Check the bundled snapshot and build offline app
         shell: bash
         run: python run.py check

@@ -32,6 +32,15 @@ def main():
         action="store_true",
         help="Replace cached downloads with fresh source responses",
     )
+    regional = commands.add_parser(
+        "fetch-regional",
+        help="Refresh the daily regional release (requires optional GIS tools and internet)",
+    )
+    regional.add_argument("--days", type=int, default=90)
+    regional.add_argument(
+        "--through",
+        help="Last rainfall-day label, YYYY-MM-DD (default latest complete UTC rainfall day)",
+    )
     serve = commands.add_parser("serve", help="Build and serve on localhost; no external services")
     serve.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
@@ -57,6 +66,10 @@ def main():
             from .ingestion import fetch_observations
 
             fetch_observations(root, refresh=args.refresh)
+        elif args.command == "fetch-regional":
+            from .regional import fetch_regional
+
+            fetch_regional(root, days=args.days, through=args.through)
         elif args.command == "build":
             build(root)
         elif args.command == "check":

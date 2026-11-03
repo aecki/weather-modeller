@@ -4,6 +4,7 @@ import { ParentSize } from '@visx/responsive';
 import { StationMap } from './StationMap';
 import { HorizontalBars, ObservationChart } from './TimeSeries';
 import { WindowExplanation } from './WindowExplanation';
+import { DailyRegional } from './DailyRegional';
 import { ModelLab } from './ModelLab';
 
 const roots = new WeakMap();
@@ -37,3 +38,6 @@ window.LabGraphics = {
   comparisons: (props) => mount('compare-bars', HorizontalBars, props),
   explanation: (props) => mount('window-explanation', WindowExplanation, props),
 };
+
+const regionalElement = document.getElementById('regional-daily');
+if (regionalElement) createRoot(regionalElement).render(<DailyRegional />);
