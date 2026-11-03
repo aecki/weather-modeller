@@ -112,4 +112,4 @@ The published GitHub Pages site needs only a browser. Conda/Python are for local
 
 The [daily pipeline](docs/regional-pipeline.md) publishes a rolling 90-day release. Pages refreshes at 12:45 and 18:45 UTC (best-effort scheduling), with source checksums, consolidation precedence and atomic publication. Address searches use swisstopo; estimates describe the surrounding region, not individual buildings. Pro Mode retains the historical station snapshot and all four models.
 
-For local preparation, activate the repository environment, install `requirements-regional.txt` with a repository pip cache, then run `python run.py fetch-regional`. Ordinary builds remain network-free.
+For local preparation, run `python run.py regional-deps`, then `python run.py fetch-regional`. Both commands use the repository environment and caches. Ordinary builds remain network-free.

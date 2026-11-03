@@ -33,7 +33,7 @@ jobs:
         run: python run.py setup
       - name: Install daily pipeline dependencies in the repository environment
         shell: bash
-        run: conda run -p .environments/weather-modeller python -m pip install --isolated --no-user --cache-dir .cache/pip -r requirements-regional.txt
+        run: python run.py regional-deps
       - name: Cache checksummed regional source files
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:

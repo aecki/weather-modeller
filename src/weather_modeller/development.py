@@ -23,9 +23,11 @@ def install_frontend(root: Path) -> None:
     subprocess.run([node, str(npm), "ci", "--ignore-scripts"], cwd=root, check=True)
 
 
-def install_dev_tools(root: Path) -> None:
+def _install_requirements(root: Path, filename: str, command: str) -> None:
     if Path(sys.prefix).resolve() != (root / ".environments/weather-modeller").resolve():
-        raise RuntimeError("Developer tools must be installed through python run.py dev")
+        raise RuntimeError(
+            f"Optional dependencies must be installed through python run.py {command}"
+        )
     subprocess.run(
         [
             sys.executable,
@@ -38,9 +40,18 @@ def install_dev_tools(root: Path) -> None:
             "--cache-dir",
             str(root / ".cache/pip"),
             "-r",
-            str(root / "requirements-dev.txt"),
+            str(root / filename),
         ],
         cwd=root,
         check=True,
     )
+
+
+def install_dev_tools(root: Path) -> None:
+    _install_requirements(root, "requirements-dev.txt", "dev")
     install_frontend(root)
+
+
+def install_regional_tools(root: Path) -> None:
+    """Use the checked-out interpreter directly, without relying on shell activation."""
+    _install_requirements(root, "requirements-regional.txt", "regional-deps")

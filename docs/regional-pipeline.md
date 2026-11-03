@@ -10,11 +10,10 @@ The lookup does not yet supply historical regional rankings or address-specific 
 
 ## Explicit refresh
 
-Activate the repository environment and install the optional ingestion dependencies there:
+Install optional ingestion dependencies through the repository launcher; shell activation is not required:
 
 ```sh
-conda activate ./.environments/weather-modeller
-python -m pip install --isolated --no-user --cache-dir .cache/pip -r requirements-regional.txt
+python run.py regional-deps
 python run.py fetch-regional
 python run.py serve
 ```

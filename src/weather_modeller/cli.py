@@ -23,6 +23,9 @@ def main():
         "install-frontend", help="Install repository-local frontend build dependencies"
     )
     commands.add_parser("dev", help="Install optional developer tools locally (requires internet)")
+    commands.add_parser(
+        "regional-deps", help="Install optional daily ingestion dependencies inside the repository"
+    )
     commands.add_parser("build", help="Build the self-contained app without network access")
     commands.add_parser("check", help="Run offline integrity and numerical checks")
     commands.add_parser("quality", help="Check Python and frontend style with installed dev tools")
@@ -62,6 +65,10 @@ def main():
             from .development import install_dev_tools
 
             install_dev_tools(root)
+        elif args.command == "regional-deps":
+            from .development import install_regional_tools
+
+            install_regional_tools(root)
         elif args.command == "fetch":
             from .ingestion import fetch_observations
 
