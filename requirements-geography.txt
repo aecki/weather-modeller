@@ -1,4 +1,0 @@
-# Optional: regenerate bundled map assets; not needed to build, serve or test.
-numpy==2.5.4
-Pillow==12.0.0
-rasterio==1.4.3

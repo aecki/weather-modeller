@@ -1,7 +1,14 @@
 import { mapTiles, distanceScale } from '../web/graphics/map-tiles.mjs';
 import { ComparisonCurve, HoldoutHistory } from '../web/graphics/ComparisonCharts';
 import { fitStormModel, modelLevel } from '../web/modelling/comparison.mjs';
-import { layout, pan, zoomAt, project } from '../web/graphics/map-viewport.mjs';
+import {
+  layout,
+  pan,
+  zoomAt,
+  project,
+  wheelZoomEnabled,
+  MAP_BOUNDS,
+} from '../web/graphics/map-viewport.mjs';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import assert from 'node:assert/strict';
@@ -60,16 +67,10 @@ console.log(
   'visx graphics verified: real rainfall, accessible stations, explicit missing observations, and inspectable accumulation.',
 );
 
-const classicMap = JSON.parse(readFileSync('web/geography/classic-map.json', 'utf8'));
 const classic = renderToStaticMarkup(
-  <StationMap
-    width={600}
-    classicMap={classicMap}
-    stations={[{ ...station, value: observed[2] }]}
-    selected="MER"
-  />,
+  <StationMap width={600} stations={[{ ...station, value: observed[2] }]} selected="MER" />,
 );
-assert.ok(classic.includes('href="geography/classic-map-overview.webp"'));
+assert.ok(!classic.includes('geography/classic-map'));
 assert.ok(!classic.includes('Topographic map'));
 assert.ok(classic.includes('Reset map view'));
 assert.ok(classic.includes('Drag to pan'));
@@ -79,7 +80,7 @@ assert.ok(!classic.includes('NaN'));
 
 // Navigation must never expose the bundled raster edge, even on narrow screens.
 
-const bounds = classicMap.processing.bounds;
+const bounds = MAP_BOUNDS;
 for (const [width, height] of [
   [1000, 560],
   [350, 460],
@@ -163,3 +164,9 @@ assert.ok(Math.abs(tile.y - 128) < 1e-7);
 assert.ok(mapTiles(layout(bounds, 1000, 600, { zoom: 256 }, 256), 1000, 600).length < 100);
 assert.equal(layout(bounds, 1000, 600, { zoom: 256 }, 256).zoom, 256);
 assert.ok(distanceScale(tileCamera).pixels > 0);
+
+assert.equal(wheelZoomEnabled({}), false);
+assert.equal(wheelZoomEnabled({ ctrlKey: true }), true);
+assert.equal(wheelZoomEnabled({ metaKey: true }), true);
+assert.equal(wheelZoomEnabled({}, true), true);
+assert.ok(classic.includes('touch-action:pan-y'));

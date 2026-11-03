@@ -17,7 +17,6 @@ let data,
   river,
   days = 1,
   cursor = 0,
-  geography,
   runtime = { exportMode: 'download' },
   mapResetCount = 0,
   playing = null,
@@ -155,17 +154,13 @@ function updateCursor() {
     ending: date,
   });
 }
-function initMap(classicMap) {
-  geography = { classicMap };
-}
 function resetMap() {
   mapResetCount++;
   updateMap();
 }
 function updateMap() {
-  if (!geography) return;
+  if (!data) return;
   LabGraphics.map({
-    ...geography,
     stations: data.stations.map((entry) => ({ ...entry, value: series(entry)[indices[cursor]] })),
     selected: station.id,
     onSelect: setStation,
@@ -236,12 +231,10 @@ async function exportSelection() {
 }
 async function init() {
   try {
-    const urls = ['data/observations.json', 'geography/classic-map.json', 'runtime-config.json'];
+    const urls = ['data/observations.json', 'runtime-config.json'];
     const responses = await Promise.all(urls.map((url) => fetch(url)));
     for (const res of responses) if (!res.ok) throw Error('HTTP ' + res.status);
-    const [observations, classicMap, config] = await Promise.all(
-      responses.map((res) => res.json()),
-    );
+    const [observations, config] = await Promise.all(responses.map((res) => res.json()));
     data = observations;
     runtime = config;
     $('export').textContent =
@@ -311,7 +304,6 @@ async function init() {
       new Date(data.generatedAt).toLocaleDateString('en-GB', { timeZone: 'Europe/Zurich' });
     $('loading').hidden = true;
     $('content').hidden = false;
-    initMap(classicMap);
     setEvent(data.events[0].id);
     if (['#how-it-works', '#model-lab'].includes(location.hash))
       document.querySelector(location.hash).scrollIntoView({ behavior: 'instant' });

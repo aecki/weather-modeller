@@ -1,3 +1,4 @@
+import { HistoricalOverview } from './HistoricalOverview';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   addressesFromResponse,
@@ -14,7 +15,9 @@ const statusLabels = {
   'annual-archive': 'Annual archive analysis',
 };
 const number = (n) =>
-  n.toLocaleString('en-CH', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  n > 0 && n < 0.1
+    ? '<0.1'
+    : n.toLocaleString('en-CH', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 const dateText = (day) =>
   new Date(`${day}T12:00:00Z`).toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -37,6 +40,8 @@ export function DailyRegional() {
   const [query, setQuery] = useState(''),
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
+  const [highlight, setHighlight] = useState(-1);
+  const suggestionTimer = useRef(null);
   const [searching, setSearching] = useState(false),
     [searchError, setSearchError] = useState('');
   const [result, setResult] = useState(null);
@@ -142,6 +147,8 @@ export function DailyRegional() {
   const edit = (value) => {
     searchRequest.current?.abort();
     searchRequest.current = null;
+    clearTimeout(suggestionTimer.current);
+    setHighlight(-1);
     setQuery(value);
     setSelected(null);
     setOptions([]);
@@ -149,7 +156,8 @@ export function DailyRegional() {
     setSearching(false);
   };
   const search = async (event) => {
-    event.preventDefault();
+    event?.preventDefault();
+    clearTimeout(suggestionTimer.current);
     searchRequest.current?.abort();
     const text = query.trim();
     if (text.length < 3 || text.split(/\s+/).length > 10) {
@@ -159,6 +167,7 @@ export function DailyRegional() {
     const controller = new AbortController();
     searchRequest.current = controller;
     setSearching(true);
+    setHighlight(-1);
     setSearchError('');
     setOptions([]);
     setSelected(null);
@@ -187,6 +196,23 @@ export function DailyRegional() {
       if (searchRequest.current === controller) setSearching(false);
     }
   };
+  const choose = (option) => {
+    clearTimeout(suggestionTimer.current);
+    searchRequest.current?.abort();
+    setSelected(option);
+    setQuery(option.label);
+    setOptions([]);
+    setHighlight(-1);
+    setSearching(false);
+  };
+  useEffect(() => {
+    if (selected || query.trim().length < 3 || query.trim().split(/\s+/).length > 10) return;
+    suggestionTimer.current = setTimeout(() => search(), 350);
+    return () => {
+      clearTimeout(suggestionTimer.current);
+      searchRequest.current?.abort();
+    };
+  }, [query, selected]);
   const active = result?.key === resultKey ? result : null;
   const source = record && manifest.sources[record.sourceId];
   const expected = expectedRainDay();
@@ -201,7 +227,7 @@ export function DailyRegional() {
   return (
     <section className="daily-regional" aria-labelledby="daily-title">
       <p className="eyebrow">Daily regional precipitation</p>
-      <h2 id="daily-title">How much precipitation fell around your address?</h2>
+      <h2 id="daily-title">Rainfall near your address: how does it compare?</h2>
       <p>
         Observation-based estimates for the surrounding area. These include rain and snowfall water
         equivalent; they are not measurements at individual buildings.
@@ -216,27 +242,58 @@ export function DailyRegional() {
             placeholder="Street, house number, postcode or town"
             maxLength={160}
             autoComplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={options.length > 0}
+            aria-controls="address-suggestions"
+            aria-activedescendant={highlight >= 0 ? `address-suggestion-${highlight}` : undefined}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowDown' && options.length) {
+                event.preventDefault();
+                setHighlight((i) => Math.min(options.length - 1, i + 1));
+              } else if (event.key === 'ArrowUp' && options.length) {
+                event.preventDefault();
+                setHighlight((i) => Math.max(0, i - 1));
+              } else if (event.key === 'Enter' && highlight >= 0 && options[highlight]) {
+                event.preventDefault();
+                choose(options[highlight]);
+              } else if (event.key === 'Escape') {
+                searchRequest.current?.abort();
+                clearTimeout(suggestionTimer.current);
+                setOptions([]);
+                setHighlight(-1);
+              }
+            }}
           />
           <button type="submit" disabled={searching}>
             {searching ? 'Searching…' : 'Search addresses'}
           </button>
         </div>
         <small>
-          Searches are sent to swisstopo. We do not save your searches. Choose a result; nearby
-          matches may also appear.
+          Suggestions are fetched from swisstopo as you type. We do not save your searches. Choose
+          the matching address; nearby matches may also appear.
         </small>
       </form>
       {searchError && <p role="status">{searchError}</p>}
       {options.length > 0 && (
-        <ul className="address-results" aria-label="Address results">
-          {options.map((option) => (
-            <li key={option.id}>
+        <ul
+          id="address-suggestions"
+          className="address-results"
+          role="listbox"
+          aria-label="Address suggestions"
+        >
+          {options.map((option, i) => (
+            <li
+              key={option.id}
+              id={`address-suggestion-${i}`}
+              role="option"
+              aria-selected={i === highlight}
+            >
               <button
-                onClick={() => {
-                  setSelected(option);
-                  setQuery(option.label);
-                  setOptions([]);
-                }}
+                type="button"
+                tabIndex={-1}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => choose(option)}
               >
                 {option.label}
               </button>
@@ -303,6 +360,12 @@ export function DailyRegional() {
                   without moving it into another grid cell.
                 </p>
               )}
+              <HistoricalOverview
+                cell={active.cell}
+                amount={active.value}
+                date={date}
+                status={record.status}
+              />
             </div>
           )}
           <p className="regional-limit">

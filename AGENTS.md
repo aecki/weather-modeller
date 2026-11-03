@@ -11,7 +11,7 @@
 - Do not commit environments, caches, raw downloads, node_modules, exports or build output. Do not claim remote CI passed without observing it.
 
 - Product name: aecki’s catastrophe lab. Keep repository/environment identifier `weather-modeller`.
-- Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or CDN dependencies. Official swisstopo XYZ tiles are authorized for online map detail; retain bundled offline geography and offline builds/tests.
+- Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or CDN dependencies. Official swisstopo XYZ tiles are authorized for online map detail; the product map is online-only; builds and tests remain network-free.
 - Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, local serving with repository exports. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
 
 - The Model lab uses stationary annual-maxima GEV/Gumbel fits, with xi = -SciPy c. Read docs/modelling.md before altering the mathematics or confidence bands. Preserve worker cancellation, bootstrap failures, infinite bounds and model/observation separation.
@@ -20,3 +20,5 @@
 - The four-model comparison uses daily storm peaks for GPD/SMEV and forward held-out complete years. Preserve training-only thresholds/seeds, paired whole-year resampling, no overlapping retained peak windows, and null GPD estimates below its threshold. Run both reference suites, including `tests/test_comparison.mjs`; see docs/modelling.md.
 
 - Daily regional ingestion is explicit (`fetch-regional`) and scheduled by the Pages workflow. Read docs/regional-pipeline.md before altering source precedence, time/axis conventions, release schemas or address lookup. Keep regional data separate from the station snapshot and modelling worker; do not commit generated releases or raw sources.
+
+- Historical regional summaries and year-bootstrap overview follow docs/regional-history.md. Preserve completeness, same-month comparisons, threshold bounds, sparse-tail guards, selected-year exclusion and immutable artifact/manifest hashes. Keep all station models separate. The bundled offline map was explicitly removed by the user; preserve development tools.

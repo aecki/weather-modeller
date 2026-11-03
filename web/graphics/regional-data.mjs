@@ -82,14 +82,12 @@ export function boundaryCoverage(geometry, point) {
   return { kind: closest <= 50 ? 'border' : 'outside', distance: closest };
 }
 
-export async function verifiedBuffer(response, expectedHash) {
-  if (!response.ok)
-    throw new Error('Daily data could not be loaded. Reload daily data to try again.');
+export async function verifiedBuffer(response, expectedHash, label = 'Daily data') {
+  if (!response.ok) throw new Error(`${label} could not be loaded. Reload data to try again.`);
   const buffer = await response.arrayBuffer();
   const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', buffer)), (n) =>
     n.toString(16).padStart(2, '0'),
   ).join('');
-  if (hash !== expectedHash)
-    throw new Error('Daily data integrity check failed. Reload daily data.');
+  if (hash !== expectedHash) throw new Error(`${label} integrity check failed. Reload data.`);
   return buffer;
 }

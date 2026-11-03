@@ -1,6 +1,6 @@
 # Architecture and development
 
-The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or modelling backend. The map optionally loads official swisstopo XYZ tiles, with a bundled raster fallback; observations and modelling remain independent of that service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
+The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or modelling backend. The map optionally loads official swisstopo XYZ tiles, without an offline raster fallback; observations and modelling remain independent of that service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
 
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
 - `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `server.py` serves the app and handles local exports; `checks.py` runs verification.
@@ -49,3 +49,5 @@ The generated worker is a required build asset. Node checks execute that worker 
 ## Daily regional release
 
 `regional.py` discovers the current STAC inventory, selects annual/monthly/preliminary sources per date, verifies and decodes them with netCDF4, and stages a content-addressed static release. `build.py` validates any prepared release before copying it. The Pages workflow performs the explicit refresh before its normal offline checks/build. `DailyRegional.jsx` mounts independently of the station controller; `regional-data.mjs` owns coordinate, boundary and binary lookup logic. No regional values enter the station modelling worker. See [pipeline contracts and failure handling](regional-pipeline.md).
+
+`regional_history.py` prepares lossless per-year/month threshold counts from the annual archive and restores an immutable pinned data artifact for deployment. The browser `regional-history.mjs` computes empirical frequency bounds and year-bootstrap ranges; `HistoricalOverview.jsx` renders plain-language context and visx category bars. These data never enter the station modelling worker. See [method](regional-history.md).

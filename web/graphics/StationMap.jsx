@@ -14,17 +14,16 @@ const color = (value) =>
             ? '#d87a43'
             : '#a63c2e';
 import { mapTiles, distanceScale } from './map-tiles.mjs';
-import { layout, pan, zoomAt } from './map-viewport.mjs';
+import { layout, pan, zoomAt, wheelZoomEnabled, MAP_BOUNDS } from './map-viewport.mjs';
 export function StationMap({
   width: measuredWidth,
   height: measuredHeight = 560,
-  classicMap,
   stations,
   selected,
   onSelect,
   resetCount,
 }) {
-  const bounds = classicMap?.processing.bounds || [5.5, 45.5, 10.95, 48.0];
+  const bounds = MAP_BOUNDS;
   const container = useRef(null);
   const [fullscreenSize, setFullscreenSize] = useState(null);
   const width = fullscreenSize?.width || measuredWidth;
@@ -43,11 +42,12 @@ export function StationMap({
       window.removeEventListener('resize', update);
     };
   }, []);
-  const [online, setOnline] = useState(true);
+  const [exploring, setExploring] = useState(false);
+  const interactive = exploring || Boolean(fullscreenSize);
+  const [tileRetry, setTileRetry] = useState(0);
   const [tileFailed, setTileFailed] = useState(false);
   const [showStations, setShowStations] = useState(true);
-  const detailed = online && !tileFailed;
-  const maxZoom = detailed ? 256 : 8;
+  const maxZoom = 256;
   const [view, setView] = useState({ zoom: 1 });
   const currentView = useRef(view);
   const svg = useRef(null);
@@ -76,6 +76,7 @@ export function StationMap({
   useEffect(() => {
     const element = svg.current;
     const wheel = (event) => {
+      if (!wheelZoomEnabled(event, Boolean(fullscreenSize))) return;
       event.preventDefault();
       const rect = element.getBoundingClientRect();
       const point = [
@@ -98,8 +99,12 @@ export function StationMap({
     };
     element.addEventListener('wheel', wheel, { passive: false });
     return () => element.removeEventListener('wheel', wheel);
-  }, [width, height, classicMap, maxZoom]);
+  }, [width, height, maxZoom, fullscreenSize]);
   const start = (event) => {
+    if (event.pointerType === 'touch' && !interactive) {
+      dragged.current = false;
+      return;
+    }
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (pointers.current.size === 0) {
       dragged.current = false;
@@ -146,6 +151,7 @@ export function StationMap({
     if (!pointers.current.size) down.current = null;
   };
   const key = (event) => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.target !== event.currentTarget) return;
     const delta = {
       ArrowLeft: [60, 0],
@@ -180,10 +186,11 @@ export function StationMap({
       <svg
         ref={svg}
         width="100%"
+        style={{ touchAction: interactive ? 'none' : 'pan-y' }}
         viewBox={`0 0 ${width} ${height}`}
         role="group"
         tabIndex={0}
-        aria-label="Swiss rainfall station map. Drag to pan, scroll to zoom. Arrow keys pan; plus and minus zoom; Home resets."
+        aria-label="Swiss rainfall station map. Drag to pan. Ctrl or Command plus scroll zooms; ordinary scrolling moves the page. Arrow keys pan; plus and minus zoom; Home resets."
         data-renderer="visx"
         onPointerDown={start}
         onPointerMove={move}
@@ -207,45 +214,18 @@ export function StationMap({
           <Mercator data={[]} center={[0, 0]} scale={camera.scale} translate={camera.translate}>
             {({ projection }) => (
               <>
-                {classicMap &&
-                  (() => {
-                    const [west, south, east, north] = bounds;
-                    const a = projection([west, north]),
-                      b = projection([east, south]);
-                    const rect = {
-                      x: a[0],
-                      y: a[1],
-                      width: b[0] - a[0],
-                      height: b[1] - a[1],
-                      preserveAspectRatio: 'none',
-                      pointerEvents: 'none',
-                    };
-                    return (
-                      <>
-                        <image href="geography/classic-map-overview.webp" {...rect} />
-                        {camera.zoom >= 2 && <image href="geography/classic-map.webp" {...rect} />}
-                      </>
-                    );
-                  })()}
-                {detailed &&
-                  mapTiles(camera, width, height).map((tile) => (
-                    <image
-                      key={tile.url}
-                      href={tile.url}
-                      x={tile.x}
-                      y={tile.y}
-                      width={tile.size + 0.15}
-                      height={tile.size + 0.15}
-                      pointerEvents="none"
-                      onError={() => {
-                        setTileFailed(true);
-                        commit({
-                          zoom: Math.min(8, currentView.current.zoom),
-                          centre: currentView.current.centre,
-                        });
-                      }}
-                    />
-                  ))}
+                {mapTiles(camera, width, height).map((tile) => (
+                  <image
+                    key={tile.url + tileRetry}
+                    href={tile.url}
+                    x={tile.x}
+                    y={tile.y}
+                    width={tile.size + 0.15}
+                    height={tile.size + 0.15}
+                    pointerEvents="none"
+                    onError={() => setTileFailed(true)}
+                  />
+                ))}
                 {showStations &&
                   stations.map((station) => {
                     const point = projection([station.lon, station.lat]);
@@ -330,6 +310,9 @@ export function StationMap({
         </button>
       </div>
       <div className="map-options">
+        <button aria-pressed={exploring} onClick={() => setExploring(!exploring)}>
+          {exploring ? 'Finish exploring' : 'Explore map'}
+        </button>
         <label>
           <input
             type="checkbox"
@@ -338,22 +321,16 @@ export function StationMap({
           />{' '}
           Stations
         </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={online}
-            onChange={(e) => {
-              setOnline(e.target.checked);
+        {tileFailed && (
+          <button
+            onClick={() => {
               setTileFailed(false);
-              if (!e.target.checked)
-                commit({
-                  zoom: Math.min(8, currentView.current.zoom),
-                  centre: currentView.current.centre,
-                });
+              setTileRetry(tileRetry + 1);
             }}
-          />{' '}
-          Online detail
-        </label>
+          >
+            Retry map
+          </button>
+        )}
         <button
           onClick={() => {
             if (document.fullscreenElement) document.exitFullscreen();
@@ -367,13 +344,15 @@ export function StationMap({
         {distanceScale(camera).label}
       </div>
       <span className="map-hint">
-        {tileFailed
-          ? 'Tiles unavailable · bundled map (toggle Online detail to retry)'
-          : detailed
-            ? 'swisstopo · online detail'
-            : 'Bundled map · limited detail'}
+        {tileFailed ? 'Some swisstopo tiles unavailable · Retry map' : 'swisstopo · online map'}
         <br />
-        Drag to pan · scroll or pinch to zoom
+        {fullscreenSize
+          ? 'Drag / pinch / scroll to explore'
+          : 'Scroll page normally · Ctrl/⌘ + scroll to zoom'}
+        <br />
+        {exploring
+          ? 'Touch exploration enabled · finish to scroll over the map'
+          : 'Touch: choose Explore map to drag and pinch'}
       </span>
       <span className="map-credit">
         <a
@@ -384,7 +363,7 @@ export function StationMap({
           © swisstopo
         </a>
         {' · '}
-        {detailed && (
+        {
           <>
             <a
               href="https://docs.geo.admin.ch/visualize-data/xyz.html"
@@ -393,12 +372,8 @@ export function StationMap({
             >
               Online map source
             </a>
-            {' · '}
           </>
-        )}
-        <a href="geography/classic-map.json" target="_blank" rel="noreferrer">
-          Map sources
-        </a>
+        }
       </span>
     </div>
   );

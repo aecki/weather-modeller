@@ -55,3 +55,7 @@ def install_dev_tools(root: Path) -> None:
 def install_regional_tools(root: Path) -> None:
     """Use the checked-out interpreter directly, without relying on shell activation."""
     _install_requirements(root, "requirements-regional.txt", "regional-deps")
+
+
+def install_history_tools(root: Path) -> None:
+    _install_requirements(root, "requirements-history.txt", "history-deps")

@@ -7,6 +7,7 @@ import tempfile
 from pathlib import Path
 
 from .regional import validate_release
+from .regional_history import validate_history
 from .storage import write_json
 from .validation import validate_snapshot
 
@@ -20,9 +21,6 @@ REQUIRED_ASSETS = (
     "model-worker.js",
     "third-party-notices.txt",
     "runtime-config.json",
-    "geography/classic-map.json",
-    "geography/classic-map.webp",
-    "geography/classic-map-overview.webp",
     "data/observations.json",
     "data/provenance.json",
     "data/regional/manifest.json",
@@ -50,6 +48,14 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
     json.loads((data / "provenance.json").read_text(encoding="utf-8"))
     if (data / "regional").exists():
         validate_release(data / "regional")
+    if (data / "regional-history").exists():
+        history_config = root / "config/regional-history.json"
+        expected = (
+            json.loads(history_config.read_text()).get("manifestSha256")
+            if history_config.exists()
+            else None
+        )
+        validate_history(data / "regional-history", expected)
     if output.is_symlink():
         raise ValueError("Refusing to build into a symlinked dist directory")
     staging_root = root / ".cache/build"
@@ -75,5 +81,5 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
             if had_previous:
                 previous.rename(output)
             raise
-    print(f"Built self-contained app: {output}", flush=True)
+    print(f"Built static web app: {output}", flush=True)
     return output

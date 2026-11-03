@@ -30,3 +30,6 @@ htmlcov/
 
 # Generated daily regional release; published by Actions, never committed
 data/processed/regional/
+
+# Prepared versioned historical reference, distributed as a release asset
+data/processed/regional-history/

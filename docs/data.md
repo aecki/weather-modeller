@@ -36,24 +36,12 @@ The processed JSON includes original hourly river records so derived values can 
 
 ## Geography
 
-Map geography is bundled locally from the official Swiss Map Raster 500 download, with **© swisstopo** attribution. Exact source URLs, provider-verified archive checksums and derived image checksums are recorded in `web/geography/classic-map.json`. [swisstopo OGD conditions](https://www.swisstopo.admin.ch/en/conditions-geodata) allow free use with attribution. No remote map tiles or API are required. See the preparation details below.
+The map uses official online swisstopo national-map tiles with **© swisstopo** attribution and an explicit error/retry state. The former bundled offline map, preparation script and associated test have been removed with user approval. Normal wheel scrolling moves the page; Ctrl/Command + wheel zooms the map. Touch drag/pinch requires Explore map, or fullscreen. Data graphics, models and static builds remain repository-owned; map cartography requires the official online service.
 
 ## Model estimates are separate from observations
 
 The Model lab now fits stationary GEV/Gumbel distributions to selected complete-year maxima and estimates return periods with bootstrap sampling uncertainty. These estimates do not change the observation snapshot or the descriptive historical rankings. Model assumptions, confidence-band interpretation and extrapolation limits are documented in [modelling.md](modelling.md).
 
-
-### Classic topographic background
-
-The default map background uses **Swiss Map Raster 500, colour combination (`komb`)**, © swisstopo, downloaded directly from the official STAC download service. It includes terrain relief, rivers and place names. The downloaded asset was last updated 31 December 2025; it is current cartographic context for every replay, not a historical-event map. A single bundled image replaces remote map tiles. The topographic map is the only view. Drag to pan; wheel, pinch, double-click and +/− buttons zoom (1–8×); arrow keys pan and Home resets. The camera is constrained to the bundled extent, preventing empty borders.
-
-The source is a paletted 25-metre EPSG:2056 GeoTIFF representing a 1:500,000 map. `scripts/prepare_classic_map.py` checks its provider SHA256, expands the colour palette, reprojects with bilinear resampling to EPSG:3857 over 5.5–10.95° E and 45.5–48.0° N, and writes an 8,000-pixel-wide WebP (quality 85, method 6). The image is positioned using the same visx Mercator projection as the station markers, including zoom. This interior crop stays inside the official source image, excluding sheet-edge margins. Zoom enlarges a fixed-resolution image; it does not fetch more detailed maps. Rainfall marker colours remain unchanged.
-
-`web/geography/classic-map.json` records exact source and metadata URLs, update time, input/output checksums and processing. This cartography supports geographic orientation; it is not an elevation analysis, catchment model or inundation map.
-
-To regenerate, download the `komb` GeoTIFF from the STAC item linked in that JSON into `data/raw/geography/classic-map.tif`, and save the STAC item as `classic-map.json` in the same ignored directory. Install `requirements-geography.txt` inside the repository environment, then run `python scripts/prepare_classic_map.py`. Normal setup, build, serving and tests do not require these optional GIS/image preparation packages or raw downloads.
-
-A 2,000-pixel overview loads initially; the bundled 8,000-pixel crop is requested from the same local origin only at 2× zoom and above. Both images have identical geographic bounds, so switching resolution preserves station alignment.
 
 ## Nationwide data investigation
 
@@ -62,3 +50,7 @@ The current production snapshot remains unchanged. The [full archive audit](rain
 ## Daily regional estimates
 
 The online address lookup uses a generated, separately versioned release of RprelimD/RhiresD regional estimates. It preserves precipitation-day windows, masked cells and consolidation tiers. It does not extend or relabel the station snapshot. [Daily pipeline and address methodology](regional-pipeline.md).
+
+## Regional historical context
+
+The address overview compares same-month days in the real 1961–2025 regional archive, with year-resampling ranges, explicit threshold bounds and sparse-tail guards. It does not fit the station models to address estimates. [Historical comparison method and source lineage](regional-history.md).

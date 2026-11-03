@@ -2016,3 +2016,49 @@ input[type='range'] {
     margin-bottom: 8px;
   }
 }
+
+.address-results [aria-selected='true'] button {
+  background: #e2e8f0;
+  outline: 2px solid #64748b;
+  outline-offset: -2px;
+}
+.historical-overview {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid #e2e8f0;
+}
+.historical-overview .historical-headline {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+}
+.historical-range {
+  padding: 10px 12px;
+  border-left: 3px solid #32776f;
+  background: #f3f7f6;
+}
+.historical-overview > div {
+  min-height: 240px;
+}
+.history-caption,
+.history-limits {
+  font-size: 12px;
+}
+.historical-overview details {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.map-hint {
+  max-width: 300px;
+}
+@media (max-width: 600px) {
+  .map-hint {
+    max-width: 200px;
+    font-size: 9px;
+  }
+  .map-options {
+    gap: 6px;
+    flex-wrap: wrap;
+    max-width: 290px;
+  }
+}

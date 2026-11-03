@@ -6,7 +6,7 @@ The online page has a daily regional lookup and a separate historical station/Pr
 
 A release requests the latest 90 complete rainfall-day labels by default. Recent data come from RprelimD; consolidated dates use RhiresD. These are observation-based regional estimates, including snowfall water equivalent, not measurements at buildings. Daily periods remain 06:00 UTC on D to 06:00 UTC on D+1. Dates missing from the provider inventory remain explicitly unavailable. The page defaults to the latest available day, rather than inventing yesterday's amount.
 
-The lookup does not yet supply historical regional rankings or address-specific extreme estimates. Pro Mode retains the independently versioned 1981–2025 station snapshot. The full national historical archive remains outside the browser bundle; see the [audit](rainfall-audit.md).
+The lookup now supplies same-month historical context and sampling ranges from the versioned 1961–2025 regional reference; see [historical comparison](regional-history.md). It does not infer building-specific extreme return periods. Pro Mode retains the independently versioned 1981–2025 station snapshot. The full national historical archive remains outside the browser bundle; see the [audit](rainfall-audit.md).
 
 ## Explicit refresh
 
@@ -57,7 +57,7 @@ The workflow installs pipeline packages into `.environments/weather-modeller`, r
 
 ## Address lookup
 
-Search is submitted directly to the official [swisstopo SearchServer](https://docs.geo.admin.ch/access-data/search.html). Inputs are not stored by the app or added to URLs/browser history. swisstopo receives the submitted query. Up to eight candidates are presented for explicit selection; the first match is not assumed exact.
+Debounced suggestions are fetched as the user types (350 ms, at least three characters), directly from the official [swisstopo SearchServer](https://docs.geo.admin.ch/access-data/search.html). Inputs are not stored by the app or added to URLs/browser history. swisstopo receives the submitted query. Up to eight candidates are presented for explicit selection, with arrow-key/Enter/Escape support; the first match is not assumed exact.
 
 With `sr=2056`, the service's `x` is northing and `y` is easting; its returned GeoJSON coordinates also use north/east order in the captured real response. The client uses the explicit attributes and validates coordinate ranges. Regression tests pin this real public-address response to prevent a silent axis swap.
 
@@ -70,3 +70,7 @@ The browser verifies both boundary and selected grid SHA-256 values, fetches one
 Offline tests cover tier precedence, same-tier ambiguity, source corruption/revisions, loss/downgrade guards, actual provider values, missing versus zero, native axis reversal, invalid precipitation, date alignment, atomic rollback and release integrity. JavaScript checks cover a real SearchServer response, an independent real-data payload, UTC 06:00 day boundaries and polygon holes/border tolerance. Synthetic catalogue/geometry/corruption fixtures are isolated to tests and never served as observations.
 
 The independent data references are documented under `tests/fixtures/regional/`. Builds without optional NetCDF dependencies skip only decoder-specific Python checks; the Pages and cross-platform workflows install those dependencies so they execute there.
+
+## Historical reference deployment
+
+The Pages workflow caches and restores the immutable historical release pinned in `config/regional-history.json`, verifies its archive/manifest and chunk hashes, then builds it into static output. Raw annual NetCDF files are not fetched during daily deployment. [Method and preparation](regional-history.md).

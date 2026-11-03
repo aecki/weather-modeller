@@ -170,8 +170,7 @@ def source_file(root, candidate):
         label = str(candidate["start"].year) if label == "archive" else label
         audited = root / "data/raw/rainfall-audit" / f"{label}.nc"
         if audited.exists() and sha256(audited.read_bytes()) == candidate["sha256"]:
-            atomic_write_bytes(path, audited.read_bytes())
-            write_json(provenance, {"retrievedAt": None, "origin": "existing-audit-cache"})
+            return audited, {"retrievedAt": None, "origin": "existing-audit-cache"}
         else:
             content = download(asset["href"])
             if sha256(content) != candidate["sha256"]:

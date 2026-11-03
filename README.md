@@ -22,7 +22,7 @@ On macOS/Linux you can then use `.environments/weather-modeller/bin/python run.p
 ```sh
 python run.py serve                 # Build and serve locally, loopback only
 python run.py serve --port 8766     # Choose a different local port
-python run.py build                 # Produce the complete offline app in dist/
+python run.py build                 # Produce the static website in dist/
 python run.py check                 # Run numerical, data-integrity and asset checks
 python run.py dev                   # Install optional repo-local developer tools
 python run.py quality               # Check Python/frontend style and common errors
@@ -45,7 +45,6 @@ weather-modeller/
 ├── config/catalog.json    # Station selection, history range, event windows
 ├── src/weather_modeller/  # Python ingestion, aggregation and app commands
 ├── web/                   # Editable HTML, CSS and JavaScript
-│   ├── geography/         # Bundled topographic map + provenance
 │   └── graphics/          # React + visx map, charts and interactive explanation
 ├── data/
 │   ├── processed/         # Tracked observations and source provenance
@@ -76,7 +75,7 @@ Python 3.12 and Node.js 22 are constrained in `environment.yml`, using conda-for
 
 Every source response has its exact URL/request, retrieval time and SHA256 recorded in `data/processed/provenance.json`. Missing observations stay missing. See [data methodology](docs/data.md) for time boundaries and limitations.
 
-Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, official online national-map tiles with a bundled Swiss Map Raster 500 offline fallback. Source attribution and provenance are bundled locally. Graphics use React and visx, bundled with dependency notices in the generated site.
+Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, official online national-map tiles. The offline-map fallback has been removed. Graphics use React and visx, bundled with dependency notices in the generated site.
 
 ## Development
 
@@ -113,3 +112,9 @@ The published GitHub Pages site needs only a browser. Conda/Python are for local
 The [daily pipeline](docs/regional-pipeline.md) publishes a rolling 90-day release. Pages refreshes at 12:45 and 18:45 UTC (best-effort scheduling), with source checksums, consolidation precedence and atomic publication. Address searches use swisstopo; estimates describe the surrounding region, not individual buildings. Pro Mode retains the historical station snapshot and all four models.
 
 For local preparation, run `python run.py regional-deps`, then `python run.py fetch-regional`. Both commands use the repository environment and caches. Ordinary builds remain network-free.
+
+## Address history and online-only maps
+
+The overview compares each supported address with real same-month regional days from 1961–2025, explains historical frequency in plain language and shows year-resampling uncertainty. [Historical method and pinned data reference](docs/regional-history.md). Address suggestions appear while typing. Normal scrolling over the online swisstopo map scrolls the page; Ctrl/Command + wheel zooms, and touch exploration is opt-in.
+
+There is no bundled offline map or separate offline distribution. Conda, local preview and network-free tests are retained for development and reproducibility. Visitors use the online site.

@@ -40,6 +40,16 @@ jobs:
           path: data/raw/regional
           key: regional-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: regional-v1-${{ runner.os }}-
+      - name: Cache the immutable historical reference
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: data/processed/regional-history
+          key: regional-history-${{ hashFiles('config/regional-history.json') }}
+      - name: Restore and verify the pinned historical reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: python run.py restore-history
       - name: Prepare a complete daily regional release
         shell: bash
         run: python run.py fetch-regional --days 90

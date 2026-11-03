@@ -1,4 +1,4 @@
-name: Cross-platform local app checks
+name: Cross-platform development checks
 on:
   push:
   pull_request:
@@ -28,7 +28,7 @@ jobs:
       - name: Install pipeline dependencies for real NetCDF regression checks
         shell: bash
         run: python run.py regional-deps
-      - name: Check the bundled snapshot and build offline app
+      - name: Check scientific references and build the static site
         shell: bash
         run: python run.py check
       - name: Install optional tools inside the checkout

@@ -1,3 +1,7 @@
+export const MAP_BOUNDS = [5.5, 45.5, 10.95, 48.0];
+export function wheelZoomEnabled(event, fullscreen = false) {
+  return Boolean(fullscreen || event.ctrlKey || event.metaKey);
+}
 // Mercator coordinates and constrained camera shared by pointer, touch and keyboard input.
 const radians = Math.PI / 180;
 export function project([lon, lat]) {
