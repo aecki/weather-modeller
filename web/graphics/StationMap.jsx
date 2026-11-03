@@ -13,10 +13,11 @@ const color = (value) =>
           : value < 150
             ? '#d87a43'
             : '#a63c2e';
+import { mapTiles, distanceScale } from './map-tiles.mjs';
 import { layout, pan, zoomAt } from './map-viewport.mjs';
 export function StationMap({
-  width,
-  height = 560,
+  width: measuredWidth,
+  height: measuredHeight = 560,
   classicMap,
   stations,
   selected,
@@ -24,6 +25,29 @@ export function StationMap({
   resetCount,
 }) {
   const bounds = classicMap?.processing.bounds || [5.5, 45.5, 10.95, 48.0];
+  const container = useRef(null);
+  const [fullscreenSize, setFullscreenSize] = useState(null);
+  const width = fullscreenSize?.width || measuredWidth;
+  const height = fullscreenSize?.height || measuredHeight;
+  useEffect(() => {
+    const update = () =>
+      setFullscreenSize(
+        document.fullscreenElement === container.current
+          ? { width: window.innerWidth, height: window.innerHeight }
+          : null,
+      );
+    document.addEventListener('fullscreenchange', update);
+    window.addEventListener('resize', update);
+    return () => {
+      document.removeEventListener('fullscreenchange', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+  const [online, setOnline] = useState(true);
+  const [tileFailed, setTileFailed] = useState(false);
+  const [showStations, setShowStations] = useState(true);
+  const detailed = online && !tileFailed;
+  const maxZoom = detailed ? 256 : 8;
   const [view, setView] = useState({ zoom: 1 });
   const currentView = useRef(view);
   const svg = useRef(null);
@@ -41,7 +65,7 @@ export function StationMap({
     currentView.current = { zoom: 1 };
     setView({ zoom: 1 });
   }, [resetCount]);
-  const camera = layout(bounds, width, height, view);
+  const camera = layout(bounds, width, height, view, maxZoom);
   const localPoint = (event) => {
     const rect = svg.current.getBoundingClientRect();
     return [
@@ -67,13 +91,14 @@ export function StationMap({
         currentView.current,
         Math.exp(-Math.max(-120, Math.min(120, delta)) * 0.003),
         point,
+        maxZoom,
       );
       currentView.current = next;
       setView(next);
     };
     element.addEventListener('wheel', wheel, { passive: false });
     return () => element.removeEventListener('wheel', wheel);
-  }, [width, height, classicMap]);
+  }, [width, height, classicMap, maxZoom]);
   const start = (event) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (pointers.current.size === 0) {
@@ -104,9 +129,17 @@ export function StationMap({
       const distance = (points) =>
         Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]);
       if (distance(previous) > 0)
-        result = zoomAt(bounds, width, height, result, distance(next) / distance(previous), a);
+        result = zoomAt(
+          bounds,
+          width,
+          height,
+          result,
+          distance(next) / distance(previous),
+          a,
+          maxZoom,
+        );
     }
-    commit(pan(bounds, width, height, result, b[0] - a[0], b[1] - a[1]));
+    commit(pan(bounds, width, height, result, b[0] - a[0], b[1] - a[1], maxZoom));
   };
   const end = (event) => {
     pointers.current.delete(event.pointerId);
@@ -122,10 +155,20 @@ export function StationMap({
     }[event.key];
     if (delta) {
       event.preventDefault();
-      commit(pan(bounds, width, height, currentView.current, ...delta));
+      commit(pan(bounds, width, height, currentView.current, ...delta, maxZoom));
     } else if (['+', '=', '-'].includes(event.key)) {
       event.preventDefault();
-      commit(zoomAt(bounds, width, height, currentView.current, event.key === '-' ? 1 / 1.4 : 1.4));
+      commit(
+        zoomAt(
+          bounds,
+          width,
+          height,
+          currentView.current,
+          event.key === '-' ? 1 / 1.4 : 1.4,
+          undefined,
+          maxZoom,
+        ),
+      );
     } else if (event.key === 'Home') {
       event.preventDefault();
       reset();
@@ -133,7 +176,7 @@ export function StationMap({
   };
   const active = stations.find((station) => station.id === (hover || selected));
   return (
-    <div className="visx-map">
+    <div className="visx-map" ref={container}>
       <svg
         ref={svg}
         width="100%"
@@ -150,7 +193,9 @@ export function StationMap({
         onKeyDown={key}
         onDoubleClick={(event) => {
           event.preventDefault();
-          commit(zoomAt(bounds, width, height, currentView.current, 1.6, localPoint(event)));
+          commit(
+            zoomAt(bounds, width, height, currentView.current, 1.6, localPoint(event), maxZoom),
+          );
         }}
       >
         <defs>
@@ -182,41 +227,62 @@ export function StationMap({
                       </>
                     );
                   })()}
-                {stations.map((station) => {
-                  const point = projection([station.lon, station.lat]);
-                  const isSelected = station.id === selected;
-                  return (
-                    <circle
-                      key={station.id}
-                      cx={point[0]}
-                      cy={point[1]}
-                      r={isSelected ? 11 : Math.min(10, 5 + Math.sqrt(station.value || 0) / 3)}
-                      fill={color(station.value)}
-                      stroke={isSelected ? '#173b3e' : '#fff'}
-                      strokeWidth={isSelected ? 3 : 1.5}
-                      tabIndex={0}
-                      role="button"
-                      aria-label={`${station.name}: ${Number.isFinite(station.value) ? station.value.toFixed(1) + ' mm' : 'missing rainfall'}`}
-                      onClick={() => {
-                        if (!dragged.current) onSelect(station.id);
+                {detailed &&
+                  mapTiles(camera, width, height).map((tile) => (
+                    <image
+                      key={tile.url}
+                      href={tile.url}
+                      x={tile.x}
+                      y={tile.y}
+                      width={tile.size + 0.15}
+                      height={tile.size + 0.15}
+                      pointerEvents="none"
+                      onError={() => {
+                        setTileFailed(true);
+                        commit({
+                          zoom: Math.min(8, currentView.current.zoom),
+                          centre: currentView.current.centre,
+                        });
                       }}
-                      onMouseEnter={() => setHover(station.id)}
-                      onMouseLeave={() => setHover(null)}
-                      onFocus={() => setHover(station.id)}
-                      onBlur={() => setHover(null)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          onSelect(station.id);
-                        }
-                      }}
-                      className="visx-point"
-                    >
-                      <title>{station.name}</title>
-                    </circle>
-                  );
-                })}
-                {active &&
+                    />
+                  ))}
+                {showStations &&
+                  stations.map((station) => {
+                    const point = projection([station.lon, station.lat]);
+                    const isSelected = station.id === selected;
+                    return (
+                      <circle
+                        key={station.id}
+                        cx={point[0]}
+                        cy={point[1]}
+                        r={isSelected ? 11 : Math.min(10, 5 + Math.sqrt(station.value || 0) / 3)}
+                        fill={color(station.value)}
+                        stroke={isSelected ? '#173b3e' : '#fff'}
+                        strokeWidth={isSelected ? 3 : 1.5}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`${station.name}: ${Number.isFinite(station.value) ? station.value.toFixed(1) + ' mm' : 'missing rainfall'}`}
+                        onClick={() => {
+                          if (!dragged.current) onSelect(station.id);
+                        }}
+                        onMouseEnter={() => setHover(station.id)}
+                        onMouseLeave={() => setHover(null)}
+                        onFocus={() => setHover(station.id)}
+                        onBlur={() => setHover(null)}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            onSelect(station.id);
+                          }
+                        }}
+                        className="visx-point"
+                      >
+                        <title>{station.name}</title>
+                      </circle>
+                    );
+                  })}
+                {showStations &&
+                  active &&
                   (() => {
                     const point = projection([active.lon, active.lat]);
                     const x = Math.max(65, Math.min(width - 65, point[0]));
@@ -243,15 +309,19 @@ export function StationMap({
       <div className="map-controls" role="group" aria-label="Map navigation">
         <button
           aria-label="Zoom in"
-          disabled={camera.zoom >= 8}
-          onClick={() => commit(zoomAt(bounds, width, height, currentView.current, 1.4))}
+          disabled={camera.zoom >= maxZoom}
+          onClick={() =>
+            commit(zoomAt(bounds, width, height, currentView.current, 1.4, undefined, maxZoom))
+          }
         >
           +
         </button>
         <button
           aria-label="Zoom out"
           disabled={camera.zoom <= 1}
-          onClick={() => commit(zoomAt(bounds, width, height, currentView.current, 1 / 1.4))}
+          onClick={() =>
+            commit(zoomAt(bounds, width, height, currentView.current, 1 / 1.4, undefined, maxZoom))
+          }
         >
           −
         </button>
@@ -259,8 +329,51 @@ export function StationMap({
           ⌂
         </button>
       </div>
+      <div className="map-options">
+        <label>
+          <input
+            type="checkbox"
+            checked={showStations}
+            onChange={(e) => setShowStations(e.target.checked)}
+          />{' '}
+          Stations
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            checked={online}
+            onChange={(e) => {
+              setOnline(e.target.checked);
+              setTileFailed(false);
+              if (!e.target.checked)
+                commit({
+                  zoom: Math.min(8, currentView.current.zoom),
+                  centre: currentView.current.centre,
+                });
+            }}
+          />{' '}
+          Online detail
+        </label>
+        <button
+          onClick={() => {
+            if (document.fullscreenElement) document.exitFullscreen();
+            else container.current.requestFullscreen?.().catch(() => {});
+          }}
+        >
+          {fullscreenSize ? 'Exit fullscreen' : 'Fullscreen'}
+        </button>
+      </div>
+      <div className="map-distance" style={{ width: distanceScale(camera).pixels }}>
+        {distanceScale(camera).label}
+      </div>
       <span className="map-hint">
-        Drag to pan · scroll or pinch to zoom · {camera.zoom.toFixed(1)}×
+        {tileFailed
+          ? 'Tiles unavailable · bundled map (toggle Online detail to retry)'
+          : detailed
+            ? 'swisstopo · online detail'
+            : 'Bundled map · limited detail'}
+        <br />
+        Drag to pan · scroll or pinch to zoom
       </span>
       <span className="map-credit">
         <a
@@ -271,6 +384,18 @@ export function StationMap({
           © swisstopo
         </a>
         {' · '}
+        {detailed && (
+          <>
+            <a
+              href="https://docs.geo.admin.ch/visualize-data/xyz.html"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Online map source
+            </a>
+            {' · '}
+          </>
+        )}
         <a href="geography/classic-map.json" target="_blank" rel="noreferrer">
           Map sources
         </a>

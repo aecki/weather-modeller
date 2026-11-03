@@ -1,3 +1,4 @@
+import { mapTiles, distanceScale } from '../web/graphics/map-tiles.mjs';
 import { ComparisonCurve, HoldoutHistory } from '../web/graphics/ComparisonCharts';
 import { fitStormModel, modelLevel } from '../web/modelling/comparison.mjs';
 import { layout, pan, zoomAt, project } from '../web/graphics/map-viewport.mjs';
@@ -148,3 +149,17 @@ const heldoutPlot = renderToStaticMarkup(
 assert.ok(heldoutPlot.includes('held-out observation'));
 assert.ok(heldoutPlot.includes('training-only 10-year'));
 assert.ok(!heldoutPlot.includes('NaN'));
+
+// The origin is the northwest of the Web Mercator world, not a Swiss local grid.
+const tileCamera = {
+  scale: (256 * 2 ** 10) / (2 * Math.PI),
+  translate: [256 / 2 - 266 * 256 + (256 * 2 ** 10) / 2, 256 / 2 - 360 * 256 + (256 * 2 ** 10) / 2],
+  centre: [0, 0],
+};
+const tile = mapTiles(tileCamera, 256, 256).find((t) => t.url.endsWith('/10/266/360.jpeg'));
+assert.ok(tile);
+assert.ok(Math.abs(tile.x - 128) < 1e-7);
+assert.ok(Math.abs(tile.y - 128) < 1e-7);
+assert.ok(mapTiles(layout(bounds, 1000, 600, { zoom: 256 }, 256), 1000, 600).length < 100);
+assert.equal(layout(bounds, 1000, 600, { zoom: 256 }, 256).zoom, 256);
+assert.ok(distanceScale(tileCamera).pixels > 0);

@@ -1,6 +1,6 @@
 # aecki’s catastrophe lab
 
-A standalone, local web app for exploring **real Swiss rainfall and river observations**. The application, Conda environment, package caches, data and build output stay inside this repository. No database, API key or internet connection is needed to explore the included snapshot after setup. The static build can also be published on GitHub Pages.
+A static web app (with an optional local development and offline setup) for exploring **real Swiss rainfall and river observations**. The application, Conda environment, package caches, data and build output stay inside this repository. No database, API key or internet connection is needed to explore the included snapshot after setup. The static build can also be published on GitHub Pages.
 
 ## Start here
 
@@ -76,7 +76,7 @@ Python 3.12 and Node.js 22 are constrained in `environment.yml`, using conda-for
 
 Every source response has its exact URL/request, retrieval time and SHA256 recorded in `data/processed/provenance.json`. Missing observations stay missing. See [data methodology](docs/data.md) for time boundaries and limitations.
 
-Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, bundled Swiss Map Raster 500 with relief and rivers. Source attribution and provenance are bundled locally. Graphics use React and visx, bundled with dependency notices in the generated site.
+Source: [MeteoSwiss, Automatic weather stations](https://opendatadocs.meteoswiss.ch/a-data-groundbased/a1-automatic-weather-stations). Source: [FOEN, Hydrological observations](https://data.bafu.admin.ch/en/dataproduct-water-observations). Map background: © swisstopo, official online national-map tiles with a bundled Swiss Map Raster 500 offline fallback. Source attribution and provenance are bundled locally. Graphics use React and visx, bundled with dependency notices in the generated site.
 
 ## Development
 
@@ -105,3 +105,5 @@ The lab estimates rainfall hazard, not flood depths or insured losses. Its condi
 ### GPD / SMEV and held-out comparison
 
 The Model lab also compares GEV, Gumbel, GPD and SMEV using earlier complete years for training and the latest 5/10/15 for testing. Inspect training-only return curves, year-bootstrap intervals, paired model differences and held-out Brier/quantile scores. Storm separation and tail-fitting settings are explicit. Computation stays in a bundled browser worker; only recorded Swiss observations and resampled observed year blocks are used. See [model methods](docs/modelling.md).
+
+The published GitHub Pages site needs only a browser. Conda/Python are for local preparation, development and serving, not for visitors. Online map detail uses the official swisstopo XYZ service; turn off Online detail for bundled geography. Tile failure switches to that fallback. All observations and model calculations remain local to the browser.

@@ -1,6 +1,6 @@
 # Architecture and development
 
-The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or external runtime service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
+The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or modelling backend. The map optionally loads official swisstopo XYZ tiles, with a bundled raster fallback; observations and modelling remain independent of that service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
 
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
 - `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `server.py` serves the app and handles local exports; `checks.py` runs verification.

@@ -1811,3 +1811,44 @@ input[type='range'] {
     font-size: 22px;
   }
 }
+
+.visx-map:fullscreen {
+  background: #eef1ed;
+  width: 100vw;
+  height: 100vh;
+}
+.visx-map:fullscreen svg {
+  width: 100%;
+  height: 100%;
+}
+.map-options {
+  position: absolute;
+  bottom: 34px;
+  right: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #fffffff0;
+  padding: 6px 9px;
+  font-size: 11px;
+}
+.map-options label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.map-options button {
+  padding: 4px 6px;
+  font-size: 11px;
+}
+.map-distance {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  border: solid #334155;
+  border-width: 0 1px 2px;
+  text-align: center;
+  font-size: 11px;
+  background: #ffffffd9;
+  color: #334155;
+}

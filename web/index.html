@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <meta
       name="description"
@@ -291,11 +291,13 @@
       </p>
       <h3>Map geography · © swisstopo</h3>
       <p>
-        The default background is the classic Swiss Map Raster 500 (1:500,000), with relief, rivers
-        and place names. It is a bundled, fixed-resolution image, not a live tile service. Drag to
-        pan; scroll or pinch to zoom. Arrow keys pan, +/− zoom, and Home resets. Navigation is
-        constrained to the bundled map extent. The map provides geographic context, not catchment
-        delineation or flood extent.
+        The map uses official swisstopo national-map tiles online, with scale-dependent terrain,
+        rivers and place names. Disable Online detail to use the bundled Swiss Map Raster 500
+        (1:500,000); this fixed-resolution fallback also appears if a tile fails to load. Drag to
+        pan; scroll or pinch to zoom. Arrow keys pan, +/− zoom, and Home resets. Fullscreen expands
+        the map; Stations hides observation markers. Navigation stays within the bundled Swiss
+        region. The map provides geographic context, not catchment delineation or flood extent.
+        Rainfall data and models do not depend on the tile service.
       </p>
       <p>
         <a href="geography/classic-map.json" target="_blank" rel="noreferrer"
