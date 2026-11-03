@@ -1,0 +1,4 @@
+# Optional: explicit national archive/coverage audit only. Not app or CI dependencies.
+numpy==2.5.4
+rasterio==1.4.3
+shapely==2.1.2

@@ -1,0 +1,21 @@
+[
+  {
+    "ADR_EGAID": "101017845",
+    "STR_ESID": "10240496",
+    "BDG_EGID": "2083452",
+    "ADR_EDID": "0",
+    "STN_LABEL": "Flughafen Basel-Mulhouse",
+    "ADR_NUMBER": "",
+    "BDG_CATEGORY": "non_residential",
+    "BDG_NAME": "EuroAirport Basel Mulhouse Freiburg",
+    "ZIP_LABEL": "4056 Basel",
+    "COM_FOSNR": "2701",
+    "COM_NAME": "Basel",
+    "COM_CANTON": "BS",
+    "ADR_STATUS": "real",
+    "ADR_OFFICIAL": "true",
+    "ADR_MODIFIED": "19.11.2024",
+    "ADR_EASTING": "2607029.543",
+    "ADR_NORTHING": "1272113.83"
+  }
+]

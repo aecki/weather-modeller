@@ -1,0 +1,429 @@
+{
+  "checked_at_utc": "2026-11-03T09:43:34.086615+00:00",
+  "catalog_items": 78,
+  "catalog_url": "https://data.geo.admin.ch/api/stac/v1/collections/ch.meteoschweiz.ogd-surface-derived-grid/items?limit=100",
+  "archive_years": [
+    1961,
+    2025
+  ],
+  "archive_year_count": 65,
+  "daily_items": [
+    "20260904-ch",
+    "20260905-ch",
+    "20260906-ch",
+    "20260907-ch",
+    "20260908-ch",
+    "20260909-ch",
+    "20260910-ch",
+    "20260911-ch",
+    "20260912-ch",
+    "20260913-ch",
+    "20260914-ch",
+    "20260915-ch",
+    "20260916-ch",
+    "20260917-ch",
+    "20260918-ch",
+    "20260919-ch",
+    "20260920-ch",
+    "20260921-ch",
+    "20260922-ch",
+    "20260923-ch",
+    "20260924-ch",
+    "20260925-ch",
+    "20260926-ch",
+    "20260927-ch",
+    "20260928-ch",
+    "20260929-ch",
+    "20260930-ch",
+    "20261001-ch",
+    "20261002-ch",
+    "20261003-ch",
+    "20261004-ch",
+    "20261005-ch",
+    "20261006-ch",
+    "20261007-ch",
+    "20261008-ch",
+    "20261009-ch",
+    "20261010-ch",
+    "20261011-ch",
+    "20261012-ch",
+    "20261013-ch",
+    "20261014-ch",
+    "20261015-ch",
+    "20261016-ch",
+    "20261017-ch",
+    "20261018-ch",
+    "20261019-ch",
+    "20261020-ch",
+    "20261021-ch",
+    "20261022-ch",
+    "20261023-ch",
+    "20261024-ch",
+    "20261025-ch",
+    "20261026-ch",
+    "20261027-ch",
+    "20261028-ch",
+    "20261029-ch",
+    "20261030-ch",
+    "20261031-ch",
+    "20261101-ch"
+  ],
+  "assets": [
+    {
+      "file": "recent.nc",
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/20261101-ch/ogd-surface-derived-grid.rprelimd_ch01h.swiss.lv95_20261101000000_20261101000000.nc",
+      "bytes": 1211647,
+      "sha256": "2c1ae1b2836f4c257e8632fdb240aca9f6190757876b7360d0f34a9aa6540e6f",
+      "provider_updated": "2026-11-02T12:16:12.399877Z"
+    },
+    {
+      "file": "2025.nc",
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/archive-ch/ogd-surface-derived-grid-archive.rhiresd_ch01h.swiss.lv95_20250101000000_20251231000000.nc",
+      "bytes": 143995038,
+      "sha256": "146994319702b24fee3adbdce9795744f3b6fb4d51861b032092ebdc6f230d62",
+      "provider_updated": "2026-02-02T14:34:06.080703Z"
+    },
+    {
+      "file": "september.nc",
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/202609-ch/ogd-surface-derived-grid-last.rhiresd_ch01h.swiss.lv95_20260901000000_20260930000000.nc",
+      "bytes": 12586087,
+      "sha256": "2c80b7991d2022b14c8062bfd6d3a58a519747abce5b9b05c4c413e1a931a8fd",
+      "provider_updated": "2026-10-26T16:11:11.453189Z"
+    },
+    {
+      "file": "september25-prelim.nc",
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/20260925-ch/ogd-surface-derived-grid.rprelimd_ch01h.swiss.lv95_20260925000000_20260925000000.nc",
+      "bytes": 1211647,
+      "sha256": "c783bcdd6ac09733acce9d7f2fddcc313e5f5edbdda6e54d5a9fc6be1145c851",
+      "provider_updated": "2026-09-26T12:17:52.745712Z"
+    }
+  ],
+  "latest": {
+    "shape": [
+      265,
+      370
+    ],
+    "crs": "EPSG:2056",
+    "resolution_m": [
+      1000.0,
+      1000.0
+    ],
+    "valid_cells": 63185,
+    "missing_cells": 34865,
+    "min_mm": 0.0,
+    "max_mm": 3.6493260860443115,
+    "places": [
+      {
+        "query": "Basel",
+        "label": "<b>Basel</b> (BL,BS) - Binningen,Basel,Allschwil,M\u00fcnchenstein,Bottmingen,Birsfelden,Riehen,Muttenz",
+        "row": 56,
+        "col": 137,
+        "mm": 0.0
+      },
+      {
+        "query": "Gen\u00e8ve",
+        "label": "<b>Gen\u00e8ve\n</b> (GE) - Gen\u00e8ve,Cologny,Carouge (GE),Vernier,Pregny-Chamb\u00e9sy,Lancy,Ch\u00eane-Bougeries,Le Grand-Saconnex,Veyrier",
+        "row": 206,
+        "col": 25,
+        "mm": 0.0
+      },
+      {
+        "query": "Lugano",
+        "label": "<b>Lugano\n</b> (TI) - Porza,Savosa,Canobbio,Massagno,Lugano,Sorengo,Paradiso,Collina d'Oro",
+        "row": 227,
+        "col": 243,
+        "mm": 0.04
+      },
+      {
+        "query": "Davos",
+        "label": "<i>Ort</i> <b>Davos Clavadel</b> (GR) - Davos",
+        "row": 141,
+        "col": 307,
+        "mm": 0.26
+      },
+      {
+        "query": "Zermatt",
+        "label": "<b>Zermatt</b> (VS) - Zermatt",
+        "row": 227,
+        "col": 149,
+        "mm": 0.0
+      },
+      {
+        "query": "Juf",
+        "label": "<i>Ort</i> <b>Juf</b> (GR) - Avers",
+        "row": 178,
+        "col": 290,
+        "mm": 0.28
+      },
+      {
+        "query": "Meiringen",
+        "label": "<i>Ort</i> <b>Meiringen</b> (BE) - Meiringen",
+        "row": 148,
+        "col": 182,
+        "mm": 0.01
+      },
+      {
+        "query": "Schaffhausen",
+        "label": "<b>Schaffhausen\n</b> (SH,ZH) - Flurlingen,Feuerthalen,Schaffhausen,Neuhausen am Rheinfall,B\u00fcsingen am Hochrhein",
+        "row": 39,
+        "col": 216,
+        "mm": 0.0
+      }
+    ]
+  },
+  "annual": {
+    "shape": [
+      365,
+      265,
+      370
+    ],
+    "crs": "EPSG:2056",
+    "valid_cells_first_day": 63185,
+    "valid_cells_last_day": 63185,
+    "negative_valid_values": 0,
+    "time_units": "days since 2025-01-01 00:00:00"
+  },
+  "station_comparisons_2025": [
+    {
+      "station": "BER",
+      "days": 365,
+      "grid_max_mm": 45.65,
+      "station_max_mm": 47.8,
+      "mean_absolute_difference_mm": 0.35
+    },
+    {
+      "station": "INT",
+      "days": 365,
+      "grid_max_mm": 79.25,
+      "station_max_mm": 73.8,
+      "mean_absolute_difference_mm": 0.59
+    },
+    {
+      "station": "MER",
+      "days": 365,
+      "grid_max_mm": 49.51,
+      "station_max_mm": 59.3,
+      "mean_absolute_difference_mm": 0.58
+    },
+    {
+      "station": "LUZ",
+      "days": 365,
+      "grid_max_mm": 46.64,
+      "station_max_mm": 52.9,
+      "mean_absolute_difference_mm": 0.62
+    },
+    {
+      "station": "ENG",
+      "days": 365,
+      "grid_max_mm": 46.65,
+      "station_max_mm": 48.9,
+      "mean_absolute_difference_mm": 0.45
+    },
+    {
+      "station": "ALT",
+      "days": 365,
+      "grid_max_mm": 52.01,
+      "station_max_mm": 58.1,
+      "mean_absolute_difference_mm": 0.68
+    },
+    {
+      "station": "SMA",
+      "days": 365,
+      "grid_max_mm": 39.97,
+      "station_max_mm": 49.8,
+      "mean_absolute_difference_mm": 0.47
+    },
+    {
+      "station": "SAE",
+      "days": 365,
+      "grid_max_mm": 46.89,
+      "station_max_mm": 64.9,
+      "mean_absolute_difference_mm": 1.82
+    },
+    {
+      "station": "STG",
+      "days": 365,
+      "grid_max_mm": 37.51,
+      "station_max_mm": 34.5,
+      "mean_absolute_difference_mm": 0.54
+    },
+    {
+      "station": "CHU",
+      "days": 365,
+      "grid_max_mm": 45.16,
+      "station_max_mm": 54.0,
+      "mean_absolute_difference_mm": 0.38
+    },
+    {
+      "station": "DAV",
+      "days": 365,
+      "grid_max_mm": 35.32,
+      "station_max_mm": 38.5,
+      "mean_absolute_difference_mm": 0.45
+    },
+    {
+      "station": "SIO",
+      "days": 365,
+      "grid_max_mm": 60.78,
+      "station_max_mm": 72.8,
+      "mean_absolute_difference_mm": 0.31
+    },
+    {
+      "station": "GVE",
+      "days": 365,
+      "grid_max_mm": 40.39,
+      "station_max_mm": 43.5,
+      "mean_absolute_difference_mm": 0.29
+    },
+    {
+      "station": "BAS",
+      "days": 365,
+      "grid_max_mm": 44.24,
+      "station_max_mm": 45.2,
+      "mean_absolute_difference_mm": 0.37
+    },
+    {
+      "station": "LUG",
+      "days": 365,
+      "grid_max_mm": 97.13,
+      "station_max_mm": 117.8,
+      "mean_absolute_difference_mm": 0.89
+    },
+    {
+      "station": "OTL",
+      "days": 365,
+      "grid_max_mm": 137.35,
+      "station_max_mm": 156.9,
+      "mean_absolute_difference_mm": 0.85
+    },
+    {
+      "station": "MAG",
+      "days": 365,
+      "grid_max_mm": 112.67,
+      "station_max_mm": 127.0,
+      "mean_absolute_difference_mm": 0.66
+    },
+    {
+      "station": "ABO",
+      "days": 365,
+      "grid_max_mm": 89.21,
+      "station_max_mm": 95.3,
+      "mean_absolute_difference_mm": 0.47
+    }
+  ],
+  "revision": {
+    "date": "2026-09-25",
+    "paired_cells": 63185,
+    "mean_absolute_difference_mm": 0.0006197897018864751,
+    "max_absolute_difference_mm": 0.09294712543487549,
+    "fraction_changed_over_1mm": 0.0,
+    "note": "Same-date preliminary vs consolidated grid; no independent truth comparison."
+  },
+  "address_search": {
+    "url": "https://api3.geo.admin.ch/rest/services/ech/SearchServer?type=locations&origins=address&limit=3&searchText=Bundesplatz%203%20Bern",
+    "results": [
+      {
+        "attrs": {
+          "detail": "bundesplatz 3 3011 bern 351 bern ch be",
+          "featureId": "2242547_0",
+          "geom_quadindex": "021300202201312213122",
+          "geom_st_box2d": "BOX(600423.1876273175 199521.0479856885,600423.1876273175 199521.0479856885)",
+          "label": "Bundesplatz 3 <b>3011 Bern</b>",
+          "lat": 46.946773529052734,
+          "links": [
+            {
+              "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/101002312",
+              "rel": "related",
+              "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+            },
+            {
+              "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/2242547_0",
+              "rel": "related",
+              "title": "ch.bfs.gebaeude_wohnungs_register"
+            }
+          ],
+          "lon": 7.444191932678223,
+          "num": 3,
+          "objectclass": "",
+          "origin": "address",
+          "rank": 7,
+          "x": 199521.046875,
+          "y": 600423.1875,
+          "zoomlevel": 10
+        },
+        "id": 1007053,
+        "weight": 7
+      },
+      {
+        "attrs": {
+          "detail": "bundesplatz 1 3011 bern 351 bern ch be",
+          "featureId": "1230564_0",
+          "geom_quadindex": "021300202210200200111",
+          "geom_st_box2d": "BOX(600472.3948111003 199555.44741186302,600472.3948111003 199555.44741186302)",
+          "label": "Bundesplatz 1 <b>3011 Bern</b>",
+          "lat": 46.94708251953125,
+          "links": [
+            {
+              "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/100776713",
+              "rel": "related",
+              "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+            },
+            {
+              "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/1230564_0",
+              "rel": "related",
+              "title": "ch.bfs.gebaeude_wohnungs_register"
+            }
+          ],
+          "lon": 7.444838523864746,
+          "num": 1,
+          "objectclass": "",
+          "origin": "address",
+          "rank": 7,
+          "x": 199555.453125,
+          "y": 600472.375,
+          "zoomlevel": 10
+        },
+        "id": 1265890,
+        "weight": 1
+      },
+      {
+        "attrs": {
+          "detail": "bundesplatz 2 3011 bern 351 bern ch be",
+          "featureId": "2242546_0",
+          "geom_quadindex": "021300202201133130110",
+          "geom_st_box2d": "BOX(600464.6251314634 199592.03396597868,600464.6251314634 199592.03396597868)",
+          "label": "Bundesplatz 2 <b>3011 Bern</b>",
+          "lat": 46.94741439819336,
+          "links": [
+            {
+              "href": "/rest/services/ech/MapServer/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/101002311",
+              "rel": "related",
+              "title": "ch.swisstopo.amtliches-gebaeudeadressverzeichnis"
+            },
+            {
+              "href": "/rest/services/ech/MapServer/ch.bfs.gebaeude_wohnungs_register/2242546_0",
+              "rel": "related",
+              "title": "ch.bfs.gebaeude_wohnungs_register"
+            }
+          ],
+          "lon": 7.444736480712891,
+          "num": 2,
+          "objectclass": "",
+          "origin": "address",
+          "rank": 7,
+          "x": 199592.03125,
+          "y": 600464.625,
+          "zoomlevel": 10
+        },
+        "id": 1609152,
+        "weight": 1
+      }
+    ]
+  },
+  "limits": [
+    "Only four files decoded; archive completeness not established.",
+    "Town samples do not establish every Swiss address is unmasked.",
+    "Stations contribute to grids; comparisons are not independent validation.",
+    "No multi-year return-level validation performed."
+  ]
+}

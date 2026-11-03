@@ -1,0 +1,59 @@
+{
+  "checked_at_utc": "2026-11-03T10:08:24.221807+00:00",
+  "source_url": "https://api3.geo.admin.ch/rest/services/ech/MapServer/find?layer=ch.swisstopo.swissboundaries3d-land-flaeche.fill&searchText=CH&searchField=id&returnGeometry=true&geometryFormat=geojson&sr=2056&contains=false",
+  "boundary_response_sha256": "aab96a561f23186b09df0fbd7b39f8d383739f67e33f0ec6e8492eaad3f6d4d8",
+  "source_layer": "ch.swisstopo.swissboundaries3d-land-flaeche.fill",
+  "shapely_version": "2.1.2",
+  "address_rows": 3307655,
+  "inside_or_on_CH_polygon": 3307651,
+  "outside_polygon": 4,
+  "outside_within_1m": 0,
+  "outside_within_10m": 2,
+  "outside_within_100m": 3,
+  "mask_files_checked": 134,
+  "inside_CH_missing_at_least_one_decoded_day": 0,
+  "outside_CH_missing_at_least_one_decoded_day": 1,
+  "exceptions": [
+    {
+      "address_id": "102434859",
+      "canton": "BS",
+      "municipality": "Basel",
+      "status": "real",
+      "distance_outside_polygon_m": 24.79,
+      "easting": 2610343.302,
+      "northing": 1269554.488
+    },
+    {
+      "address_id": "101017845",
+      "canton": "BS",
+      "municipality": "Basel",
+      "status": "real",
+      "distance_outside_polygon_m": 3553.43,
+      "easting": 2607029.543,
+      "northing": 1272113.83
+    },
+    {
+      "address_id": "102950781",
+      "canton": "TI",
+      "municipality": "Breggia",
+      "status": "real",
+      "distance_outside_polygon_m": 2.08,
+      "easting": 2725268.288,
+      "northing": 1080757.072
+    },
+    {
+      "address_id": "102950831",
+      "canton": "TI",
+      "municipality": "Breggia",
+      "status": "real",
+      "distance_outside_polygon_m": 3.03,
+      "easting": 2725263.773,
+      "northing": 1080813.827
+    }
+  ],
+  "limitations": [
+    "Point-in-polygon uses this service geometry, not a legal adjudication of boundary addresses.",
+    "Current address directory evaluated against historical rainfall masks; not historical building occupancy.",
+    "Bulk coordinate coverage does not establish search-service recall."
+  ]
+}

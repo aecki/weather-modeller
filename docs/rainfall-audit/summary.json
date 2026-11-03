@@ -1,0 +1,21 @@
+{
+  "checked_at_utc": "2026-11-03T10:08:17.627718+00:00",
+  "annual_files": 65,
+  "annual_days": 23741,
+  "annual_passed": 65,
+  "monthly_files": 10,
+  "monthly_passed": 10,
+  "preliminary_files": 59,
+  "preliminary_passed": 59,
+  "all_source_bytes": 9708320153,
+  "annual_bytes": 9365952670,
+  "latest_preliminary_date": "2026-11-01",
+  "address_rows": 3307655,
+  "address_covered_every_day": 3307654,
+  "overlap_days": 27,
+  "catalog_sha256": "1bd9a73a1e6e3112887adeab57d91f528fc134504422e92c8b580fa8e01be790",
+  "address_catalog_sha256": "dc5526f5aa9498351e97ed46b0c769c12677e71b7e8358b5191fc7f2e32e0b89",
+  "script_sha256": "da743d988f44e198f241f816a82edb7777df288d22be4d2909cdc308ffbd642a",
+  "numpy_version": "2.5.4",
+  "rasterio_version": "1.4.3"
+}

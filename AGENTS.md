@@ -1,6 +1,6 @@
 # Repository conventions
 
-- This is a standalone local app. Keep the Conda environment named `weather-modeller` inside `.environments/weather-modeller/` and all project caches/data/exports inside the checkout. Never install into base or change global configuration.
+- The product is an online web app with a repository-local development environment. Keep the Conda environment named `weather-modeller` inside `.environments/weather-modeller/` and all project caches/data/exports inside the checkout. Never install into base or change global configuration.
 - Run commands through `python run.py`. Normal verification is `python run.py check`; when developer tools are installed, also run `python run.py quality`. Install optional tools with `python run.py dev`.
 - Read CONTRIBUTING.md and the applicable docs before changing architecture or data interpretation.
 - Edit `web/` and `src/weather_modeller/`, not generated `dist/`.

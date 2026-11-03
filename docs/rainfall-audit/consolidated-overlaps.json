@@ -1,0 +1,10 @@
+[
+  {
+    "month": "202512",
+    "days": 31,
+    "max_absolute_difference_mm": 7.445555686950684,
+    "mask_cell_day_differences": 0,
+    "annual_sha256": "146994319702b24fee3adbdce9795744f3b6fb4d51861b032092ebdc6f230d62",
+    "monthly_sha256": "da6598cffb029319cdf70a4466d5ef917d97486f4417f6ee65bf073182783928"
+  }
+]

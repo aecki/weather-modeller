@@ -1,0 +1,178 @@
+{
+  "source": {
+    "url": "https://data.geo.admin.ch/ch.swisstopo.amtliches-gebaeudeadressverzeichnis/amtliches-gebaeudeadressverzeichnis_ch/amtliches-gebaeudeadressverzeichnis_ch_2056.csv.zip",
+    "sha256": "351c2b40e1e6124be3e152d850485a9387bafd98cf312ffbb5c46b39a74e892f",
+    "bytes": 143450640,
+    "provider_updated": "2026-11-03T07:37:01.089020Z"
+  },
+  "rows": 3307655,
+  "valid_coordinate_rows": 3307655,
+  "invalid_coordinate_rows": 0,
+  "outside_grid_rows": 0,
+  "address_status_counts": {
+    "real": 3256366,
+    "planned": 51289
+  },
+  "covered_every_decoded_day": 3307654,
+  "covered_at_least_one_decoded_day": 3307654,
+  "address_occupied_cells": 31409,
+  "cantons": [
+    {
+      "canton": "AG",
+      "coordinate_rows": 280588,
+      "covered_every_decoded_day": 280588,
+      "covered_at_least_one_decoded_day": 280588
+    },
+    {
+      "canton": "AI",
+      "coordinate_rows": 9978,
+      "covered_every_decoded_day": 9978,
+      "covered_at_least_one_decoded_day": 9978
+    },
+    {
+      "canton": "AR",
+      "coordinate_rows": 28523,
+      "covered_every_decoded_day": 28523,
+      "covered_at_least_one_decoded_day": 28523
+    },
+    {
+      "canton": "BE",
+      "coordinate_rows": 467040,
+      "covered_every_decoded_day": 467040,
+      "covered_at_least_one_decoded_day": 467040
+    },
+    {
+      "canton": "BL",
+      "coordinate_rows": 121244,
+      "covered_every_decoded_day": 121244,
+      "covered_at_least_one_decoded_day": 121244
+    },
+    {
+      "canton": "BS",
+      "coordinate_rows": 32010,
+      "covered_every_decoded_day": 32009,
+      "covered_at_least_one_decoded_day": 32009
+    },
+    {
+      "canton": "FR",
+      "coordinate_rows": 162527,
+      "covered_every_decoded_day": 162527,
+      "covered_at_least_one_decoded_day": 162527
+    },
+    {
+      "canton": "GE",
+      "coordinate_rows": 85823,
+      "covered_every_decoded_day": 85823,
+      "covered_at_least_one_decoded_day": 85823
+    },
+    {
+      "canton": "GL",
+      "coordinate_rows": 27836,
+      "covered_every_decoded_day": 27836,
+      "covered_at_least_one_decoded_day": 27836
+    },
+    {
+      "canton": "GR",
+      "coordinate_rows": 141409,
+      "covered_every_decoded_day": 141409,
+      "covered_at_least_one_decoded_day": 141409
+    },
+    {
+      "canton": "JU",
+      "coordinate_rows": 52103,
+      "covered_every_decoded_day": 52103,
+      "covered_at_least_one_decoded_day": 52103
+    },
+    {
+      "canton": "LU",
+      "coordinate_rows": 142375,
+      "covered_every_decoded_day": 142375,
+      "covered_at_least_one_decoded_day": 142375
+    },
+    {
+      "canton": "NE",
+      "coordinate_rows": 64916,
+      "covered_every_decoded_day": 64916,
+      "covered_at_least_one_decoded_day": 64916
+    },
+    {
+      "canton": "NW",
+      "coordinate_rows": 15507,
+      "covered_every_decoded_day": 15507,
+      "covered_at_least_one_decoded_day": 15507
+    },
+    {
+      "canton": "OW",
+      "coordinate_rows": 20574,
+      "covered_every_decoded_day": 20574,
+      "covered_at_least_one_decoded_day": 20574
+    },
+    {
+      "canton": "SG",
+      "coordinate_rows": 216218,
+      "covered_every_decoded_day": 216218,
+      "covered_at_least_one_decoded_day": 216218
+    },
+    {
+      "canton": "SH",
+      "coordinate_rows": 35616,
+      "covered_every_decoded_day": 35616,
+      "covered_at_least_one_decoded_day": 35616
+    },
+    {
+      "canton": "SO",
+      "coordinate_rows": 114848,
+      "covered_every_decoded_day": 114848,
+      "covered_at_least_one_decoded_day": 114848
+    },
+    {
+      "canton": "SZ",
+      "coordinate_rows": 59276,
+      "covered_every_decoded_day": 59276,
+      "covered_at_least_one_decoded_day": 59276
+    },
+    {
+      "canton": "TG",
+      "coordinate_rows": 119990,
+      "covered_every_decoded_day": 119990,
+      "covered_at_least_one_decoded_day": 119990
+    },
+    {
+      "canton": "TI",
+      "coordinate_rows": 200338,
+      "covered_every_decoded_day": 200338,
+      "covered_at_least_one_decoded_day": 200338
+    },
+    {
+      "canton": "UR",
+      "coordinate_rows": 22857,
+      "covered_every_decoded_day": 22857,
+      "covered_at_least_one_decoded_day": 22857
+    },
+    {
+      "canton": "VD",
+      "coordinate_rows": 255046,
+      "covered_every_decoded_day": 255046,
+      "covered_at_least_one_decoded_day": 255046
+    },
+    {
+      "canton": "VS",
+      "coordinate_rows": 214744,
+      "covered_every_decoded_day": 214744,
+      "covered_at_least_one_decoded_day": 214744
+    },
+    {
+      "canton": "ZG",
+      "coordinate_rows": 29606,
+      "covered_every_decoded_day": 29606,
+      "covered_at_least_one_decoded_day": 29606
+    },
+    {
+      "canton": "ZH",
+      "coordinate_rows": 386663,
+      "covered_every_decoded_day": 386663,
+      "covered_at_least_one_decoded_day": 386663
+    }
+  ],
+  "method": "Census of all CH CSV rows, including all listed statuses; LV95 containing-cell lookup, no snapping. Directory census is not a search API census, accuracy validation, or historical address reconstruction."
+}

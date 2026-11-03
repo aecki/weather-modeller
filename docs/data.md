@@ -54,3 +54,7 @@ The source is a paletted 25-metre EPSG:2056 GeoTIFF representing a 1:500,000 map
 To regenerate, download the `komb` GeoTIFF from the STAC item linked in that JSON into `data/raw/geography/classic-map.tif`, and save the STAC item as `classic-map.json` in the same ignored directory. Install `requirements-geography.txt` inside the repository environment, then run `python scripts/prepare_classic_map.py`. Normal setup, build, serving and tests do not require these optional GIS/image preparation packages or raw downloads.
 
 A 2,000-pixel overview loads initially; the bundled 8,000-pixel crop is requested from the same local origin only at 2× zoom and above. Both images have identical geographic bounds, so switching resolution preserves station alignment.
+
+## Nationwide data investigation
+
+The current production snapshot remains unchanged. The [full archive audit](rainfall-audit.md) covers 65 annual files, all listed Swiss address coordinates, and available preliminary/consolidated overlaps. It records revision and spatial-interpretation limits before any interface migration.
