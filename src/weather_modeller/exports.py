@@ -1,11 +1,8 @@
-"""Export selected observations to the repository's outputs directory."""
+"""Independent CSV reference for testing browser downloads."""
 
 import csv
 import io
-import json
 from pathlib import Path
-
-from .storage import atomic_write_bytes
 
 
 def selection_csv(snapshot, selection):
@@ -63,17 +60,3 @@ def selection_csv(snapshot, selection):
     if Path(filename).name != filename or ".." in filename or "\\" in filename:
         raise ValueError("Invalid catalog identifier for export")
     return filename, stream.getvalue()
-
-
-def save_selection(root, selection):
-    snapshot = json.loads((root / "data/processed/observations.json").read_text(encoding="utf-8"))
-    filename, content = selection_csv(snapshot, selection)
-    output = root / "outputs"
-    if output.is_symlink():
-        raise ValueError("Refusing to export into a symlinked outputs directory")
-    output.mkdir(exist_ok=True)
-    path = output / filename
-    if path.is_symlink():
-        raise ValueError("Refusing to overwrite a symlink")
-    atomic_write_bytes(path, content.encode("utf-8-sig"))
-    return path.relative_to(root).as_posix()

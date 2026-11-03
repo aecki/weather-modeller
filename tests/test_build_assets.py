@@ -15,7 +15,7 @@ class AssetVersionTests(unittest.TestCase):
     def test_versions_match_content_and_change_on_revision(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)
-            names = ("style.css", "graphics.js", "data-core.js", "app.js")
+            names = ("style.css", "overview.css", "graphics.js", "data-core.js", "app.js")
             original = "\n".join(f'<script src="{name}"></script>' for name in names)
             for name in names:
                 (path / name).write_text(name)

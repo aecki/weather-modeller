@@ -23,6 +23,7 @@ def check(root):
     subprocess.run([node, str(root / "tests/test_regional_history.mjs")], cwd=root, check=True)
     subprocess.run([node, str(root / "scripts/test_graphics.mjs")], cwd=root, check=True)
     subprocess.run([node, str(root / "tests/test_regional_models.mjs")], cwd=root, check=True)
+    subprocess.run([node, str(root / "tests/test_archive_data.mjs")], cwd=root, check=True)
     build(root)
     subprocess.run([node, str(root / "tests/test_models.mjs")], cwd=root, check=True)
     subprocess.run([node, str(root / "tests/test_comparison.mjs")], cwd=root, check=True)
@@ -43,6 +44,7 @@ def quality(root):
             "--check",
             "web/index.html",
             "web/style.css",
+            "web/overview.css",
             "web/app.js",
             "web/data-core.js",
             "tests/test_data.cjs",
@@ -56,6 +58,7 @@ def quality(root):
             "tests/test_regional.mjs",
             "tests/test_regional_history.mjs",
             "tests/test_regional_models.mjs",
+            "tests/test_archive_data.mjs",
             "web/modelling",
         ],
         cwd=root,

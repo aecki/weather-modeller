@@ -31,9 +31,9 @@ python run.py fetch --refresh       # Explicitly re-download official source obs
 python run.py setup --update        # Update this repository's environment from environment.yml
 ```
 
-The **Save CSV in repository** button writes a selection to `outputs/` inside this checkout.
+CSV selections download directly from the browser. There is no standalone desktop app or local export API.
 
-Neither `serve`, `build` nor `check` refreshes data. The downloaded snapshot is tracked so a fresh clone can run without downloading historical observations. Links to source documentation only contact those sites if you choose to open them.
+Neither `serve`, `build` nor `check` refreshes data. The downloaded snapshot is tracked so a fresh clone can run without downloading historical observations. The web app uses official swisstopo map/search services and verified MeteoSwiss range downloads for older calendar days.
 
 ## Repository structure
 
@@ -49,7 +49,7 @@ weather-modeller/
 ├── data/
 │   ├── processed/         # Tracked observations and source provenance
 │   └── raw/               # Original downloads and request metadata (ignored)
-├── outputs/               # CSV selections saved by the local app (ignored)
+├── outputs/               # Data-preparation artifacts (ignored)
 ├── tests/                 # Python and Node tests; no live network requests
 ├── scripts/               # Bootstrap and command entrypoints
 ├── docs/                  # Setup, architecture and data methodology
@@ -91,7 +91,7 @@ python run.py check
 
 ## GitHub Pages
 
-The app is ready to build as a static website. See [GitHub Pages setup](docs/github-pages.md) for deployment. A checked-in Actions workflow builds/tests `dist/` and deploys it after Pages is enabled. Static hosting uses browser CSV downloads; local serving retains repository-local CSV saves.
+The app is ready to build as a static website. See [GitHub Pages setup](docs/github-pages.md) for deployment. A checked-in Actions workflow builds/tests `dist/` and deploys it after Pages is enabled. Both the website and its development preview use browser CSV downloads.
 
 The page includes a **How it works** section with a visx illustration driven by the selected real measurements. Maps, charts and comparison graphics all use visx.
 
@@ -109,7 +109,7 @@ The published GitHub Pages site needs only a browser. Conda/Python are for local
 
 ## Daily regional data
 
-The [daily pipeline](docs/regional-pipeline.md) publishes a rolling 90-day release. Pages refreshes at 12:45 and 18:45 UTC (best-effort scheduling), with source checksums, consolidation precedence and atomic publication. Address searches use swisstopo; estimates describe the surrounding region, not individual buildings. Pro Mode retains the historical station snapshot and all four models.
+The [daily pipeline](docs/regional-pipeline.md) publishes a rolling 366-day release plus a small index of every final annual archive day since 1961. Pages refreshes at 12:45 and 18:45 UTC (best-effort scheduling), with source checksums, consolidation precedence and atomic publication. Address searches use swisstopo; estimates describe the surrounding region, not individual buildings. Pro Mode retains the historical station snapshot and all four models.
 
 For local preparation, run `python run.py regional-deps`, then `python run.py fetch-regional`. Both commands use the repository environment and caches. Ordinary builds remain network-free.
 

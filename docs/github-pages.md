@@ -1,6 +1,6 @@
 # Publishing aecki’s catastrophe lab on GitHub Pages
 
-The app builds to a static `dist/` directory. GitHub Pages serves that directory; visitors need neither Python nor Conda. React, visx and every other runtime asset are bundled locally, alongside the official observation snapshot. There are no runtime CDN dependencies or external data requests.
+The app builds to a static `dist/` directory. GitHub Pages serves that directory; visitors need neither Python nor Conda. React, visx and every other runtime asset are bundled locally, alongside the official observation snapshot. There are no runtime code/CDN dependencies. Map/search services and historical day grids come from official online providers.
 
 ## Enable deployment
 
@@ -17,12 +17,9 @@ Public repositories can use Pages on GitHub Free; eligibility for private reposi
 
 Official instructions: [GitHub Pages custom workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
 
-## Exports in the two modes
+## Browser downloads and development preview
 
-- `python run.py serve` builds **repository mode**: Save CSV writes to this checkout's `outputs/` through the local Python server, as before.
-- `python run.py build` builds **static mode**, used by GitHub Pages: Download selection CSV creates the file in the browser, without an API or write access to the repository.
-
-The generated `runtime-config.json` declares the mode. Both exports use the same observation snapshot, field names, missing-value rules and UTC labels. The published site does not send selections to any backend.
+CSV downloads are generated in the browser in every environment. There is no runtime-mode switch, local export API or standalone app. `serve` is only a static development preview.
 
 ## Test a Pages build locally
 
@@ -34,6 +31,6 @@ conda activate ./.environments/weather-modeller
 python -m http.server 8767 --bind 127.0.0.1 --directory dist
 ```
 
-Open `http://127.0.0.1:8767`. This uses only a plain static server and cannot call the local CSV-export API, matching Pages behavior.
+Open `http://127.0.0.1:8767`. This uses a plain static server, matching Pages behavior.
 
-Data is a versioned snapshot. Updating it requires an explicit local fetch, review, commit and deployment; the hosted page does not silently refresh provider data.
+The workflow refreshes the recent 366-day release twice daily. Older days use the checked-in range index of verified final annual sources; the browser checks both raw and normalized day hashes. See [full calendar](full-calendar.md).

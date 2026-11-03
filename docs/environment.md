@@ -20,7 +20,7 @@ The installed Conda executable is used only to create/update the `.environments/
 | Python bytecode cache | `.cache/python/` |
 | Temporary files | `.cache/tmp/` |
 
-No HOME variable is changed. Existing OS/browser installations remain system prerequisites; a browser will still manage its own normal profile/cache. CSV exports are written by the local app to this repository's `outputs/` directory. Project code does not write application state outside the checkout.
+No HOME variable is changed. Existing OS/browser installations remain system prerequisites; a browser will still manage its own normal profile/cache. CSV exports are downloaded by the browser. Preparation artifacts stay in the repository’s ignored `outputs/` directory. Project code does not write application state outside the checkout.
 
 ## Portability versus exact package locks
 
@@ -36,7 +36,7 @@ Conda environments embed absolute installation prefixes. Clone on another device
 
 ## Serving
 
-`python run.py serve` dispatches into the checkout's Python interpreter, builds `dist/`, and binds only `127.0.0.1`. Its only write endpoint saves a validated observation selection to the repository’s `outputs/` directory; it rejects cross-origin requests and caller-provided paths. HTML, bundled React/visx graphics, JavaScript, CSS, map geography and observations are served from this directory. A content security policy restricts automatic asset requests to the local origin. The online map and address search use official swisstopo services. Regional ingestion is an explicit network operation with optional repository-local dependencies; ordinary build/check commands remain network-free. See [daily pipeline](regional-pipeline.md).
+`python run.py serve` dispatches into the checkout's Python interpreter, builds `dist/`, and binds only `127.0.0.1`. It is only a static development preview, with no write endpoints, export server, runtime mode or standalone-app behavior. The browser requests official map/search services and historical rainfall ranges online. The content security policy permits only the specific official providers. Regional ingestion is an explicit network operation; ordinary build/check commands remain network-free. See [daily pipeline](regional-pipeline.md).
 
 ## Optional developer dependencies
 

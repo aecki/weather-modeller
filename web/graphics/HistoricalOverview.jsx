@@ -1,3 +1,4 @@
+import { FrequencyDots } from './RainVisuals';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { AxisBottom, AxisLeft } from '@visx/axis';
@@ -12,7 +13,7 @@ const monthName = (date) =>
 const pct = (n) => (n * 100).toFixed(1);
 const frequency = (n) => (n * 100).toLocaleString('en-GB', { maximumFractionDigits: 1 });
 function HistoryChart({ width, bands }) {
-  const left = 106,
+  const left = 120,
     right = 38,
     top = 8,
     bottom = 48,
@@ -38,7 +39,7 @@ function HistoryChart({ width, bands }) {
           hideAxisLine
           hideTicks
           tickLabelProps={() => ({
-            fontSize: 10,
+            fontSize: 12,
             fill: '#475569',
             textAnchor: 'end',
             dy: 3,
@@ -50,7 +51,7 @@ function HistoryChart({ width, bands }) {
           scale={x}
           numTicks={4}
           tickFormat={(n) => `${n}%`}
-          tickLabelProps={() => ({ fontSize: 10, fill: '#64748b', textAnchor: 'middle' })}
+          tickLabelProps={() => ({ fontSize: 12, fill: '#64748b', textAnchor: 'middle' })}
         />
         {bands.map((b) => {
           const cy = y(b.label) + y.bandwidth() / 2;
@@ -97,7 +98,7 @@ function HistoryChart({ width, bands }) {
             </g>
           );
         })}
-        <text x={inner / 2} y={height - top - 5} textAnchor="middle" fontSize={10} fill="#64748b">
+        <text x={inner / 2} y={height - top - 5} textAnchor="middle" fontSize={12} fill="#64748b">
           Historical days (%)
         </text>
       </g>
@@ -213,60 +214,67 @@ export function HistoricalOverview({ cell, amount, date, status }) {
         <p role="status">{result.unavailable}</p>
       ) : (
         <>
-          <p className="historical-headline">
-            {result.dry
-              ? `Days with little or no precipitation were ${result.estimate >= 0.2 ? 'common' : 'less common'} in ${name}.`
-              : result.upperCount === 0
-                ? 'No equally wet examples in this historical comparison.'
-                : !result.interval
-                  ? 'Very few historical examples at this amount.'
-                  : result.interval[1] < 0.05
-                    ? `Unusual for ${name}.`
-                    : result.share[1] < 0.2
-                      ? `Wetter than most ${name} days.`
-                      : `Within the usual range of ${name} rainfall.`}
-          </p>
-          {result.interval ? (
-            <>
-              <p>
-                {result.dry ? (
-                  <>
-                    Days with less than 1 mm made up about{' '}
-                    <strong>{frequency(result.estimate)} out of 100</strong> historical {name} days.
-                  </>
-                ) : (
-                  <>
-                    At least this much precipitation occurred on about{' '}
-                    <strong>{frequency(result.estimate)} out of 100</strong> historical {name} days.
-                  </>
-                )}
-              </p>
-              <p className="everyday-context">
+          <div className="history-story">
+            <div className="history-copy">
+              <p className="historical-headline">
                 {result.dry
-                  ? `Think of a typical ${name}: around ${Math.round((result.estimate * result.total) / result.yearCount)} days had less than 1 mm.`
-                  : `In everyday terms, about 1 in ${Math.max(1, Math.round(1 / result.estimate))} historical ${name} days was at least this wet. This counts days, not years between storms.`}
+                  ? `Days with little or no precipitation were ${result.estimate >= 0.2 ? 'common' : 'less common'} in ${name}.`
+                  : result.upperCount === 0
+                    ? 'No equally wet examples in this historical comparison.'
+                    : !result.interval
+                      ? 'Very few historical examples at this amount.'
+                      : result.interval[1] < 0.05
+                        ? `Unusual for ${name}.`
+                        : result.share[1] < 0.2
+                          ? `Wetter than most ${name} days.`
+                          : `Within the usual range of ${name} rainfall.`}
               </p>
-              <p className="historical-range">
-                <strong>
-                  Uncertainty range (95%): {frequency(result.interval[0])}–
-                  {frequency(result.interval[1])} out of 100 days.
-                </strong>
-              </p>
-            </>
-          ) : (
-            <>
-              <p>
-                {result.lowerCount === result.upperCount
-                  ? result.lowerCount
-                  : `Between ${result.lowerCount} and ${result.upperCount}`}{' '}
-                of {result.total.toLocaleString('en-GB')} reference days{' '}
-                {result.dry ? 'had less than 1 mm' : 'were at least this wet'}. There are too few
-                examples across years for a stable frequency range.
-              </p>
-              <p>Few or no observed examples do not mean the true chance is zero.</p>
-            </>
-          )}
-          <p>
+              {result.interval ? (
+                <>
+                  <p>
+                    {result.dry ? (
+                      <>
+                        Days with less than 1 mm made up about{' '}
+                        <strong>{frequency(result.estimate)} out of 100</strong> historical {name}{' '}
+                        days.
+                      </>
+                    ) : (
+                      <>
+                        At least this much precipitation occurred on about{' '}
+                        <strong>{frequency(result.estimate)} out of 100</strong> historical {name}{' '}
+                        days.
+                      </>
+                    )}
+                  </p>
+                  <p className="everyday-context">
+                    {result.dry
+                      ? `Think of a typical ${name}: around ${Math.round((result.estimate * result.total) / result.yearCount)} days had less than 1 mm.`
+                      : `In everyday terms, about 1 in ${Math.max(1, Math.round(1 / result.estimate))} historical ${name} days was at least this wet. This counts days, not years between storms.`}
+                  </p>
+                  <p className="historical-range">
+                    <strong>
+                      Uncertainty range (95%): {frequency(result.interval[0])}–
+                      {frequency(result.interval[1])} out of 100 days.
+                    </strong>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    {result.lowerCount === result.upperCount
+                      ? result.lowerCount
+                      : `Between ${result.lowerCount} and ${result.upperCount}`}{' '}
+                    of {result.total.toLocaleString('en-GB')} reference days{' '}
+                    {result.dry ? 'had less than 1 mm' : 'were at least this wet'}. There are too
+                    few examples across years for a stable frequency range.
+                  </p>
+                  <p>Few or no observed examples do not mean the true chance is zero.</p>
+                </>
+              )}
+            </div>
+            <FrequencyDots share={result.estimate} dry={result.dry} />
+          </div>
+          <p className="history-reference">
             Compared with {result.total.toLocaleString('en-GB')} days from {result.yearCount}{' '}
             complete historical {name} records, {history.manifest.years[0]}–
             {history.manifest.years.at(-1)}.

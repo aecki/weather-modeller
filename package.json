@@ -7,8 +7,8 @@
     "node": ">=22 <23"
   },
   "scripts": {
-    "format": "prettier --write web/index.html web/style.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json web/modelling tests/*.mjs",
-    "format:check": "prettier --check web/index.html web/style.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json web/modelling tests/*.mjs",
+    "format": "prettier --write web/index.html web/style.css web/overview.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json web/modelling tests/*.mjs",
+    "format:check": "prettier --check web/index.html web/style.css web/overview.css web/app.js web/data-core.js web/graphics scripts/*.mjs tests/*.cjs tests/*.jsx config/catalog.json web/modelling tests/*.mjs",
     "test": "node tests/test_data.cjs"
   },
   "devDependencies": {

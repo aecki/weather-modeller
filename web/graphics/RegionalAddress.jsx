@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { loadRegionalRecord, areaMean, annualMaxima } from './regional-models.mjs';
-import { verifiedBuffer } from './regional-data.mjs';
+import { resolveRainDay, loadRainField } from './archive-data.mjs';
+import { WetDaysGraphic, RecordGraphic } from './RainVisuals';
 import { ModelLab } from './ModelLab';
 const fmt = (n) => n.toLocaleString('en-GB', { maximumFractionDigits: 0 });
 export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mode }) {
@@ -42,21 +43,13 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
         const day = new Date(new Date(`${date}T12:00:00Z`).getTime() - i * 86400000)
           .toISOString()
           .slice(0, 10);
-        const source = release.days.find((r) => r.date === day);
+        const source = await resolveRainDay(release, day, controller.signal);
         if (!source)
           return {
             unavailable:
               'The selected accumulation includes an unpublished day. Choose a threshold below to explore the historical model.',
           };
-        const buffer =
-          i === 0
-            ? fieldBuffer
-            : await verifiedBuffer(
-                await fetch(new URL(`data/regional/${source.path}`, document.baseURI), {
-                  signal: controller.signal,
-                }),
-                source.sha256,
-              );
+        const buffer = i === 0 ? fieldBuffer : await loadRainField(source, controller.signal);
         const mean = areaMean(buffer, release.grid, record.entry, record.cells);
         if (mean === null)
           return {
@@ -102,6 +95,19 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
               <p>fell in an average year — the same as {fmt(total)} litres on each square metre.</p>
             </article>
             <article>
+              <WetDaysGraphic
+                wet={wet}
+                yearLength={
+                  record.manifest.years.reduce(
+                    (sum, y, i) =>
+                      sum +
+                      (record.entry.years[i]
+                        ? (Date.UTC(y + 1, 0, 1) - Date.UTC(y, 0, 1)) / 86400000
+                        : 0),
+                    0,
+                  ) / years.length
+                }
+              />
               <strong>{fmt(wet)} wet days a year</strong>
               <p>
                 on average had at least 1 mm. Other days had less than 1 mm; they were not
@@ -109,6 +115,10 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
               </p>
             </article>
             <article>
+              <RecordGraphic
+                record={wettest.value}
+                selected={areaMean(fieldBuffer, release.grid, record.entry, record.cells)}
+              />
               <strong>{fmt(wettest.value)} mm in one day</strong>
               <p>
                 was the wettest regional day in this record, on{' '}

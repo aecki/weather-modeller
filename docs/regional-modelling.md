@@ -20,7 +20,7 @@ Regional Pro Mode provides the existing independently verified **GEV and Gumbel*
 
 ## Overview facts and date choice
 
-Yesterday's latest completed 06:00–06:00 UTC rainfall day is the default. Both views share the selected date, and the selector exposes the current published 90-day release, with missing days labelled. A button returns to the latest completed day. Earlier days require an explicit longer regional release; the full 1961–2025 archive supports the model and facts, not arbitrary daily field downloads through this selector.
+The latest completed 06:00–06:00 UTC rainfall day is the default. Both views share a native calendar picker, previous/next-day controls, a yesterday shortcut and historical storm shortcuts. Final annual archive days from 1961–2025 are fetched directly from the official NetCDF files as verified byte ranges. A rolling 366-day recent release bridges the annual archive to yesterday; unpublished days stay explicitly unavailable. See [full historical calendar](full-calendar.md).
 
 The overview explains the empirical daily frequency in everyday terms and displays three regional facts: average annual precipitation total, average number of days with at least 1 mm, and the wettest regional day with its actual date. These are descriptive facts over complete reference years, not climate normals, trend estimates or record claims beyond 1961–2025. They are clearly separated from the containing-cell daily amount.
 

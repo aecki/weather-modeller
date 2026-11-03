@@ -1,11 +1,11 @@
 # Architecture and development
 
-The app has a static frontend and a small Python preparation/serving toolchain with a local CSV-export endpoint. There is no database or modelling backend. The map optionally loads official swisstopo XYZ tiles, without an offline raster fallback; observations and modelling remain independent of that service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
+The online-only app has a static frontend and a small Python preparation/serving toolchain for deployment and development preview. There is no database or modelling backend. The map optionally loads official swisstopo XYZ tiles, without an offline raster fallback; observations and modelling remain independent of that service. A small esbuild step bundles React and visx; setup installs its pinned npm dependencies locally.
 
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
-- `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `server.py` serves the app and handles local exports; `checks.py` runs verification.
+- `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `checks.py` runs verification.
 - `catalog.py` validates event/station selection. `sources.py` handles cached downloads and provenance. `ingestion.py` prepares the observation snapshot. `validation.py` checks its contract before a refresh or build.
-- `exports.py` produces CSV selections from the snapshot. `storage.py` provides unique temporary files and atomic replacement for exports and source caches.
+- `exports.py` independently verifies the browser CSV format in tests. `storage.py` provides unique temporary files and atomic replacement for exports and source caches.
 - `aggregation.py` contains the river mean calculation shared by ingestion and Python tests.
 - `web/data-core.js` contains the rainfall and annual-maxima calculations shared by the frontend and Node tests.
 - `web/app.js` handles the map, event replay, charts, historical comparison and CSV export.
@@ -34,7 +34,7 @@ Exports and cache writes use unique temporary files in the destination directory
 
 ## Static hosting
 
-`python run.py build` emits a complete static Pages artifact, with browser-side CSV downloads. `serve` selects repository exports in its generated runtime config. Neither build depends on a hosted API. Relative asset/data URLs support both a domain root and a GitHub repository subpath. See [GitHub Pages](github-pages.md).
+`python run.py build` emits a complete static Pages artifact, with browser-side CSV downloads. `serve` is an ordinary static development preview with identical browser downloads. Neither build depends on a hosted API. Relative asset/data URLs support both a domain root and a GitHub repository subpath. See [GitHub Pages](github-pages.md).
 
 Graphics use visx geometry, scales, axes, grids and shapes throughout. The UI controller keeps selections in one place and passes measured values/callbacks into React graphic components. visx never creates or interpolates missing weather observations; river line paths explicitly break at gaps.
 

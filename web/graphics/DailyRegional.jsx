@@ -1,3 +1,5 @@
+import { archiveIndex, resolveRainDay, loadRainField } from './archive-data.mjs';
+import { RainAmountGraphic } from './RainVisuals';
 import { RegionalAddress } from './RegionalAddress';
 import { HistoricalOverview } from './HistoricalOverview';
 import React, { useEffect, useRef, useState } from 'react';
@@ -27,6 +29,12 @@ const dateText = (day) =>
     timeZone: 'UTC',
   });
 const timeText = (text) => new Date(text).toLocaleString('en-GB', { timeZone: 'UTC' }) + ' UTC';
+function shiftDay(day, offset) {
+  return new Date(Date.parse(`${day}T12:00:00Z`) + offset * 86400000).toISOString().slice(0, 10);
+}
+function validDate(day) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(day);
+}
 function assetURL(path) {
   if (!/^(grids\/[a-f0-9]{64}\.f32|boundary-[a-f0-9]{64}\.json)$/.test(path))
     throw new Error('Invalid daily data asset');
@@ -36,10 +44,22 @@ function assetURL(path) {
 export function DailyRegional({ mode = 'overview' }) {
   const [manifest, setManifest] = useState(null),
     [releaseError, setReleaseError] = useState('');
+  const [archive, setArchive] = useState(null),
+    [resolved, setResolved] = useState(null),
+    [dayError, setDayError] = useState('');
   const [reload, setReload] = useState(0),
     [analysisDate, setDate] = useState('');
   const expected = expectedRainDay();
   const date = analysisDate || expected;
+  const calendarInput = useRef(null);
+  useEffect(() => {
+    if (calendarInput.current && calendarInput.current.value !== date)
+      calendarInput.current.value = date;
+  }, [date]);
+  const commitCalendar = (event) => {
+    const input = event.currentTarget;
+    if (input.validity.valid && input.value) setDate(input.value);
+  };
   const [query, setQuery] = useState(''),
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
@@ -49,7 +69,6 @@ export function DailyRegional({ mode = 'overview' }) {
     [searchError, setSearchError] = useState('');
   const [result, setResult] = useState(null);
   const searchRequest = useRef(null),
-    grids = useRef(new Map()),
     boundary = useRef(null);
   useEffect(() => {
     const controller = new AbortController();
@@ -78,6 +97,9 @@ export function DailyRegional({ mode = 'overview' }) {
       )
         throw new Error('Unsupported daily data release.');
       if (controller.signal.aborted) return;
+      const historical = await archiveIndex();
+      if (controller.signal.aborted) return;
+      setArchive(historical);
       setManifest(data);
       setDate((current) => current || expectedRainDay());
     })().catch((error) => {
@@ -86,7 +108,21 @@ export function DailyRegional({ mode = 'overview' }) {
     return () => controller.abort();
   }, [reload]);
   useEffect(() => () => searchRequest.current?.abort(), []);
-  const record = manifest?.days.find((day) => day.date === date);
+  useEffect(() => {
+    if (!manifest || !validDate(date)) return;
+    const controller = new AbortController();
+    setResolved(null);
+    setDayError('');
+    resolveRainDay(manifest, date, controller.signal)
+      .then((record) => {
+        if (!controller.signal.aborted) setResolved({ date, record });
+      })
+      .catch((e) => {
+        if (!controller.signal.aborted) setDayError(e.message);
+      });
+    return () => controller.abort();
+  }, [manifest, date]);
+  const record = resolved?.date === date ? resolved.record : null;
   const resultKey =
     selected && record
       ? `${selected.id}:${selected.easting}:${selected.northing}:${record.sha256}:${manifest.boundary.sha256}`
@@ -113,15 +149,7 @@ export function DailyRegional({ mode = 'overview' }) {
           unavailable:
             'This coordinate lies outside the supported Swiss region. No regional estimate is shown.',
         };
-      let buffer = grids.current.get(record.sha256);
-      if (!buffer) {
-        buffer = await verifiedBuffer(
-          await fetch(assetURL(record.path), { signal: controller.signal }),
-          record.sha256,
-        );
-        grids.current.set(record.sha256, buffer);
-        if (grids.current.size > 8) grids.current.delete(grids.current.keys().next().value);
-      }
+      const buffer = await loadRainField(record, controller.signal);
       const cell = cellAt(manifest.grid, selected);
       const value = amountAt(buffer, manifest.grid, cell);
       return {
@@ -214,30 +242,25 @@ export function DailyRegional({ mode = 'overview' }) {
     };
   }, [query, selected]);
   const active = result?.key === resultKey ? result : null;
-  const source = record && manifest.sources[record.sourceId];
-  const dates = [];
-  if (manifest)
-    for (
-      let d = new Date(`${manifest.requestedThrough}T12:00:00Z`);
-      d.toISOString().slice(0, 10) >= manifest.requestedFrom;
-      d.setUTCDate(d.getUTCDate() - 1)
-    )
-      dates.push(d.toISOString().slice(0, 10));
+  const source = record?.source;
   return (
-    <section className="daily-regional" aria-labelledby="daily-title">
-      <p className="eyebrow">Daily regional precipitation</p>
-      <h2 id="daily-title">
+    <section
+      className={`daily-regional ${selected ? 'has-address' : ''}`}
+      aria-labelledby="daily-title"
+    >
+      <p className="eyebrow">SWITZERLAND · REAL RAINFALL, SINCE 1961</p>
+      <h1 id="daily-title">
         {mode === 'overview'
           ? date !== expected
-            ? 'How much did it rain that day?'
+            ? 'Rainfall, in perspective.'
             : new Date().getUTCHours() >= 6
-              ? 'How much did it rain yesterday?'
+              ? 'Rainfall, in perspective.'
               : 'Rainfall on the latest completed day'
           : 'Daily rainfall by address'}
-      </h2>
-      <p>
-        Observation-based estimates for the surrounding area. These include rain and snowfall water
-        equivalent; they are not measurements at individual buildings.
+      </h1>
+      <p className="daily-intro">
+        A place. A day. The rain that fell — and how it compares with the past. Explore real Swiss
+        rainfall records, one address at a time.
       </p>
       <form className="address-search" onSubmit={search}>
         <label htmlFor="daily-address">Swiss address</label>
@@ -272,6 +295,20 @@ export function DailyRegional({ mode = 'overview' }) {
               }
             }}
           />
+          <div className="calendar-field">
+            <label htmlFor="daily-date">Calendar day</label>
+            <input
+              id="daily-date"
+              type="date"
+              ref={calendarInput}
+              defaultValue={date}
+              min={archive?.from || '1961-01-01'}
+              max={expected}
+              onInput={commitCalendar}
+              onChange={commitCalendar}
+              onBlur={commitCalendar}
+            />
+          </div>
           <button type="submit" disabled={searching}>
             {searching ? 'Searching…' : 'Search addresses'}
           </button>
@@ -315,22 +352,31 @@ export function DailyRegional({ mode = 'overview' }) {
       ) : (
         <>
           <div className="daily-date">
-            <label htmlFor="daily-date">Rainfall day</label>
-            <select id="daily-date" value={date} onChange={(event) => setDate(event.target.value)}>
-              {dates.map((day) => (
-                <option key={day} value={day}>
-                  {dateText(day)}
-                  {manifest.unavailableDates.includes(day) ? ' — unavailable' : ''}
-                </option>
-              ))}
-            </select>
             <button
-              className="text-button"
-              onClick={() => setDate(expected)}
-              disabled={date === expected}
+              onClick={() => setDate(shiftDay(date, -1))}
+              disabled={date <= (archive?.from || '1961-01-01')}
             >
-              Latest completed day
+              ← Previous day
             </button>
+            <span>{dateText(date)}</span>
+            <button onClick={() => setDate(shiftDay(date, 1))} disabled={date >= expected}>
+              Next day →
+            </button>
+            <button onClick={() => setDate(expected)} disabled={date === expected}>
+              Yesterday
+            </button>
+          </div>
+          <div className="event-shortcuts" aria-label="Explore historical rainfall days">
+            <span>Jump into history</span>
+            {[
+              ['2005-08-22', 'Alpine floods · 2005'],
+              ['2021-07-13', 'Wet summer · 2021'],
+              ['2024-06-29', 'Southern storms · 2024'],
+            ].map(([day, label]) => (
+              <button key={day} onClick={() => setDate(day)}>
+                {label} <span aria-hidden="true">↗</span>
+              </button>
+            ))}
           </div>
           <p className="daily-freshness">
             Latest available rainfall day: <strong>{dateText(manifest.latestAvailable)}</strong>.{' '}
@@ -340,14 +386,32 @@ export function DailyRegional({ mode = 'overview' }) {
             Last successful refresh: {timeText(manifest.generatedAt)}.
           </p>
           {selected && <h3>{selected.label}</h3>}
-          {!record ? (
+          {dayError ? (
+            <p role="status">{dayError}</p>
+          ) : !resolved ? (
+            <p role="status">Finding this rainfall day…</p>
+          ) : !record ? (
             <p role="status">
               No published field is available for {dateText(date)} yet. We will show its estimate
               here when it becomes available. Choose an earlier available day above to explore the
               history.
             </p>
           ) : !selected ? (
-            <p>Select an address to see its regional estimate.</p>
+            <div className="overview-welcome">
+              <span className="welcome-mark" aria-hidden="true">
+                ↗
+              </span>
+              <h3>What did the rain look like where you were?</h3>
+              <p>
+                Find an address above, then pick any calendar day back to 1961. Compare a memorable
+                storm, a birthday or yesterday with decades of real records.
+              </p>
+              <div className="welcome-points">
+                <span>65 years of history</span>
+                <span>Every Swiss address</span>
+                <span>Source: MeteoSwiss</span>
+              </div>
+            </div>
           ) : !active ? (
             <p role="status">Loading regional estimate…</p>
           ) : active.error || active.unavailable ? (
@@ -357,19 +421,25 @@ export function DailyRegional({ mode = 'overview' }) {
               <span className={`regional-status ${record.status}`}>
                 {statusLabels[record.status]}
               </span>
-              <strong className="daily-amount">
-                {number(active.value)} <span>mm</span>
-              </strong>
-              <p>
-                {number(active.value)} litres per square metre · rainfall day {dateText(date)}
-              </p>
-              <p>
-                {record.status === 'preliminary'
-                  ? 'This preliminary regional estimate can change after more measurements and quality checks become available.'
-                  : record.status === 'consolidated-monthly'
-                    ? 'This monthly analysis is consolidated but can change during annual reprocessing.'
-                    : 'This value comes from the annual archive analysis.'}
-              </p>
+              <div className="rain-hero">
+                <div className="rain-hero-number">
+                  <span className="result-kicker">RAIN THAT FELL · {dateText(date)}</span>
+                  <strong className="daily-amount">
+                    {number(active.value)} <span>mm</span>
+                  </strong>
+                  <p>
+                    {number(active.value)} litres per square metre · rainfall day {dateText(date)}
+                  </p>
+                  <p>
+                    {record.status === 'preliminary'
+                      ? 'This preliminary regional estimate can change after more measurements and quality checks become available.'
+                      : record.status === 'consolidated-monthly'
+                        ? 'This monthly analysis is consolidated but can change during annual reprocessing.'
+                        : 'This value comes from the annual archive analysis.'}
+                  </p>
+                </div>
+                <RainAmountGraphic amount={active.value} />
+              </div>
               {active.coverage.kind === 'border' && (
                 <p>
                   This coordinate is close to the Swiss boundary. The original coordinate is used
@@ -413,7 +483,11 @@ export function DailyRegional({ mode = 'overview' }) {
                   {source.providerUpdatedAt ? timeText(source.providerUpdatedAt) : 'Not supplied'}
                 </dd>
                 <dt>Verified for this release</dt>
-                <dd>{timeText(source.verifiedAt)}</dd>
+                <dd>
+                  {source.verifiedAt
+                    ? timeText(source.verifiedAt)
+                    : 'Verified against the pinned historical source'}
+                </dd>
                 <dt>Original data</dt>
                 <dd>
                   <a href={source.url} target="_blank" rel="noreferrer">

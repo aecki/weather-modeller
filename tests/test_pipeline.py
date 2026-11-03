@@ -114,56 +114,5 @@ class ExportTests(unittest.TestCase):
             selection_csv(snapshot, {"event": "../../bad", "station": "s", "river": "r", "days": 3})
 
 
-class LocalServerTests(unittest.TestCase):
-    def test_exports_stay_in_repository_and_reject_cross_origin(self):
-        import tempfile
-        import threading
-        import urllib.error
-        import urllib.request
-        from functools import partial
-        from http.server import ThreadingHTTPServer
-
-        from weather_modeller.server import LocalAppHandler
-
-        cache = ROOT / ".cache" / "tmp"
-        cache.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(dir=cache) as temporary:
-            root = Path(temporary)
-            (root / "data/processed").mkdir(parents=True)
-            (root / "data/processed/observations.json").write_bytes(
-                (ROOT / "data/processed/observations.json").read_bytes()
-            )
-            server = ThreadingHTTPServer(("127.0.0.1", 0), partial(LocalAppHandler, root=root))
-            worker = threading.Thread(target=server.serve_forever, daemon=True)
-            worker.start()
-            url = f"http://127.0.0.1:{server.server_port}"
-            selection = json.dumps(
-                {"event": "2005", "station": "MER", "river": "2135", "days": 3}
-            ).encode()
-            try:
-                config = json.load(urllib.request.urlopen(url + "/runtime-config.json"))
-                self.assertEqual(config["exportMode"], "repository")
-                request = urllib.request.Request(
-                    url + "/api/exports",
-                    data=selection,
-                    headers={"Content-Type": "application/json", "Origin": url},
-                )
-                result = json.load(urllib.request.urlopen(request))
-                self.assertTrue((root / result["path"]).is_file())
-                self.assertEqual(Path(result["path"]).parent.as_posix(), "outputs")
-                request = urllib.request.Request(
-                    url + "/api/exports",
-                    data=selection,
-                    headers={"Content-Type": "application/json", "Origin": "https://example.com"},
-                )
-                with self.assertRaises(urllib.error.HTTPError) as error:
-                    urllib.request.urlopen(request)
-                self.assertEqual(error.exception.code, 403)
-            finally:
-                server.shutdown()
-                server.server_close()
-                worker.join()
-
-
 if __name__ == "__main__":
     unittest.main()

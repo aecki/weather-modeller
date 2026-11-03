@@ -12,7 +12,7 @@
 
 - Product name: aecki’s catastrophe lab. Keep repository/environment identifier `weather-modeller`.
 - Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or CDN dependencies. Official swisstopo XYZ tiles are authorized for online map detail; the product map is online-only; builds and tests remain network-free.
-- Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, local serving with repository exports. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
+- Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, static development preview with browser downloads. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
 
 - The Model lab uses stationary annual-maxima GEV/Gumbel fits, with xi = -SciPy c. Read docs/modelling.md before altering the mathematics or confidence bands. Preserve worker cancellation, bootstrap failures, infinite bounds and model/observation separation.
 - Verify mathematical changes against the versioned lmoments3/SciPy real-data references. Optional requirements-science.txt is only for fixture generation; do not add a scientific Python runtime dependency to the hosted site.
@@ -24,3 +24,5 @@
 - Historical regional summaries and year-bootstrap overview follow docs/regional-history.md. Preserve completeness, same-month comparisons, threshold bounds, sparse-tail guards, selected-year exclusion and immutable artifact/manifest hashes. Keep all station models separate. The bundled offline map was explicitly removed by the user; preserve development tools.
 
 - Regional address models follow docs/regional-modelling.md: fixed ≥400-cell Swiss footprints, complete daily area means before 1/3/5-day maxima, no year-crossing windows, GEV/Gumbel only. Keep area-average thresholds separate from containing-cell daily values and all station analyses. Preserve pinned reference hashes and the independent regional fixtures.
+
+- The full calendar uses docs/full-calendar.md. Keep the pinned official raw byte-range index, per-day raw/normalized SHA-256, 206-only requests, axes/fill rules and 366-day recent bridge. Never fall back to full-year browser downloads or fake unavailable dates. The standalone app, local export API and runtime switch have been removed; keep only static development preview and build/data tools.

@@ -17,12 +17,12 @@ REQUIRED_ASSETS = (
     "index.html",
     "favicon.svg",
     "style.css",
+    "overview.css",
     "app.js",
     "data-core.js",
     "graphics.js",
     "model-worker.js",
     "third-party-notices.txt",
-    "runtime-config.json",
     "data/observations.json",
     "data/provenance.json",
     "data/regional/manifest.json",
@@ -44,15 +44,13 @@ def version_entry_assets(destination: Path) -> None:
     """Keep a cached page from mixing scripts and styles from different deployments."""
     entry = destination / "index.html"
     html = entry.read_text(encoding="utf-8")
-    for name in ("style.css", "graphics.js", "data-core.js", "app.js"):
+    for name in ("style.css", "overview.css", "graphics.js", "data-core.js", "app.js"):
         digest = hashlib.sha256((destination / name).read_bytes()).hexdigest()[:16]
         html = html.replace(f'"{name}"', f'"{name}?v={digest}"')
     entry.write_text(html, encoding="utf-8")
 
 
-def build(root: Path, *, export_mode: str = "download") -> Path:
-    if export_mode not in ("download", "repository"):
-        raise ValueError("Unsupported export mode")
+def build(root: Path) -> Path:
     root = Path(root)
     source, data, output = root / "web", root / "data/processed", root / "dist"
     snapshot = json.loads((data / "observations.json").read_text(encoding="utf-8"))
@@ -79,10 +77,12 @@ def build(root: Path, *, export_mode: str = "download") -> Path:
         staged, previous = Path(directory) / "dist", Path(directory) / "previous"
         shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics", "modelling"))
         shutil.copytree(data, staged / "data")
+        reference = root / "data/reference/rainfall-archive"
+        if reference.exists():
+            shutil.copytree(reference, staged / "data/rainfall-archive")
         if not (staged / "data/regional/manifest.json").exists():
             write_json(staged / "data/regional/manifest.json", {"schemaVersion": 1, "days": []})
         compile_frontend(root, staged)
-        write_json(staged / "runtime-config.json", {"exportMode": export_mode})
         (staged / ".nojekyll").touch()
         for asset in REQUIRED_ASSETS:
             if not (staged / asset).is_file():

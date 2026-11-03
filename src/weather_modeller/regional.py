@@ -283,7 +283,7 @@ def promote(staged, output):
         raise
 
 
-def fetch_regional(root, *, days=90, through=None):
+def fetch_regional(root, *, days=366, through=None):
     root = Path(root)
     if not 1 <= days <= 366:
         raise ValueError("Regional release must contain 1–366 requested days")

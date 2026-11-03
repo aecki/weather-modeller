@@ -99,7 +99,7 @@ jobs:
         run: python run.py restore-regional-models
       - name: Prepare a complete daily regional release
         shell: bash
-        run: python run.py fetch-regional --days 90
+        run: python run.py fetch-regional --days 366
       - name: Test and build the static site
         shell: bash
         run: python run.py check

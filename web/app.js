@@ -17,7 +17,6 @@ let data,
   river,
   days = 1,
   cursor = 0,
-  runtime = { exportMode: 'download' },
   mapResetCount = 0,
   playing = null,
   dates = [],
@@ -196,33 +195,21 @@ function riverChart() {
 async function exportSelection() {
   const button = $('export');
   button.disabled = true;
-  $('export-status').textContent =
-    runtime.exportMode === 'repository' ? 'Saving in repository…' : 'Preparing download…';
+  $('export-status').textContent = 'Preparing download…';
   try {
-    if (runtime.exportMode !== 'repository') {
-      const result = DataCore.selectionCSV(data, {
-        event: event.id,
-        station: station.id,
-        river: river.id,
-        days,
-      });
-      const blob = new Blob(['\uFEFF' + result.content], { type: 'text/csv;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = result.filename;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-      $('export-status').textContent = 'CSV download prepared from the selected observations.';
-      return;
-    }
-    const response = await fetch('api/exports', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event: event.id, station: station.id, river: river.id, days }),
+    const result = DataCore.selectionCSV(data, {
+      event: event.id,
+      station: station.id,
+      river: river.id,
+      days,
     });
-    const result = await response.json();
-    if (!response.ok) throw Error(result.error || 'Export failed');
-    $('export-status').textContent = 'Saved to ' + result.path;
+    const blob = new Blob(['\uFEFF' + result.content], { type: 'text/csv;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = result.filename;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    $('export-status').textContent = 'CSV download prepared from the selected observations.';
   } catch (error) {
     $('export-status').textContent = 'Could not save selection: ' + error.message;
   } finally {
@@ -263,14 +250,12 @@ function applyMode() {
 window.addEventListener('hashchange', applyMode);
 async function init() {
   try {
-    const urls = ['data/observations.json', 'runtime-config.json'];
+    const urls = ['data/observations.json'];
     const responses = await Promise.all(urls.map((url) => fetch(url)));
     for (const res of responses) if (!res.ok) throw Error('HTTP ' + res.status);
-    const [observations, config] = await Promise.all(responses.map((res) => res.json()));
+    const [observations] = await Promise.all(responses.map((res) => res.json()));
     data = observations;
-    runtime = config;
-    $('export').textContent =
-      runtime.exportMode === 'repository' ? '↓ Save CSV in repository' : '↓ Download selection CSV';
+    $('export').textContent = '↓ Download selection CSV';
     station = data.stations.find((s) => s.id === 'MER') || data.stations[0];
     river = data.rivers.find((r) => r.id === '2135') || data.rivers[0];
     $('events').innerHTML = data.events

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self' https://api3.geo.admin.ch; worker-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self' https://api3.geo.admin.ch https://data.geo.admin.ch; worker-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <meta
       name="description"
@@ -14,6 +14,7 @@
     <title>aecki’s catastrophe lab</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="overview.css" />
     <script defer src="graphics.js"></script>
     <script defer src="data-core.js"></script>
     <script defer src="app.js"></script>
@@ -48,7 +49,10 @@
       </aside>
       <main id="explorer">
         <header class="topbar">
-          <a class="overview-brand" href="#overview">aecki’s catastrophe lab</a>
+          <a class="overview-brand" href="#overview"
+            ><span class="brand-symbol" aria-hidden="true">◒</span
+            ><span>aecki’s <b>catastrophe lab</b></span></a
+          >
           <nav class="mode-switch" aria-label="Display mode">
             <a href="#overview" id="overview-mode" aria-current="page">Overview</a>
             <a href="#pro" id="pro-mode">Pro Mode</a>
@@ -78,7 +82,7 @@
                 <p id="event-dates"></p>
               </div>
               <div class="export-actions">
-                <button id="export" class="outline-button">↓ Save CSV in repository</button>
+                <button id="export" class="outline-button">↓ Download selection CSV</button>
                 <p id="export-status" role="status"></p>
               </div>
             </section>

@@ -1,0 +1,48 @@
+{
+  "date": "2005-08-22",
+  "source": {
+    "year": 2005,
+    "product": "RhiresD",
+    "version": "v2.0",
+    "sha256": "c62e37628e08a285fae35b26aaf5f105faf95eb1e3627230804827d26d9f2938",
+    "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/archive-ch/ogd-surface-derived-grid-archive.rhiresd_ch01h.swiss.lv95_20050101000000_20051231000000.nc",
+    "providerUpdatedAt": "2026-03-11T09:16:33.497845Z",
+    "verifiedAt": "2026-11-03T11:59:47.773654+00:00",
+    "retrievedAt": null,
+    "origin": "existing-audit-cache"
+  },
+  "archive": {
+    "schemaVersion": 1,
+    "year": 2005,
+    "source": {
+      "year": 2005,
+      "product": "RhiresD",
+      "version": "v2.0",
+      "sha256": "c62e37628e08a285fae35b26aaf5f105faf95eb1e3627230804827d26d9f2938",
+      "url": "https://data.geo.admin.ch/ch.meteoschweiz.ogd-surface-derived-grid/archive-ch/ogd-surface-derived-grid-archive.rhiresd_ch01h.swiss.lv95_20050101000000_20051231000000.nc",
+      "providerUpdatedAt": "2026-03-11T09:16:33.497845Z",
+      "verifiedAt": "2026-11-03T11:59:47.773654+00:00",
+      "retrievedAt": null,
+      "origin": "existing-audit-cache"
+    },
+    "version": "v2.0",
+    "grid": {
+      "crs": "EPSG:2056",
+      "width": 370,
+      "height": 265,
+      "west": 2474000,
+      "north": 1324000,
+      "resolution": 1000,
+      "encoding": "float32-le",
+      "order": "north-to-south rows, west-to-east columns",
+      "missing": "NaN"
+    },
+    "length": 392200,
+    "flipNorth": true,
+    "flipEast": false,
+    "fillValue": -999.989990234375,
+    "offset": 91428782,
+    "rawSha256": "c297037b2f9354e0bb65f0532ad828126673983a2208eb5b2f65801a3c85aeb1"
+  },
+  "sha256": "1284ac13b0c4ed7d35ae58fe6dbece917cb6a159d62b51ed17bbd89f137e621a"
+}

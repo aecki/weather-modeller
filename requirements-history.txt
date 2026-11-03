@@ -1,3 +1,4 @@
 # Explicit national reference preparation only; not needed by daily deployment.
 -r requirements-regional.txt
 shapely==2.1.2
+h5py==3.15.1

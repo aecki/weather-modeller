@@ -5,13 +5,12 @@ import os
 import subprocess
 import sys
 from functools import partial
-from http.server import ThreadingHTTPServer
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from .build import build
 from .checks import check
 from .project import project_root
-from .server import LocalAppHandler
 
 
 def main():
@@ -39,7 +38,7 @@ def main():
         "fetch-regional",
         help="Refresh the daily regional release (requires optional GIS tools and internet)",
     )
-    regional.add_argument("--days", type=int, default=90)
+    regional.add_argument("--days", type=int, default=366)
     regional.add_argument(
         "--through",
         help="Last rainfall-day label, YYYY-MM-DD (default latest complete UTC rainfall day)",
@@ -64,7 +63,7 @@ def main():
     commands.add_parser(
         "restore-regional-models", help="Restore the pinned regional modelling reference"
     )
-    serve = commands.add_parser("serve", help="Build and serve on localhost; no external services")
+    serve = commands.add_parser("serve", help="Build and serve a static development preview")
     serve.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
     root = project_root()
@@ -126,8 +125,8 @@ def main():
 
             quality(root)
         elif args.command == "serve":
-            build(root, export_mode="repository")
-            handler = partial(LocalAppHandler, root=root)
+            build(root)
+            handler = partial(SimpleHTTPRequestHandler, directory=str(root / "dist"))
             with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
                 print(
                     f"aecki’s catastrophe lab: http://127.0.0.1:{args.port}\nPress Ctrl+C to stop.",
