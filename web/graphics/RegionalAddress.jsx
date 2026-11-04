@@ -75,7 +75,7 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
         {error} <button onClick={() => setRetry(retry + 1)}>Retry regional history</button>
       </p>
     );
-  if (!record) return <p role="status">Reading the real rainfall history around this address…</p>;
+  if (!record) return <p role="status">Loading regional rainfall history…</p>;
   const total = years.reduce((a, r) => a + r[0], 0) / years.length;
   const wet = years.reduce((a, r) => a + r[1], 0) / years.length;
   const wettest = annualMaxima(record, 1).sort((a, b) => b.value - a.value)[0];
@@ -83,7 +83,7 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
   return (
     <section className="regional-address" aria-label="Selected address rainfall history">
       <div className="overview-only">
-        <h3>A little rainfall perspective</h3>
+        <h3>Rainfall in the surrounding region</h3>
         <p>
           In the surrounding region, based on {years.length} complete years from{' '}
           {record.manifest.years[0]}–{record.manifest.years.at(-1)}:
@@ -92,7 +92,7 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
           <div className="rain-facts">
             <article>
               <strong>{fmt(total)} mm</strong>
-              <p>fell in an average year — the same as {fmt(total)} litres on each square metre.</p>
+              <p>average annual rainfall, equivalent to {fmt(total)} litres per square metre.</p>
             </article>
             <article>
               <WetDaysGraphic

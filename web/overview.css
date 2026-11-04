@@ -645,3 +645,24 @@ body[data-mode='pro'] .model-lab {
     font-size: 30px;
   }
 }
+
+/* Keep controls visible and explanatory text legible. */
+.address-search input:focus-visible,
+.daily-regional button:focus-visible,
+.daily-regional summary:focus-visible {
+  outline: 2px solid var(--story-green);
+  outline-offset: 4px;
+}
+.rain-hero p {
+  font-size: 14px;
+}
+.result-kicker,
+.regional-status {
+  font-size: 12px;
+}
+.overview-welcome {
+  padding: 28px 32px;
+}
+.welcome-mark {
+  display: none;
+}

@@ -248,8 +248,8 @@ export function HistoricalOverview({ cell, amount, date, status }) {
                   </p>
                   <p className="everyday-context">
                     {result.dry
-                      ? `Think of a typical ${name}: around ${Math.round((result.estimate * result.total) / result.yearCount)} days had less than 1 mm.`
-                      : `In everyday terms, about 1 in ${Math.max(1, Math.round(1 / result.estimate))} historical ${name} days was at least this wet. This counts days, not years between storms.`}
+                      ? `An average ${name} had around ${Math.round((result.estimate * result.total) / result.yearCount)} days with less than 1 mm.`
+                      : `About 1 in ${Math.max(1, Math.round(1 / result.estimate))} historical ${name} days was at least this wet. This counts days, not years between storms.`}
                   </p>
                   <p className="historical-range">
                     <strong>
@@ -287,8 +287,8 @@ export function HistoricalOverview({ cell, amount, date, status }) {
             }
           </ParentSize>
           <p className="history-caption">
-            Lines show supported 95% year-resampling ranges. Categories with too few examples have
-            no line.
+            The bars show how often each rainfall category occurred. Thin lines show uncertainty
+            estimated by resampling historical years; categories with too few examples have no line.
           </p>
           <p className="history-limits">
             The range reflects limited historical years and the resolution of the comparison

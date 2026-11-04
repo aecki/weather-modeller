@@ -250,17 +250,11 @@ export function DailyRegional({ mode = 'overview' }) {
     >
       <p className="eyebrow">SWITZERLAND · REAL RAINFALL, SINCE 1961</p>
       <h1 id="daily-title">
-        {mode === 'overview'
-          ? date !== expected
-            ? 'Rainfall, in perspective.'
-            : new Date().getUTCHours() >= 6
-              ? 'Rainfall, in perspective.'
-              : 'Rainfall on the latest completed day'
-          : 'Daily rainfall by address'}
+        {mode === 'overview' ? 'How much did it really rain?' : 'Daily rainfall by address'}
       </h1>
       <p className="daily-intro">
-        A place. A day. The rain that fell — and how it compares with the past. Explore real Swiss
-        rainfall records, one address at a time.
+        Choose a Swiss address and a date to see the estimated rainfall and compare it with records
+        since 1961. Estimates describe the surrounding area, not measurements at the building.
       </p>
       <form className="address-search" onSubmit={search}>
         <label htmlFor="daily-address">Swiss address</label>
@@ -314,8 +308,7 @@ export function DailyRegional({ mode = 'overview' }) {
           </button>
         </div>
         <small>
-          Suggestions are fetched from swisstopo as you type. We do not save your searches. Choose
-          the matching address; nearby matches may also appear.
+          Select a matching address from the swisstopo suggestions. Searches are not saved.
         </small>
       </form>
       {searchError && <p role="status">{searchError}</p>}
@@ -365,9 +358,17 @@ export function DailyRegional({ mode = 'overview' }) {
             <button onClick={() => setDate(expected)} disabled={date === expected}>
               Yesterday
             </button>
+            {manifest.latestAvailable < expected && (
+              <button
+                onClick={() => setDate(manifest.latestAvailable)}
+                disabled={date === manifest.latestAvailable}
+              >
+                Latest available day
+              </button>
+            )}
           </div>
           <div className="event-shortcuts" aria-label="Explore historical rainfall days">
-            <span>Jump into history</span>
+            <span>Historical rainfall events</span>
             {[
               ['2005-08-22', 'Alpine floods · 2005'],
               ['2021-07-13', 'Wet summer · 2021'],
@@ -381,7 +382,7 @@ export function DailyRegional({ mode = 'overview' }) {
           <p className="daily-freshness">
             Latest available rainfall day: <strong>{dateText(manifest.latestAvailable)}</strong>.{' '}
             {manifest.latestAvailable < expected && (
-              <>The completed rainfall day {dateText(expected)} is not in this release yet. </>
+              <>Data for {dateText(expected)} has not been published in this release yet. </>
             )}
             Last successful refresh: {timeText(manifest.generatedAt)}.
           </p>
@@ -392,19 +393,19 @@ export function DailyRegional({ mode = 'overview' }) {
             <p role="status">Finding this rainfall day…</p>
           ) : !record ? (
             <p role="status">
-              No published field is available for {dateText(date)} yet. We will show its estimate
-              here when it becomes available. Choose an earlier available day above to explore the
-              history.
+              Rainfall data for {dateText(date)} is not available in this release. Choose another
+              calendar day or use the latest available data.
             </p>
           ) : !selected ? (
             <div className="overview-welcome">
               <span className="welcome-mark" aria-hidden="true">
                 ↗
               </span>
-              <h3>What did the rain look like where you were?</h3>
+              <h3>Choose an address to see the rainfall</h3>
               <p>
-                Find an address above, then pick any calendar day back to 1961. Compare a memorable
-                storm, a birthday or yesterday with decades of real records.
+                The result shows the estimated daily amount, how often similar rainfall occurred in
+                the same month, and the uncertainty in that comparison. Pro Mode provides
+                return-period models and a separate station explorer.
               </p>
               <div className="welcome-points">
                 <span>65 years of history</span>
@@ -423,7 +424,7 @@ export function DailyRegional({ mode = 'overview' }) {
               </span>
               <div className="rain-hero">
                 <div className="rain-hero-number">
-                  <span className="result-kicker">RAIN THAT FELL · {dateText(date)}</span>
+                  <span className="result-kicker">ESTIMATED RAINFALL · {dateText(date)}</span>
                   <strong className="daily-amount">
                     {number(active.value)} <span>mm</span>
                   </strong>
