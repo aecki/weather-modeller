@@ -120,3 +120,19 @@ The overview compares each supported address with real same-month regional days 
 There is no bundled offline map or separate offline distribution. Conda, local preview and network-free tests are retained for development and reproducibility. Visitors use the online site.
 
 Address-selected Pro Mode fits regional-average rainfall extremes from the real 1961–2025 archive, with GEV/Gumbel, 1/3/5-day windows and sampling ranges. Station analysis remains separate with all four models. Overview and Pro Mode share a selectable rainfall day; Overview adds clear historical context and regional rainfall facts. See [regional model methods](docs/regional-modelling.md).
+
+### Monthly rainfall, full station access and lake levels
+
+Overview includes monthly totals, historical variability, yearly records and the five largest non-overlapping rainfall windows. Pro Mode → **All stations & gauges** exposes every inventoried daily precipitation series in the automatic-weather, automatic-precipitation and manual networks, plus the complete FOEN gauge directory. Annual-only mountain totalisers are listed separately. The station-map explorer and all four models remain available.
+
+The lake section shows measured levels for 25 selected lakes against their usual seasonal range. Where enough comparable historical years exist, it shows an experimental historical recovery-time comparison with sampling uncertainty. It withholds dates where evidence is insufficient. This is not an operational, weather-driven lake forecast. [Definitions, sources and limits](docs/overview-water-network.md).
+
+Explicit preparation uses the repository environment:
+
+```sh
+conda activate ./.environments/weather-modeller
+python scripts/prepare_station_directory.py
+python scripts/prepare_water.py
+```
+
+The Pages workflow refreshes station metadata and FOEN lake observations. Local serving, checks and builds do not fetch data. The compact 1961–2025 monthly reference is versioned in the repository; its optional regeneration uses `scripts/prepare_overview_history.py` and the previously audited local annual sources.

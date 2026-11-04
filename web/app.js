@@ -34,6 +34,11 @@ function eventIndices(e) {
   return [data.dates.indexOf(e.start), data.dates.indexOf(e.end)];
 }
 function eventPeak(e, s = station) {
+  if (e.extremeDay) {
+    const index = data.dates.indexOf(e.extremeDay);
+    const value = series(s)[index];
+    return Number.isFinite(value) ? { index, value } : null;
+  }
   const [a, b] = eventIndices(e);
   return DataCore.peak(series(s), a, b);
 }
@@ -66,7 +71,28 @@ function setEvent(id) {
 function setStation(id) {
   station = data.stations.find((s) => s.id === id);
   $('station').value = id;
-  updateAnalysis();
+  showExtremes();
+}
+function showExtremes() {
+  const extremes = LabGraphics.largestWindows(data.dates, station.values, days);
+  data.events = extremes.map((row) => ({
+    id: `extreme-${row.date}`,
+    name: dateLabel(row.date, true),
+    subtitle: `${fmt(row.value)} mm / ${days} day(s)`,
+    extremeDay: row.date,
+    start: data.dates[Math.max(0, row.index - Math.max(5, days - 1))],
+    end: data.dates[Math.min(data.dates.length - 1, row.index + 5)],
+  }));
+  $('events').replaceChildren(
+    ...data.events.map((entry, i) => {
+      const button = document.createElement('button');
+      button.className = 'event';
+      button.dataset.id = entry.id;
+      button.textContent = `${i + 1}. ${entry.name} · ${entry.subtitle}`;
+      return button;
+    }),
+  );
+  if (data.events.length) setEvent(data.events[0].id);
 }
 function updateAnalysis() {
   $('export-status').textContent = '';
@@ -112,7 +138,7 @@ function updateAnalysis() {
     station,
     stations: data.stations,
     days,
-    event,
+    event: event.extremeDay ? { ...event, start: event.extremeDay } : event,
     eventPeak: peak,
     historyStart: data.historyStart,
     historyEnd: data.historyEnd,
@@ -128,7 +154,7 @@ function setDuration(value) {
     button.classList.toggle('active', active);
     button.setAttribute('aria-pressed', active);
   });
-  updateAnalysis();
+  showExtremes();
 }
 function updateCursor() {
   const date = dates[cursor],
@@ -181,7 +207,9 @@ function rainChart() {
 }
 function riverChart() {
   const byDate = new Map(
-    (river.events[event.id] || []).map((row) => [row.timestamp.slice(0, 10), row]),
+    Object.values(river.events)
+      .flat()
+      .map((row) => [row.timestamp.slice(0, 10), row]),
   );
   LabGraphics.river({
     dates,
@@ -217,8 +245,11 @@ async function exportSelection() {
   }
 }
 let proStarted = false;
+let networkStarted = false;
 function applyMode() {
   const pro = [
+    '#network',
+    '#network-comparison',
     '#pro',
     '#pro-daily',
     '#station-lab',
@@ -235,7 +266,15 @@ function applyMode() {
     '#explorer',
   ].includes(location.hash);
   document.body.dataset.mode = pro ? 'pro' : 'overview';
-  document.body.dataset.analysis = stationMode ? 'station' : 'address';
+  document.body.dataset.analysis = ['#network', '#network-comparison'].includes(location.hash)
+    ? 'network'
+    : stationMode
+      ? 'station'
+      : 'address';
+  if (['#network', '#network-comparison'].includes(location.hash) && !networkStarted) {
+    networkStarted = true;
+    LabGraphics.network();
+  }
   $('overview-mode').toggleAttribute('aria-current', !pro);
   $('pro-mode').toggleAttribute('aria-current', pro);
   (pro ? $('pro-mode') : $('overview-mode')).setAttribute('aria-current', 'page');
@@ -258,12 +297,6 @@ async function init() {
     $('export').textContent = '↓ Download selection CSV';
     station = data.stations.find((s) => s.id === 'MER') || data.stations[0];
     river = data.rivers.find((r) => r.id === '2135') || data.rivers[0];
-    $('events').innerHTML = data.events
-      .map(
-        (e) =>
-          `<button class="event" data-id="${e.id}"><span class="year">${e.id}</span><span class="ename">${e.name}<small>${e.subtitle}</small></span><span class="arrow">↗</span></button>`,
-      )
-      .join('');
     $('station').innerHTML = [...data.stations]
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((s) => `<option value="${s.id}">${s.name} · ${s.id}</option>`)
@@ -321,7 +354,7 @@ async function init() {
       new Date(data.generatedAt).toLocaleDateString('en-GB', { timeZone: 'Europe/Zurich' });
     $('loading').hidden = true;
     $('content').hidden = false;
-    setEvent(data.events[0].id);
+    showExtremes();
     if (
       ['#station-lab', '#how-it-works', '#model-lab', '#model-comparison'].includes(location.hash)
     )

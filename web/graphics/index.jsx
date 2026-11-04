@@ -6,6 +6,8 @@ import { HorizontalBars, ObservationChart } from './TimeSeries';
 import { WindowExplanation } from './WindowExplanation';
 import { DailyRegional } from './DailyRegional';
 import { ModelLab } from './ModelLab';
+import { StationNetwork } from './StationNetwork';
+import { largestWindows } from './station-data.mjs';
 
 const roots = new WeakMap();
 function mount(id, Component, props) {
@@ -26,6 +28,12 @@ function mount(id, Component, props) {
     );
 }
 window.LabGraphics = {
+  largestWindows,
+  network: () => {
+    const element = document.getElementById('station-network');
+    if (!roots.has(element)) roots.set(element, createRoot(element));
+    roots.get(element).render(<StationNetwork />);
+  },
   daily: (props) => {
     const element = document.getElementById('regional-daily');
     if (!roots.has(element)) roots.set(element, createRoot(element));

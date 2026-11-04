@@ -666,3 +666,197 @@ body[data-mode='pro'] .model-lab {
 .welcome-mark {
   display: none;
 }
+
+/* Clear summaries and full-network research controls. */
+.climate-overview,
+.lake-overview,
+.historical-extremes,
+.hydro-network {
+  background: white;
+  border: 1px solid var(--story-line);
+  border-radius: 14px;
+  padding: 28px;
+  margin: 24px 0;
+}
+.climate-overview h2,
+.lake-overview h2,
+.station-network h1 {
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+.climate-overview p,
+.lake-overview p,
+.historical-extremes p,
+.station-network p {
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: 850px;
+}
+.chart-caption {
+  font-size: 13px !important;
+  color: #526963;
+}
+.section-heading,
+.network-controls {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.section-heading {
+  align-items: center;
+  justify-content: space-between;
+}
+.section-heading h3 {
+  margin: 0;
+}
+.network-controls label,
+.climate-overview > label,
+.lake-overview > label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+.network-controls input,
+.network-controls select,
+.station-network select,
+.station-network input,
+.climate-overview select,
+.lake-overview select,
+.historical-extremes select {
+  max-width: 100%;
+  min-height: 44px;
+  border: 1px solid #b9cac2;
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: white;
+  color: #183b3b;
+  font-size: 15px;
+}
+.network-controls > label {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.network-controls button {
+  min-height: 44px;
+  padding: 10px 16px;
+}
+.extreme-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.extreme-buttons button {
+  text-align: left;
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid #cad9d1;
+  border-radius: 8px;
+  color: #234e45;
+  background: #f5f8f4;
+  min-height: 100px;
+}
+.extreme-buttons button[aria-pressed='true'] {
+  border: 2px solid #146e63;
+  background: #e5f0e9;
+}
+.extreme-buttons button strong {
+  font-size: 19px;
+}
+.climate-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.climate-facts article {
+  padding: 18px;
+  background: #f0f5ef;
+  border-radius: 8px;
+}
+.climate-facts strong,
+.climate-facts span {
+  display: block;
+  line-height: 1.5;
+}
+.climate-facts strong {
+  font-size: 26px;
+}
+.lake-reading {
+  margin: 20px 0;
+  display: grid;
+  gap: 8px;
+}
+.lake-reading strong {
+  font-size: 38px;
+}
+.lake-recovery {
+  background: #f1f5ef;
+  padding: 18px 22px;
+  border-radius: 8px;
+}
+.station-network {
+  padding: 30px 0;
+}
+.table-scroll {
+  overflow: auto;
+  max-height: 450px;
+}
+.hydro-network pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.network-only,
+body[data-analysis='network'] .station-only,
+body[data-analysis='network'] #regional-daily {
+  display: none !important;
+}
+body[data-analysis='network'] .network-only {
+  display: block !important;
+}
+body[data-analysis='network'] .app {
+  display: block;
+}
+body[data-analysis='network'] main {
+  max-width: 1250px;
+  padding: 0 32px 50px;
+}
+@media (max-width: 760px) {
+  .climate-overview,
+  .lake-overview,
+  .historical-extremes,
+  .hydro-network {
+    padding: 20px;
+  }
+  .extreme-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .climate-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body[data-analysis='network'] main {
+    padding: 0 20px 40px;
+  }
+}
+
+.overview-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 12px 0 24px;
+}
+.overview-topics a {
+  color: #146e63;
+  font-size: 15px;
+  text-underline-offset: 4px;
+}
+#monthly-rainfall,
+#lake-levels {
+  scroll-margin-top: 24px;
+}
+
+.daily-date {
+  max-width: none;
+}

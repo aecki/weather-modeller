@@ -28,6 +28,7 @@ function Plot({ component: Component, ...props }) {
   );
 }
 export function ModelComparison({
+  namespace = '',
   dates,
   station,
   stations,
@@ -202,9 +203,15 @@ export function ModelComparison({
     };
   }, [result, confidence, period, bandModel]);
   return (
-    <section id="model-comparison" className="comparison-lab" aria-labelledby="comparison-title">
+    <section
+      id={namespace ? `${namespace}-comparison` : 'model-comparison'}
+      className="comparison-lab"
+      aria-labelledby={namespace ? `${namespace}-comparison-title` : 'comparison-title'}
+    >
       <span className="eyebrow">FORWARD HOLDOUT EXPERIMENT</span>
-      <h2 id="comparison-title">Compare GEV, Gumbel, GPD and SMEV</h2>
+      <h2 id={namespace ? `${namespace}-comparison-title` : 'comparison-title'}>
+        Compare GEV, Gumbel, GPD and SMEV
+      </h2>
       <p>
         Fit the earlier complete years; reserve the latest complete years for testing. Station,
         rainfall duration and selected year range follow the controls above. Replay-year exclusion

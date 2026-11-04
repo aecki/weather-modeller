@@ -1,5 +1,7 @@
 import { archiveIndex, resolveRainDay, loadRainField } from './archive-data.mjs';
 import { RainAmountGraphic } from './RainVisuals';
+import { ClimateOverview, HistoricalExtremes, useCellSummary } from './ClimateOverview';
+import { LakeOverview } from './WaterOverview';
 import { RegionalAddress } from './RegionalAddress';
 import { HistoricalOverview } from './HistoricalOverview';
 import React, { useEffect, useRef, useState } from 'react';
@@ -64,6 +66,7 @@ export function DailyRegional({ mode = 'overview' }) {
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(-1);
+  const [days, setDays] = useState(1);
   const suggestionTimer = useRef(null);
   const [searching, setSearching] = useState(false),
     [searchError, setSearchError] = useState('');
@@ -242,13 +245,20 @@ export function DailyRegional({ mode = 'overview' }) {
     };
   }, [query, selected]);
   const active = result?.key === resultKey ? result : null;
+  const goToSection = (event, id) => {
+    event.preventDefault();
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'instant' });
+    else document.getElementById('daily-address')?.focus();
+  };
   const source = record?.source;
+  const summary = useCellSummary(active?.cell?.index);
   return (
     <section
       className={`daily-regional ${selected ? 'has-address' : ''}`}
       aria-labelledby="daily-title"
     >
-      <p className="eyebrow">SWITZERLAND · REAL RAINFALL, SINCE 1961</p>
+      <p className="eyebrow">Swiss Precipitation Analysis</p>
       <h1 id="daily-title">
         {mode === 'overview' ? 'How much did it really rain?' : 'Daily rainfall by address'}
       </h1>
@@ -256,6 +266,19 @@ export function DailyRegional({ mode = 'overview' }) {
         Choose a Swiss address and a date to see the estimated rainfall and compare it with records
         since 1961. Estimates describe the surrounding area, not measurements at the building.
       </p>
+      {mode === 'overview' && (
+        <nav className="overview-topics" aria-label="Overview sections">
+          <a href="#daily-title" onClick={(e) => goToSection(e, 'daily-title')}>
+            Daily rainfall
+          </a>
+          <a href="#monthly-rainfall" onClick={(e) => goToSection(e, 'monthly-rainfall')}>
+            Monthly totals
+          </a>
+          <a href="#lake-levels" onClick={(e) => goToSection(e, 'lake-levels')}>
+            Lake levels &amp; recovery
+          </a>
+        </nav>
+      )}
       <form className="address-search" onSubmit={search}>
         <label htmlFor="daily-address">Swiss address</label>
         <div>
@@ -367,18 +390,6 @@ export function DailyRegional({ mode = 'overview' }) {
               </button>
             )}
           </div>
-          <div className="event-shortcuts" aria-label="Explore historical rainfall days">
-            <span>Historical rainfall events</span>
-            {[
-              ['2005-08-22', 'Alpine floods · 2005'],
-              ['2021-07-13', 'Wet summer · 2021'],
-              ['2024-06-29', 'Southern storms · 2024'],
-            ].map(([day, label]) => (
-              <button key={day} onClick={() => setDate(day)}>
-                {label} <span aria-hidden="true">↗</span>
-              </button>
-            ))}
-          </div>
           <p className="daily-freshness">
             Latest available rainfall day: <strong>{dateText(manifest.latestAvailable)}</strong>.{' '}
             {manifest.latestAvailable < expected && (
@@ -447,20 +458,32 @@ export function DailyRegional({ mode = 'overview' }) {
                   without moving it into another grid cell.
                 </p>
               )}
+              <HistoricalExtremes
+                summary={summary}
+                days={days}
+                onDuration={setDays}
+                onDate={setDate}
+                date={date}
+              />
               <HistoricalOverview
                 cell={active.cell}
                 amount={active.value}
                 date={date}
                 status={record.status}
               />
-              <RegionalAddress
-                cell={active.cell}
-                selected={selected}
-                date={date}
-                fieldBuffer={active.buffer}
-                release={manifest}
-                mode={mode}
-              />
+              <ClimateOverview summary={summary} date={date} />
+              {mode === 'pro' && (
+                <RegionalAddress
+                  cell={active.cell}
+                  selected={selected}
+                  date={date}
+                  fieldBuffer={active.buffer}
+                  release={manifest}
+                  mode={mode}
+                  days={days}
+                  onDuration={setDays}
+                />
+              )}
             </div>
           )}
           <p className="regional-limit">
@@ -523,6 +546,7 @@ export function DailyRegional({ mode = 'overview' }) {
       <p className="daily-station-link overview-only">
         <a href="#pro">Explore regional return periods and uncertainty in Pro Mode →</a>
       </p>
+      {mode === 'overview' && <LakeOverview selected={selected} />}
     </section>
   );
 }

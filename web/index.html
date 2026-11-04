@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self' https://api3.geo.admin.ch https://data.geo.admin.ch; worker-src 'self'; object-src 'none'; base-uri 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://wmts.geo.admin.ch; font-src 'self'; connect-src 'self' https://api3.geo.admin.ch https://data.geo.admin.ch https://data.bafu.admin.ch; worker-src 'self'; object-src 'none'; base-uri 'self'"
     />
     <meta
       name="description"
@@ -30,8 +30,8 @@
           <h1>Swiss precipitation explorer</h1>
           <p>Daily regional estimates and historical station analysis.</p>
         </div>
-        <div class="eyebrow section-label">Historical event</div>
-        <nav id="events" aria-label="Historical event"></nav>
+        <div class="eyebrow section-label">Historical extremes</div>
+        <nav id="events" aria-label="Historical extremes"></nav>
         <div class="eyebrow section-label">Station lab settings</div>
         <span class="field-label">Rainfall accumulation</span>
         <div class="segmented" id="durations" role="group" aria-label="Rainfall accumulation">
@@ -59,11 +59,13 @@
           </nav>
         </header>
         <nav class="page-nav pro-only pro-nav" aria-label="Pro Mode sections">
-          <a href="#pro">Selected address</a><a href="#station-lab">Station explorer</a
-          ><a href="#model-lab">Station models</a><a href="#how-it-works">Station methods</a>
+          <a href="#pro">Selected address</a><a href="#network">All stations &amp; gauges</a
+          ><a href="#station-lab">Station explorer</a><a href="#model-lab">Station models</a
+          ><a href="#how-it-works">Station methods</a>
         </nav>
         <span id="pro-daily"></span>
         <div id="regional-daily"></div>
+        <div id="station-network" class="network-only pro-only"></div>
         <div id="pro-analysis" class="station-only">
           <div id="station-lab" class="station-lab-intro">
             <p class="eyebrow">Pro Mode · station measurements</p>

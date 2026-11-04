@@ -44,7 +44,9 @@
       throw Error('Invalid observation selection');
     const rolled = rolling(station.values, selection.days);
     const discharge = new Map(
-      river.events[event.id].map((row) => [row.timestamp.slice(0, 10), row]),
+      Object.values(river.events)
+        .flat()
+        .map((row) => [row.timestamp.slice(0, 10), row]),
     );
     const rows = [
       [

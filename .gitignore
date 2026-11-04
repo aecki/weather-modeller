@@ -36,3 +36,6 @@ data/processed/regional-history/
 
 # Prepared regional modelling reference
 data/processed/regional-models/
+
+# Explicitly refreshed FOEN water observations
+data/processed/water/

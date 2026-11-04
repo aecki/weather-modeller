@@ -2,3 +2,5 @@
 numpy==2.5.4
 netCDF4==1.7.4
 cftime==1.6.6.1
+# Swiss daily water-level labels, including on Windows without an OS time-zone database.
+tzdata==2026.6

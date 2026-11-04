@@ -80,6 +80,13 @@ def build(root: Path) -> Path:
         reference = root / "data/reference/rainfall-archive"
         if reference.exists():
             shutil.copytree(reference, staged / "data/rainfall-archive")
+        for name in ("rainfall-summary",):
+            reference = root / "data/reference" / name
+            if reference.exists():
+                shutil.copytree(reference, staged / "data" / name)
+        directory = root / "data/reference/station-network.json"
+        if directory.exists():
+            shutil.copy2(directory, staged / "data/station-network.json")
         if not (staged / "data/regional/manifest.json").exists():
             write_json(staged / "data/regional/manifest.json", {"schemaVersion": 1, "days": []})
         compile_frontend(root, staged)

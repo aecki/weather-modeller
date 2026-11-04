@@ -100,6 +100,18 @@ jobs:
       - name: Prepare a complete daily regional release
         shell: bash
         run: python run.py fetch-regional --days 366
+      - name: Cache official lake history
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: data/raw/water-network
+          key: water-history-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: water-history-${{ runner.os }}-
+      - name: Refresh the official precipitation station directory
+        shell: bash
+        run: .environments/weather-modeller/bin/python scripts/prepare_station_directory.py
+      - name: Refresh FOEN lake levels and recovery comparisons
+        shell: bash
+        run: .environments/weather-modeller/bin/python scripts/prepare_water.py
       - name: Test and build the static site
         shell: bash
         run: python run.py check

@@ -44,6 +44,7 @@ function ResponsiveChart({ component: Component, ...props }) {
 
 export function ModelLab({
   regional = false,
+  namespace = '',
   dates,
   annual,
   station,
@@ -220,7 +221,10 @@ export function ModelLab({
         <span className="model-badge">STATIONARY HAZARD MODEL</span>
       </div>
       {!regional && (
-        <a className="comparison-jump" href="#model-comparison">
+        <a
+          className="comparison-jump"
+          href={namespace ? `#${namespace}-comparison` : '#model-comparison'}
+        >
           Compare four models on held-out years ↓
         </a>
       )}
@@ -607,6 +611,7 @@ export function ModelLab({
       </div>
       {!regional && (
         <ModelComparison
+          namespace={namespace}
           stations={stations}
           onStation={onStation}
           onDuration={onDuration}

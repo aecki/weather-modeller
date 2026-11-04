@@ -4,7 +4,16 @@ import { resolveRainDay, loadRainField } from './archive-data.mjs';
 import { WetDaysGraphic, RecordGraphic } from './RainVisuals';
 import { ModelLab } from './ModelLab';
 const fmt = (n) => n.toLocaleString('en-GB', { maximumFractionDigits: 0 });
-export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mode }) {
+export function RegionalAddress({
+  cell,
+  selected,
+  date,
+  fieldBuffer,
+  release,
+  mode,
+  days,
+  onDuration,
+}) {
   const [everPro, setEverPro] = useState(mode === 'pro');
   useEffect(() => {
     if (mode === 'pro') setEverPro(true);
@@ -12,7 +21,6 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
   const [loaded, setLoaded] = useState(null),
     [error, setError] = useState(''),
     [retry, setRetry] = useState(0),
-    [days, setDays] = useState(1),
     [target, setTarget] = useState(null);
   useEffect(() => {
     let cancelled = false;
@@ -146,10 +154,10 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
         <section className="pro-only" aria-label="Regional return-period model">
           <h2>Extreme rainfall around {selected.label}</h2>
           <p>
-            Explore the annual chance of heavy rainfall averaged across the same fixed{' '}
-            {record.entry.areaKm2} km² region. These are experimental stationary regional models,
-            not official MeteoSwiss estimates, point rainfall, flood risk or building-level return
-            periods.
+            This model estimates extreme rainfall across a {record.entry.areaKm2} km² area around
+            the address. The source data cannot reliably resolve city-sized rainfall extremes. Use
+            station analysis for measurements at a specific gauge. These experimental models are not
+            official MeteoSwiss return-period estimates.
           </p>
           {current?.amount != null ? (
             <p>
@@ -189,7 +197,7 @@ export function RegionalAddress({ cell, selected, date, fieldBuffer, release, mo
             }}
             stations={[]}
             days={days}
-            onDuration={setDays}
+            onDuration={onDuration}
             event={{ id: date, start: date }}
             eventPeak={current?.amount != null ? { value: current.amount } : null}
             historyStart={`${record.manifest.years[0]}-01-01`}
