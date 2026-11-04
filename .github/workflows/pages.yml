@@ -1,4 +1,4 @@
-name: Publish aecki’s catastrophe lab
+name: Publish aeckis rainfall explorer
 on:
   push:
     branches: [main]
@@ -40,7 +40,7 @@ jobs:
           python run.py restore-history
           python run.py prepare-regional-models
           python scripts/regional_reference_release.py verify
-      - name: Publish the verified immutable data artifact
+      - name: Publish the verified rainfall data reference
         if: steps.reference.outputs.exists != 'true'
         run: |
           if ! gh release view "$REFERENCE_TAG" >/dev/null 2>&1; then

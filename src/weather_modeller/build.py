@@ -11,7 +11,6 @@ from .regional import validate_release
 from .regional_history import validate_history
 from .regional_models import validate_models
 from .storage import write_json
-from .validation import validate_snapshot
 
 REQUIRED_ASSETS = (
     "index.html",
@@ -23,8 +22,6 @@ REQUIRED_ASSETS = (
     "graphics.js",
     "model-worker.js",
     "third-party-notices.txt",
-    "data/observations.json",
-    "data/provenance.json",
     "data/regional/manifest.json",
 )
 
@@ -44,7 +41,14 @@ def version_entry_assets(destination: Path) -> None:
     """Keep a cached page from mixing scripts and styles from different deployments."""
     entry = destination / "index.html"
     html = entry.read_text(encoding="utf-8")
-    for name in ("style.css", "overview.css", "graphics.js", "data-core.js", "app.js"):
+    for name in (
+        "style.css",
+        "overview.css",
+        "graphics.js",
+        "data-core.js",
+        "app.js",
+        "favicon.svg",
+    ):
         digest = hashlib.sha256((destination / name).read_bytes()).hexdigest()[:16]
         html = html.replace(f'"{name}"', f'"{name}?v={digest}"')
     entry.write_text(html, encoding="utf-8")
@@ -53,9 +57,6 @@ def version_entry_assets(destination: Path) -> None:
 def build(root: Path) -> Path:
     root = Path(root)
     source, data, output = root / "web", root / "data/processed", root / "dist"
-    snapshot = json.loads((data / "observations.json").read_text(encoding="utf-8"))
-    validate_snapshot(snapshot)
-    json.loads((data / "provenance.json").read_text(encoding="utf-8"))
     if (data / "regional").exists():
         validate_release(data / "regional")
     if (data / "regional-history").exists():
@@ -76,7 +77,14 @@ def build(root: Path) -> Path:
     with tempfile.TemporaryDirectory(dir=staging_root) as directory:
         staged, previous = Path(directory) / "dist", Path(directory) / "previous"
         shutil.copytree(source, staged, ignore=shutil.ignore_patterns("graphics", "modelling"))
-        shutil.copytree(data, staged / "data")
+        # The retired sample explorer is a scientific test reference, not a production dataset.
+        shutil.copytree(
+            data,
+            staged / "data",
+            ignore=lambda directory, names: (
+                {"observations.json", "provenance.json"} if Path(directory) == data else set()
+            ),
+        )
         reference = root / "data/reference/rainfall-archive"
         if reference.exists():
             shutil.copytree(reference, staged / "data/rainfall-archive")

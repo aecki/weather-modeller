@@ -55,7 +55,7 @@ Return periods longer than n annual observations are shaded as extrapolation. Th
 
 ## Execution and verification
 
-Fitting and resampling run in a bundled Web Worker. Previous workers are terminated on changed fit settings; stale results are not displayed under a new configuration. The worker and numerical module are static assets, so the same model runs offline after loading and on GitHub Pages without a Python backend. No raw observations or model selections are sent to another service.
+Fitting and resampling run in a bundled Web Worker. Previous workers are terminated on changed fit settings; stale results are not displayed under a new configuration. The worker and numerical module are browser assets served by GitHub Pages; model fitting needs no Python backend. No raw observations or model selections are sent to another service.
 
 `tests/fixtures/extreme-reference.json` contains independent lmoments3/SciPy calculations for all 18 stations, three durations and two distributions (108 cases), tied to the observation snapshot SHA256. Node checks compare annual maxima, parameter estimates, return levels and exceedance probabilities against these references, test deterministic bootstrap/support limits, and execute the actual bundled worker. SciPy/lmoments3 are **optional fixture-generation tools**, not browser or runtime requirements.
 

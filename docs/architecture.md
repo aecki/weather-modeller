@@ -5,7 +5,7 @@ The online-only app has a static frontend and a small Python preparation/serving
 - `run.py` dispatches into `.environments/weather-modeller/`; `scripts/bootstrap.py` builds that isolated environment.
 - `cli.py` routes commands; `build.py` stages and validates complete builds before replacing the last working app; `checks.py` runs verification.
 - `catalog.py` validates event/station selection. `sources.py` handles cached downloads and provenance. `ingestion.py` prepares the observation snapshot. `validation.py` checks its contract before a refresh or build.
-- `exports.py` independently verifies the browser CSV format in tests. `storage.py` provides unique temporary files and atomic replacement for exports and source caches.
+- Browser CSV exports live in the unified station workspace. `storage.py` provides unique temporary files and atomic replacement for source caches and generated releases.
 - `aggregation.py` contains the river mean calculation shared by ingestion and Python tests.
 - `web/data-core.js` contains the rainfall and annual-maxima calculations shared by the frontend and Node tests.
 - `web/app.js` handles the map, event replay, charts, historical comparison and CSV export.
@@ -54,4 +54,10 @@ The generated worker is a required build asset. Node checks execute that worker 
 
 ## Overview and Pro Mode
 
-The root URL and `#overview` open the address overview, initially on the latest completed rainfall day, with a shared day selector in both modes. Pro Mode (`#pro`) analyses the selected address through a fixed-area regional GEV/Gumbel model. Station controls, maps, all four station models, held-out comparisons, rivers and exports live in the separate Station explorer (`#station-lab`); existing station/model/method links still open it. Station data and workers initialize on the first station visit, and leaving Pro Mode stops event playback. See [regional modelling and reference contracts](regional-modelling.md).
+The root URL and `#overview` open the address overview. Pro Mode has only two destinations: `#pro` for regional address analysis and `#network` for all precipitation stations and FOEN gauges. `routes.mjs` redirects former sample-explorer/model URLs to the unified station workspace. `app.js` handles only routing and lazy mounting; it no longer maintains a second station controller or sample-only UI.
+
+`StationNetwork.jsx` owns station selection from the finder and the interactive swisstopo map, official on-demand source histories, ranked extremes, charts, CSVs, GEV/Gumbel/GPD/SMEV, diagnostics and methods. `stationLocations` groups overlapping station codes for map display while retaining every separate network series in the finder. Location markers never imply that unrequested observations have been downloaded. Lake/river gauge selection has its own map and native measurement units. Both map surfaces retain panning, modifier-wheel zoom, touch opt-in, fullscreen and official attribution.
+
+The tracked sample snapshot remains an independent regression input; it is not an additional product page. The analytical workers, annual completeness rules, held-out isolation and source-version handling are unchanged. See [full overview/network contracts](overview-water-network.md).
+
+The old sample-only CSV implementation has been removed. The original fixed observation/provenance snapshot is retained for scientific fixtures and is explicitly excluded from the published site. No standalone executable, local export endpoint, offline fallback, service worker or separate offline distribution is produced.

@@ -15,7 +15,7 @@ from .project import project_root
 
 def main():
     parser = argparse.ArgumentParser(
-        description="aecki’s catastrophe lab: repository-local observation explorer"
+        description="aeckis rainfall explorer: repository-local observation explorer"
     )
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser(
@@ -129,7 +129,7 @@ def main():
             handler = partial(SimpleHTTPRequestHandler, directory=str(root / "dist"))
             with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
                 print(
-                    f"aecki’s catastrophe lab: http://127.0.0.1:{args.port}\nPress Ctrl+C to stop.",
+                    f"aeckis rainfall explorer: http://127.0.0.1:{args.port}\nPress Ctrl+C to stop.",
                     flush=True,
                 )
                 server.serve_forever()

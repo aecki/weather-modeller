@@ -1,4 +1,4 @@
-# aecki’s catastrophe lab
+# aeckis rainfall explorer
 
 A static web app for **daily regional Swiss precipitation estimates** and a separate laboratory for **real historical station rainfall and river observations**. The published GitHub Pages site needs only a browser. Address estimates carry preliminary/consolidated status and source versions; station models remain separate. The development environment, caches, data and build output stay inside this repository.
 
@@ -33,7 +33,7 @@ python run.py setup --update        # Update this repository's environment from 
 
 CSV selections download directly from the browser. There is no standalone desktop app or local export API.
 
-Neither `serve`, `build` nor `check` refreshes data. The downloaded snapshot is tracked so a fresh clone can run without downloading historical observations. The web app uses official swisstopo map/search services and verified MeteoSwiss range downloads for older calendar days.
+Neither `serve`, `build` nor `check` refreshes data. The original observation snapshot is retained as a scientific test reference and is excluded from the published site. The web app loads official station histories, swisstopo map/search services and verified MeteoSwiss range downloads online.
 
 ## Repository structure
 
@@ -58,7 +58,7 @@ weather-modeller/
 │   └── weather-modeller/  # Actual local environment (ignored)
 ├── .cache/                # Conda/npm/Python caches and temp files (ignored)
 ├── node_modules/          # Local frontend/compiler dependencies (ignored)
-└── dist/                  # Generated self-contained web app (ignored)
+└── dist/                  # Generated static web assets (ignored)
 ```
 
 ## Working on another device
@@ -123,7 +123,7 @@ Address-selected Pro Mode fits regional-average rainfall extremes from the real 
 
 ### Monthly rainfall, full station access and lake levels
 
-Overview includes monthly totals, historical variability, yearly records and the five largest non-overlapping rainfall windows. Pro Mode → **All stations & gauges** exposes every inventoried daily precipitation series in the automatic-weather, automatic-precipitation and manual networks, plus the complete FOEN gauge directory. Annual-only mountain totalisers are listed separately. The station-map explorer and all four models remain available.
+Overview includes monthly totals, historical variability, yearly records and the five largest non-overlapping rainfall windows. Pro Mode → **All stations & gauges** exposes every inventoried daily precipitation series in the automatic-weather, automatic-precipitation and manual networks, plus the complete FOEN gauge directory. Annual-only mountain totalisers are listed separately. The full-network map and all four models share this single workspace; the former sample-only explorer/model pages redirect to it.
 
 The lake section shows measured levels for 25 selected lakes against their usual seasonal range. Where enough comparable historical years exist, it shows an experimental historical recovery-time comparison with sampling uncertainty. It withholds dates where evidence is insufficient. This is not an operational, weather-driven lake forecast. [Definitions, sources and limits](docs/overview-water-network.md).
 

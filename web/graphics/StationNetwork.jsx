@@ -3,7 +3,19 @@ import { ParentSize } from '@visx/responsive';
 import { ModelLab } from './ModelLab';
 import { ObservationChart } from './TimeSeries';
 import { WaterChart } from './WaterOverview';
-import { loadStation, largestWindows } from './station-data.mjs';
+import { loadStation, largestWindows, stationLocations, stationCSV } from './station-data.mjs';
+import { StationMap } from './StationMap';
+import { WindowExplanation } from './WindowExplanation';
+function downloadCSV(content, filename) {
+  const url = URL.createObjectURL(
+    new Blob(['\uFEFF' + content], { type: 'text/csv;charset=utf-8' }),
+  );
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 export function StationNetwork() {
   const [directory, setDirectory] = useState(null),
@@ -66,15 +78,22 @@ export function StationNetwork() {
     directory?.stations.filter((s) =>
       `${s.name} ${s.code} ${s.canton} ${s.type}`.toLowerCase().includes(query.toLowerCase()),
     ) || [];
+  const mapStations = useMemo(
+    () => stationLocations(directory?.stations || [], id),
+    [directory, id],
+  );
+  const selectStation = (value) => {
+    setId(value);
+    setQuery('');
+  };
   const nearby = active && at >= 0 ? active.dates.slice(Math.max(0, at - 10), at + 11) : [];
   return (
     <section className="station-network" aria-label="Precipitation network analysis">
       <p className="eyebrow">MEASURED PRECIPITATION</p>
-      <h1>All precipitation stations</h1>
+      <h1>Stations &amp; gauges</h1>
       <p>
-        Choose any of the {directory?.stations.length ?? 'available'} stations with daily
-        precipitation in the MeteoSwiss automatic and manual networks. Measurements are local to the
-        gauge; the address estimates use a separate regional grid.
+        Search for a precipitation station or choose one on the map. Its observations, historical
+        extremes and models appear below.
       </p>
       <div className="network-controls">
         <label>
@@ -91,7 +110,7 @@ export function StationNetwork() {
           <select
             aria-label="All precipitation stations"
             value={id}
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => selectStation(e.target.value)}
           >
             {station && !options.includes(station) && (
               <option value={station.id}>
@@ -123,6 +142,35 @@ export function StationNetwork() {
           </select>
         </label>
       </div>
+      {directory && (
+        <section className="network-map-panel" aria-label="Precipitation station locations">
+          <div className="map-panel-heading">
+            <h2>Precipitation stations</h2>
+            <span>
+              {mapStations.length} locations · {directory.stations.length} separate series
+            </span>
+          </div>
+          <div className="network-map">
+            <ParentSize>
+              {({ width, height }) => (
+                <StationMap
+                  width={Math.max(width, 280)}
+                  height={Math.max(height, 360)}
+                  stations={mapStations}
+                  selected={id}
+                  onSelect={selectStation}
+                  locationsOnly
+                  resetCount={0}
+                />
+              )}
+            </ParentSize>
+          </div>
+          <p className="chart-caption">
+            Markers show station locations. Select a marker to load its measurements. Automatic and
+            manual histories at the same station remain separate choices in the finder.
+          </p>
+        </section>
+      )}
       {station && (
         <p>
           {station.type} · {station.canton} · {station.elevation} m above sea level. Record coverage
@@ -135,7 +183,18 @@ export function StationNetwork() {
         <p role="status">Loading official daily station observations…</p>
       ) : (
         <>
-          <h2>Historical extremes</h2>
+          <div className="record-heading">
+            <h2>{station.name}</h2>
+            <button
+              className="outline-button"
+              onClick={() =>
+                downloadCSV(stationCSV(active, days), `rainfall-${station.code}-${days}day.csv`)
+              }
+            >
+              Download station CSV
+            </button>
+          </div>
+          <h3>Historical extremes</h3>
           <p>
             The five largest non-overlapping {days}-day totals in the available station record,{' '}
             {active.dates[0]}–{active.dates.at(-1)}. Windows stay within calendar years.
@@ -183,23 +242,47 @@ export function StationNetwork() {
               )}
             </ParentSize>
           )}
-          <ModelLab
-            key={id}
-            namespace="network"
-            dates={active.dates}
-            annual={annual}
-            station={{ ...station, values: active.values }}
-            stations={directory.stations}
-            days={days}
-            event={{ id: chosen || 'none', start: chosen || active.dates[0] }}
-            eventPeak={selectedPeak}
-            historyStart={active.dates[0]}
-            historyEnd={active.dates.at(-1)}
-            onStation={setId}
-            onDuration={setDays}
-          />
-          <details>
-            <summary>Station sources and quality</summary>
+          {selectedPeak && (
+            <details className="calculation-details">
+              <summary>How this rainfall total is calculated</summary>
+              <ParentSize style={{ height: 240 }}>
+                {({ width }) => (
+                  <WindowExplanation
+                    width={Math.max(width, 280)}
+                    samples={active.dates
+                      .slice(Math.max(0, at - days + 1), at + 1)
+                      .map((date, i) => ({
+                        date,
+                        value: active.values[Math.max(0, at - days + 1) + i],
+                      }))}
+                    days={days}
+                    total={selectedPeak.value}
+                    stationName={station.name}
+                    ending={chosen}
+                  />
+                )}
+              </ParentSize>
+            </details>
+          )}
+          <section id="network-models">
+            <ModelLab
+              key={id}
+              namespace="network"
+              dates={active.dates}
+              annual={annual}
+              station={{ ...station, values: active.values }}
+              stations={directory.stations}
+              days={days}
+              event={{ id: chosen || 'none', start: chosen || active.dates[0] }}
+              eventPeak={selectedPeak}
+              historyStart={active.dates[0]}
+              historyEnd={active.dates.at(-1)}
+              onStation={selectStation}
+              onDuration={setDays}
+            />
+          </section>
+          <details id="network-methods" open={location.hash === '#network-methods'}>
+            <summary>Data and methods</summary>
             <p>
               Source: MeteoSwiss, daily precipitation rre150d0, mm; labelled rainfall days
               06:00–06:00 UTC. Historical values take precedence over overlapping recent files.
@@ -406,11 +489,76 @@ export function HydroNetwork() {
         </label>
         <button disabled={busy}>{busy ? 'Loading…' : 'Load daily measurements'}</button>
       </form>
+      {directory && (
+        <section className="network-map-panel" aria-label="Lake and river gauge locations">
+          <div className="map-panel-heading">
+            <h3>Lake and river gauges</h3>
+          </div>
+          <div className="network-map gauge-map">
+            <ParentSize>
+              {({ width, height }) => (
+                <StationMap
+                  width={Math.max(width, 280)}
+                  height={Math.max(height, 360)}
+                  stations={directory.stations
+                    .filter((s) => Number.isFinite(s.latitude) && Number.isFinite(s.longitude))
+                    .map((s) => ({
+                      id: s.no,
+                      code: s.no,
+                      name: `${s.riverName} · ${s.name}`,
+                      lat: s.latitude,
+                      lon: s.longitude,
+                    }))}
+                  selected={id}
+                  onSelect={setId}
+                  locationsOnly
+                  mapLabel="Swiss lake and river gauge map"
+                  resetCount={0}
+                />
+              )}
+            </ParentSize>
+          </div>
+          <p className="chart-caption">
+            Select a gauge, then load daily measurements for the chosen period. Retired gauges
+            remain available; not every gauge publishes both measurements.
+          </p>
+        </section>
+      )}
       {error && <p role="alert">{error}</p>}
       {rows && (
         <>
           {rows.length ? (
             <>
+              <button
+                className="outline-button"
+                onClick={() => {
+                  const quote = (value) => '"' + String(value ?? '').replaceAll('"', '""') + '"';
+                  const csv =
+                    [
+                      [
+                        'station',
+                        'parameter',
+                        'interval_start',
+                        'daily_mean',
+                        'unit',
+                        'release_flag',
+                      ],
+                      ...rows.map((r) => [
+                        id,
+                        parameter,
+                        r.timestamp,
+                        r.value,
+                        r.unitSymbol,
+                        r.releaseState,
+                      ]),
+                    ]
+                      .map((row) => row.map(quote).join(','))
+                      .join('\r\n') + '\r\n';
+                  downloadCSV(csv, `gauge-${id}-${parameter}-${start}-${end}.csv`);
+                }}
+              >
+                Download gauge CSV
+              </button>
               <p>
                 {rows.length} daily values · unit as supplied: {rows[0].unitSymbol}.
               </p>

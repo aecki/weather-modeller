@@ -22,6 +22,8 @@ export function StationMap({
   selected,
   onSelect,
   resetCount,
+  locationsOnly = false,
+  mapLabel = 'Swiss rainfall station map',
 }) {
   const bounds = MAP_BOUNDS;
   const container = useRef(null);
@@ -190,7 +192,7 @@ export function StationMap({
         viewBox={`0 0 ${width} ${height}`}
         role="group"
         tabIndex={0}
-        aria-label="Swiss rainfall station map. Drag to pan. Ctrl or Command plus scroll zooms; ordinary scrolling moves the page. Arrow keys pan; plus and minus zoom; Home resets."
+        aria-label={`${mapLabel}. Drag to pan. Ctrl or Command plus scroll zooms; ordinary scrolling moves the page. Arrow keys pan; plus and minus zoom; Home resets.`}
         data-renderer="visx"
         onPointerDown={start}
         onPointerMove={move}
@@ -235,13 +237,30 @@ export function StationMap({
                         key={station.id}
                         cx={point[0]}
                         cy={point[1]}
-                        r={isSelected ? 11 : Math.min(10, 5 + Math.sqrt(station.value || 0) / 3)}
-                        fill={color(station.value)}
+                        r={
+                          isSelected
+                            ? 10
+                            : locationsOnly
+                              ? 5
+                              : Math.min(10, 5 + Math.sqrt(station.value || 0) / 3)
+                        }
+                        fill={
+                          locationsOnly
+                            ? isSelected
+                              ? '#c03932'
+                              : '#2c6384'
+                            : color(station.value)
+                        }
                         stroke={isSelected ? '#173b3e' : '#fff'}
                         strokeWidth={isSelected ? 3 : 1.5}
                         tabIndex={0}
                         role="button"
-                        aria-label={`${station.name}: ${Number.isFinite(station.value) ? station.value.toFixed(1) + ' mm' : 'missing rainfall'}`}
+                        aria-label={
+                          locationsOnly
+                            ? `Select ${station.name} (${station.code || station.id})`
+                            : `${station.name}: ${Number.isFinite(station.value) ? station.value.toFixed(1) + ' mm' : 'missing rainfall'}`
+                        }
+                        aria-pressed={isSelected}
                         onClick={() => {
                           if (!dragged.current) onSelect(station.id);
                         }}
@@ -273,10 +292,13 @@ export function StationMap({
                       <g pointerEvents="none">
                         <rect x={x - 62} y={y - 17} width={124} height={24} rx={4} fill="#173b3e" />
                         <text x={x} y={y - 2} textAnchor="middle" fill="#fff" fontSize={10}>
-                          {active.id} ·{' '}
-                          {Number.isFinite(active.value)
-                            ? active.value.toFixed(1) + ' mm'
-                            : 'Missing'}
+                          {locationsOnly ? active.code || active.id : active.id}
+                          {locationsOnly ? '' : ' · '}
+                          {locationsOnly
+                            ? ''
+                            : Number.isFinite(active.value)
+                              ? active.value.toFixed(1) + ' mm'
+                              : 'Missing'}
                         </text>
                       </g>
                     );

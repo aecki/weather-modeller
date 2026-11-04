@@ -1,53 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ParentSize } from '@visx/responsive';
-import { StationMap } from './StationMap';
-import { HorizontalBars, ObservationChart } from './TimeSeries';
-import { WindowExplanation } from './WindowExplanation';
 import { DailyRegional } from './DailyRegional';
-import { ModelLab } from './ModelLab';
 import { StationNetwork } from './StationNetwork';
-import { largestWindows } from './station-data.mjs';
-
+import { routeForHash } from './routes.mjs';
 const roots = new WeakMap();
-function mount(id, Component, props) {
-  const element = document.getElementById(id);
-  if (!roots.has(element)) roots.set(element, createRoot(element));
-  roots
-    .get(element)
-    .render(
-      <ParentSize debounceTime={20}>
-        {({ width, height }) => (
-          <Component
-            {...props}
-            width={Math.max(width, 100)}
-            {...(id === 'map' ? { height: Math.max(height, 100) } : {})}
-          />
-        )}
-      </ParentSize>,
-    );
+function render(id, element) {
+  const container = document.getElementById(id);
+  if (!roots.has(container)) roots.set(container, createRoot(container));
+  roots.get(container).render(element);
 }
 window.LabGraphics = {
-  largestWindows,
-  network: () => {
-    const element = document.getElementById('station-network');
-    if (!roots.has(element)) roots.set(element, createRoot(element));
-    roots.get(element).render(<StationNetwork />);
-  },
-  daily: (props) => {
-    const element = document.getElementById('regional-daily');
-    if (!roots.has(element)) roots.set(element, createRoot(element));
-    roots.get(element).render(<DailyRegional {...props} />);
-  },
-  modelLab: (props) => {
-    const element = document.getElementById('model-lab');
-    if (!roots.has(element)) roots.set(element, createRoot(element));
-    roots.get(element).render(<ModelLab {...props} />);
-  },
-  map: (props) => mount('map', StationMap, props),
-  rainfall: (props) => mount('rain-chart', ObservationChart, { ...props, kind: 'rain' }),
-  river: (props) => mount('river-chart', ObservationChart, { ...props, kind: 'river' }),
-  rankings: (props) => mount('rankings', HorizontalBars, { ...props, compact: true }),
-  comparisons: (props) => mount('compare-bars', HorizontalBars, props),
-  explanation: (props) => mount('window-explanation', WindowExplanation, props),
+  route: routeForHash,
+  network: () => render('station-network', <StationNetwork />),
+  daily: (props) => render('regional-daily', <DailyRegional {...props} />),
 };

@@ -10,7 +10,7 @@
 - Keep scientific, cache and file-replacement regression tests meaningful. Do not add tests that merely mirror trivial presentation changes.
 - Do not commit environments, caches, raw downloads, node_modules, exports or build output. Do not claim remote CI passed without observing it.
 
-- Product name: aecki’s catastrophe lab. Keep repository/environment identifier `weather-modeller`.
+- Product name: aeckis rainfall explorer. Keep repository/environment identifier `weather-modeller`.
 - Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or CDN dependencies. Official swisstopo XYZ tiles are authorized for online map detail; the product map is online-only; builds and tests remain network-free.
 - Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, static development preview with browser downloads. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
 
@@ -28,3 +28,5 @@
 - The full calendar uses docs/full-calendar.md. Keep the pinned official raw byte-range index, per-day raw/normalized SHA-256, 206-only requests, axes/fill rules and 366-day recent bridge. Never fall back to full-year browser downloads or fake unavailable dates. The standalone app, local export API and runtime switch have been removed; keep only static development preview and build/data tools.
 
 - Expanded overview and full station/lake access follow docs/overview-water-network.md. Never shrink the ≥400-cell return-period footprint to imply local precision. Monthly cell summaries are descriptive smoothed estimates. Historical extremes are five non-overlapping real windows, not editorial event names or annual-maxima-only ranks. Keep overlapping station network histories separate; annual totalisers are not daily series. Lake recovery is a sparse-guarded, right-censored historical comparison, not a weather-conditioned forecast. Preserve source timestamps, height datums, unknown release flags, stale-data warnings and missing follow-up.
+
+- Pro Mode navigation is intentionally minimal: Address analysis and Stations & gauges only. Keep all station tools in the unified network workspace, preserve legacy URL redirects, and never mark unloaded map locations as measured missing rainfall. The map groups station codes; separate network histories remain separate in the finder.

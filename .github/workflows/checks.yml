@@ -1,4 +1,4 @@
-name: Cross-platform development checks
+name: Web app checks
 on:
   push:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
           auto-activate-base: false
           activate-environment: ''
           miniforge-version: latest
-      - name: Create environment inside checkout
+      - name: Prepare data and web build tools
         shell: bash
         run: python run.py setup
       - name: Install pipeline dependencies for real NetCDF regression checks

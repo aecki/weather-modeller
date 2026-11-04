@@ -11,3 +11,9 @@ Data graphics use visx: a linearly scaled actual rainfall bar, a 100-mark histor
 ## Web app only
 
 There is no offline/standalone mode, local export endpoint or runtime-mode configuration. CSV downloads happen entirely in the browser. Python/Conda, build/data preparation tools and a plain static preview server remain development tools, not a separate user-facing app.
+
+## Unified explorer layout (4 November 2026)
+
+Product name: **aeckis rainfall explorer**, with a repository-owned SVG raindrop favicon. The reference was the current [MeteoSwiss French homepage](https://www.meteosuisse.admin.ch/), reviewed in the browser: white masthead, horizontal navigation, restrained blue/grey surfaces, red selection indicators and large map-led sections. The explorer uses its own branding and assets, not the federal crest or an official-service identity.
+
+Pro Mode intentionally has only two destinations: Address analysis and Stations & gauges. All station records, maps, models, comparisons, downloads and methods share the network workspace. Former sample-only station/model routes redirect to it. Station and gauge maps show selectable locations, not fabricated or unrequested rainfall values. The finder retains separate network histories behind grouped station-code locations. Secondary data definitions stay in inline disclosures rather than adding navigation links.

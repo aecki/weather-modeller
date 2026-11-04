@@ -1,3 +1,4 @@
+import { routeForHash } from '../web/graphics/routes.mjs';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
@@ -5,6 +6,8 @@ import {
   completeSeries,
   largestWindows,
   loadStation,
+  stationLocations,
+  stationCSV,
 } from '../web/graphics/station-data.mjs';
 const raw = readFileSync(new URL('fixtures/station-daily.csv', import.meta.url), 'utf8');
 const parsed = stationRows(raw),
@@ -63,3 +66,36 @@ try {
 } finally {
   globalThis.fetch = nativeFetch;
 }
+
+// All locations are available without splicing automatic and manual histories.
+const directory = JSON.parse(
+  readFileSync(new URL('../data/reference/station-network.json', import.meta.url), 'utf8'),
+);
+const locations = stationLocations(directory.stations, 'nime:BER');
+assert.equal(locations.length, new Set(directory.stations.map((s) => s.code)).size);
+assert.equal(locations.find((s) => s.code === 'BER').id, 'nime:BER');
+assert.equal(locations.at(-1).id, 'nime:BER');
+assert.equal(
+  stationLocations(directory.stations, 'smn:BER').find((s) => s.code === 'BER').id,
+  'smn:BER',
+);
+const exported = stationCSV(gaps, 3);
+assert.ok(exported.includes('"2020-01-01","0",""'));
+assert.ok(exported.includes('"2020-01-02","",""'));
+assert.ok(exported.includes('"2020-01-03","2",""'));
+
+for (const hash of ['#station-lab', '#model-lab', '#model-comparison', '#how-it-works']) {
+  const route = routeForHash(hash);
+  assert.equal(route.analysis, 'network');
+  assert.equal(route.mode, 'pro');
+  assert.ok(route.hash.startsWith('#network'));
+}
+assert.equal(routeForHash('').mode, 'overview');
+assert.equal(routeForHash('#pro').analysis, 'address');
+assert.equal(routeForHash('#network').analysis, 'network');
+
+const versionedCSV = stationCSV(
+  { ...gaps, id: 'smn:BER', sources: [{ tier: 'historical', sha256: 'a'.repeat(64) }] },
+  3,
+);
+assert.ok(versionedCSV.includes('"smn:BER","historical:' + 'a'.repeat(64) + '"'));

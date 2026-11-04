@@ -34,3 +34,7 @@ python -m http.server 8767 --bind 127.0.0.1 --directory dist
 Open `http://127.0.0.1:8767`. This uses a plain static server, matching Pages behavior.
 
 The workflow refreshes the recent 366-day release twice daily. Older days use the checked-in range index of verified final annual sources; the browser checks both raw and normalized day hashes. See [full calendar](full-calendar.md).
+
+## Workflow scope
+
+The two active workflows serve the web app only: **Web app checks** validates scientific calculations, build integrity and code quality; **Publish aeckis rainfall explorer** refreshes official rainfall/lake data, restores versioned data references, builds static assets and deploys GitHub Pages. Python/Conda are build and data-processing tools on the CI runner, not a client application. Cross-platform checks keep those repository tools portable. Data-reference `.tar.gz` release assets contain rainfall summaries for the website, not an offline application. The uploaded Pages artifact is the static website required by GitHub hosting. No workflow packages a desktop executable, offline map fallback, local export service or separate standalone distribution.

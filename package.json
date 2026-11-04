@@ -1,8 +1,8 @@
 {
-  "name": "aeckis-catastrophe-lab",
+  "name": "aeckis-rainfall-explorer",
   "version": "0.1.0",
   "private": true,
-  "description": "aecki\u2019s catastrophe lab \u2014 real Swiss observations, interactive visx graphics",
+  "description": "aeckis rainfall explorer — real Swiss observations and interactive analysis",
   "engines": {
     "node": ">=22 <23"
   },

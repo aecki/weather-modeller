@@ -220,14 +220,6 @@ export function ModelLab({
         </div>
         <span className="model-badge">STATIONARY HAZARD MODEL</span>
       </div>
-      {!regional && (
-        <a
-          className="comparison-jump"
-          href={namespace ? `#${namespace}-comparison` : '#model-comparison'}
-        >
-          Compare four models on held-out years ↓
-        </a>
-      )}
       <div className="model-controls">
         {!regional && (
           <label>

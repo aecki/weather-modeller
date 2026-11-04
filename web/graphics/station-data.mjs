@@ -101,3 +101,48 @@ export async function loadStation(station, signal) {
   }
   return { ...completeSeries(lookup), sources };
 }
+
+// A location can have separate automatic/manual histories. Select a record, never splice them.
+export function stationLocations(stations, selected) {
+  const groups = new Map();
+  const priority = (s) => {
+    const rank = ['smn', 'smn-precip', 'nime'].indexOf(s.network);
+    return s.id === selected ? -1 : rank < 0 ? 3 : rank;
+  };
+  for (const station of stations) {
+    if (!Number.isFinite(station.lat) || !Number.isFinite(station.lon)) continue;
+    const current = groups.get(station.code);
+    if (!current || priority(station) < priority(current)) groups.set(station.code, station);
+  }
+  return [...groups.values()].sort((a, b) => Number(a.id === selected) - Number(b.id === selected));
+}
+export function stationCSV(series, duration) {
+  const lines = [
+    [
+      'date',
+      'daily_precipitation_mm',
+      `trailing_${duration}day_mm`,
+      'rainfall_interval_utc',
+      'station_series',
+      'input_source_sha256',
+    ],
+  ];
+  const sources = (series.sources || []).map((s) => `${s.tier}:${s.sha256}`).join(';');
+  for (let i = 0; i < series.dates.length; i++) {
+    const window = series.values.slice(Math.max(0, i - duration + 1), i + 1);
+    const total =
+      window.length === duration && window.every(Number.isFinite)
+        ? window.reduce((a, b) => a + b, 0)
+        : null;
+    lines.push([
+      series.dates[i],
+      series.values[i],
+      total,
+      '06:00 to next day 06:00',
+      series.id,
+      sources,
+    ]);
+  }
+  const quote = (value) => '"' + String(value ?? '').replaceAll('"', '""') + '"';
+  return lines.map((row) => row.map(quote).join(',')).join('\r\n') + '\r\n';
+}

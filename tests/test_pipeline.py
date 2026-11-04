@@ -89,30 +89,5 @@ class RepositoryTests(unittest.TestCase):
         self.assertIn("connect-src 'self'", html)
 
 
-class ExportTests(unittest.TestCase):
-    def test_export_uses_observations_and_preserves_missing_values(self):
-        from weather_modeller.exports import selection_csv
-
-        snapshot = {
-            "dates": ["2024-01-01", "2024-01-02", "2024-01-03"],
-            "events": [{"id": "e", "start": "2024-01-01", "end": "2024-01-03"}],
-            "stations": [{"id": "s", "values": [0, None, 5]}],
-            "rivers": [{"id": "r", "river": "Test", "events": {"e": []}}],
-        }
-        filename, content = selection_csv(
-            snapshot, {"event": "e", "station": "s", "river": "r", "days": 3}
-        )
-        self.assertEqual(filename, "swiss-observations-e-s-r-3day.csv")
-        import csv
-        import io
-
-        rows = list(csv.DictReader(io.StringIO(content)))
-        self.assertEqual(rows[0]["rain_daily_mm"], "0")
-        self.assertEqual(rows[1]["rain_daily_mm"], "")
-        self.assertEqual(rows[2]["rain_trailing_3day_mm"], "")
-        with self.assertRaises(ValueError):
-            selection_csv(snapshot, {"event": "../../bad", "station": "s", "river": "r", "days": 3})
-
-
 if __name__ == "__main__":
     unittest.main()

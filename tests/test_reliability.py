@@ -99,7 +99,9 @@ class BuildTests(LocalTemporaryTest):
     def test_successful_build_replaces_old_files(self):
         build(self.root)
         self.assertFalse((self.root / "dist/previous.txt").exists())
-        self.assertTrue((self.root / "dist/data/observations.json").is_file())
+        self.assertFalse((self.root / "dist/data/observations.json").exists())
+        self.assertFalse((self.root / "dist/data/provenance.json").exists())
+        self.assertTrue((self.root / "dist/data/regional/manifest.json").is_file())
         self.assertTrue((self.root / "dist/.nojekyll").is_file())
         self.assertEqual(list((self.root / ".cache/build").iterdir()), [])
 

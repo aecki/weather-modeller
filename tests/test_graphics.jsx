@@ -170,3 +170,15 @@ assert.equal(wheelZoomEnabled({ ctrlKey: true }), true);
 assert.equal(wheelZoomEnabled({ metaKey: true }), true);
 assert.equal(wheelZoomEnabled({}, true), true);
 assert.ok(classic.includes('touch-action:pan-y'));
+
+const locationsMap = renderToStaticMarkup(
+  <StationMap
+    width={600}
+    stations={[{ ...station, id: 'smn:MER', code: 'MER' }]}
+    selected="smn:MER"
+    locationsOnly
+  />,
+);
+assert.ok(locationsMap.includes('Select Meiringen (MER)'));
+assert.ok(!locationsMap.includes('missing rainfall'));
+assert.ok(locationsMap.includes('aria-pressed="true"'));
