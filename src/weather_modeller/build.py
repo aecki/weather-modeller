@@ -92,6 +92,9 @@ def build(root: Path) -> Path:
             reference = root / "data/reference" / name
             if reference.exists():
                 shutil.copytree(reference, staged / "data" / name)
+        lake_reference = root / "data/reference/lake-recovery"
+        if lake_reference.exists():
+            shutil.copytree(lake_reference, staged / "data/lake-recovery-reference")
         benchmark = root / "data/reference/lake-benchmark.json"
         if benchmark.exists():
             shutil.copy2(benchmark, staged / "data/lake-benchmark.json")

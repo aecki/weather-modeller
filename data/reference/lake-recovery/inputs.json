@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "attribution": "Lake levels: FOEN. Weather: ECMWF ERA5 reanalysis via Open-Meteo (CC BY 4.0). Reanalysis estimates are not rain-gauge observations or archived forecasts.",
+  "weatherSources": [
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=1989-01-01&end_date=1993-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-1989-1993.json",
+      "sha256": "1a7236aa632d85875cfe60c44ad14bc2e74889f7d414787648fc544160baa6ce",
+      "retrievedAt": "2026-11-05T14:30:55.475917+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=1994-01-01&end_date=1998-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-1994-1998.json",
+      "sha256": "a9b6e876ae3262805f9dd1202365e464ffa4b7588677850a7382a7fca24fc591",
+      "retrievedAt": "2026-11-05T14:30:56.811945+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=1999-01-01&end_date=1999-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-1999-1999.json",
+      "sha256": "153271f7cde35e643f53e78eabfff6e09f2438e60ea4f11ef1900ece800175fe",
+      "retrievedAt": "2026-11-05T14:35:32.708754+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2000-01-01&end_date=2000-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2000-2000.json",
+      "sha256": "d6d4cf3a9b8baa909654937cc16da1f9a181282f1ae0237d45cddc8ff1375152",
+      "retrievedAt": "2026-11-05T14:35:33.205806+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2001-01-01&end_date=2001-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2001-2001.json",
+      "sha256": "de28637767e5391380cd7b0e2bf96891a209ea32cf748cbc6d880171120099ba",
+      "retrievedAt": "2026-11-05T14:35:33.702114+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2002-01-01&end_date=2002-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2002-2002.json",
+      "sha256": "5a1d0a60cce27d77fcb8677528a10f13c676f8ce2668f3d69654b9fa6b2973d6",
+      "retrievedAt": "2026-11-05T14:35:33.954182+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2003-01-01&end_date=2003-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2003-2003.json",
+      "sha256": "f2e30e275db31c899656bc662a63eca0f6bf8316cf3be0b42e321bdda0e6fb40",
+      "retrievedAt": "2026-11-05T14:35:34.228857+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2004-01-01&end_date=2004-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2004-2004.json",
+      "sha256": "e7520890c74f733fd78701e6a6315c02de784ce6b2e397ebca497c23847e2119",
+      "retrievedAt": "2026-11-05T14:35:34.500799+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2005-01-01&end_date=2005-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2005-2005.json",
+      "sha256": "8afd09c9a813df53ef8e51455aa40d25d5194ba03e92207c2cc24afdaa70c5d6",
+      "retrievedAt": "2026-11-05T14:35:34.827893+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2006-01-01&end_date=2006-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2006-2006.json",
+      "sha256": "41fbf04d93e78b4f571154a798d97babccfbf2c7a5d1591d9bc4106ea585200e",
+      "retrievedAt": "2026-11-05T14:35:35.279004+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2007-01-01&end_date=2007-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2007-2007.json",
+      "sha256": "a2244b6f36d7c358641aad8dafaf163ef895c05f95fdc91ccfb3fffd108b6724",
+      "retrievedAt": "2026-11-05T14:35:35.657202+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2008-01-01&end_date=2008-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2008-2008.json",
+      "sha256": "0286b99e2711415396852a3e93f460a8539eb0541695e162b3ed4ab9fdb57925",
+      "retrievedAt": "2026-11-05T14:35:35.958287+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2009-01-01&end_date=2009-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2009-2009.json",
+      "sha256": "e7b3f70755c6fb8ded3268a05ed73101cc40fb50df8d20cf5a2f05cdfda3adf9",
+      "retrievedAt": "2026-11-05T14:37:07.236303+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2010-01-01&end_date=2010-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2010-2010.json",
+      "sha256": "dcee89bd247cdece5a5e059d6e10e9adee4a53bbf15d16a291d6250a83cc90d9",
+      "retrievedAt": "2026-11-05T14:38:38.533036+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2011-01-01&end_date=2011-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2011-2011.json",
+      "sha256": "e91e3fb55a37f86262954618fe345c0f4d51bbc594c457189e7d74e3dfa6d758",
+      "retrievedAt": "2026-11-05T14:38:38.837545+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2012-01-01&end_date=2012-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2012-2012.json",
+      "sha256": "f38bd49183e4924eb0ff3e5ed64c615796e8432794e7bbf29c15125eb4385cc1",
+      "retrievedAt": "2026-11-05T14:38:39.082705+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2013-01-01&end_date=2013-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2013-2013.json",
+      "sha256": "5b6c83ceb0c73cd65cac901b821edb4e524b30d90419220bb851cffbfffe627a",
+      "retrievedAt": "2026-11-05T14:38:39.391937+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2014-01-01&end_date=2014-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2014-2014.json",
+      "sha256": "080b2d10d9601f27d1b8bf493ea1132d815065a0626f6522d3489f3477a24f8a",
+      "retrievedAt": "2026-11-05T14:38:39.638851+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2015-01-01&end_date=2015-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2015-2015.json",
+      "sha256": "b0d2318c78158d2793a7b8b5549e15c016558c3d20bba6a52970b3f415f415b4",
+      "retrievedAt": "2026-11-05T14:38:39.955831+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2016-01-01&end_date=2016-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2016-2016.json",
+      "sha256": "eedd617a172cfbb52ac956637573869a96740810fd4120fb7b41bf9e8278e8b0",
+      "retrievedAt": "2026-11-05T14:38:40.284595+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2017-01-01&end_date=2017-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2017-2017.json",
+      "sha256": "21083a9d5862fb4d1ec28b7aa2df1409285a824024201be57e2d37603720b7b4",
+      "retrievedAt": "2026-11-05T14:38:40.563827+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2018-01-01&end_date=2018-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2018-2018.json",
+      "sha256": "5a0944cc42eedf8cb3d0f11646ea6f10bb70a54f7c8e143a1362d4186b5b7d86",
+      "retrievedAt": "2026-11-05T14:38:40.874576+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2019-01-01&end_date=2019-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2019-2019.json",
+      "sha256": "365893ee5d4d766fb806c0b872a9e12ff06f55f80930fffd6deda0827114a14f",
+      "retrievedAt": "2026-11-05T14:40:12.221315+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2020-01-01&end_date=2020-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2020-2020.json",
+      "sha256": "d0a1c986d832e988a442e78ed9c7db95c468554ab5d3969f34aa70126908b729",
+      "retrievedAt": "2026-11-05T14:40:12.479366+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2021-01-01&end_date=2021-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2021-2021.json",
+      "sha256": "4cacee66711a3440d8408f3891edf825a0b6981409e3c57f2c5d849ee13e88da",
+      "retrievedAt": "2026-11-05T14:40:12.782373+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2022-01-01&end_date=2022-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2022-2022.json",
+      "sha256": "2601ed61d034c24feb9055b8c087250ed4f5f355519dd5a2428ca5f67713466b",
+      "retrievedAt": "2026-11-05T14:41:44.072887+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2023-01-01&end_date=2023-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2023-2023.json",
+      "sha256": "0a1aebd268140d1158a357f28deb6fe38122d743f10a9f9d6606504bc7536fd8",
+      "retrievedAt": "2026-11-05T14:41:44.378375+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2024-01-01&end_date=2024-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2024-2024.json",
+      "sha256": "d1d1062df112247e7316b8d3fe5cb2f021eb1c3251ade7812f4e83e0879c10f4",
+      "retrievedAt": "2026-11-05T14:44:47.699501+00:00"
+    },
+    {
+      "url": "https://archive-api.open-meteo.com/v1/archive?latitude=46.94259%2C47.23732%2C46.94518%2C47.19623%2C46.80386%2C47.68155%2C46.77728%2C47.60492&longitude=8.95686%2C8.79281%2C9.13657%2C9.04826%2C9.20282%2C9.32349%2C9.70844%2C9.82238&start_date=2025-01-01&end_date=2025-12-31&daily=precipitation_sum%2Ctemperature_2m_mean%2Cet0_fao_evapotranspiration&timezone=Europe%2FZurich&models=era5&cell_selection=nearest",
+      "file": "data/raw/lake-recovery/era5-2025-2025.json",
+      "sha256": "cef0d3b64a6edaea8fed9158f9843072fbd9d11a48a1906c1b7346d93645a6d7",
+      "retrievedAt": "2026-11-05T14:44:48.010958+00:00"
+    }
+  ],
+  "catchmentsSha256": "6c00b0d7a19ed0ac7278261382c2baabdefe6dc68b0e67749e6a21bd33869319",
+  "lakes": [
+    {
+      "id": "2209",
+      "basinId": 123466,
+      "label": "Lake Zurich outlet",
+      "areaKm2": 1825.12,
+      "swissPercent": 100.0,
+      "nodes": [
+        {
+          "latitude": 46.94259,
+          "longitude": 8.95686,
+          "weight": 0.11057979041142058
+        },
+        {
+          "latitude": 47.23732,
+          "longitude": 8.79281,
+          "weight": 0.29033682844609665
+        },
+        {
+          "latitude": 46.94518,
+          "longitude": 9.13657,
+          "weight": 0.3925570374951974
+        },
+        {
+          "latitude": 47.19623,
+          "longitude": 9.04826,
+          "weight": 0.20652634364728625
+        }
+      ],
+      "history": {
+        "path": "history-2209.json.gz",
+        "sha256": "f967b02196dd7b0a50127c9cfe4e5603afbe33160be91a754f2d0bf2dcd90650",
+        "waterSha256": "bfc5aacab1d43d0023320dbc586153c20e02926a209f3e5da6876326d0849c79",
+        "waterSources": [
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-1970.json",
+            "sha256": "f4eb5c9db53a68e12b1fc516dbbdb1a1dfbc03948009c783683dd3c261e0ceaf",
+            "retrievedAt": "2026-11-04T14:45:37.098602+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1970-01-01T00:00:00Z\",_lt:\"1980-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-1980.json",
+            "sha256": "5ee49f853817192b9d1e4d107cf046c27fd855c2cf5a80d3e2583e20c2e18857",
+            "retrievedAt": "2026-11-04T14:45:38.186473+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1980-01-01T00:00:00Z\",_lt:\"1990-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-1990.json",
+            "sha256": "ad7f2ce70e27fa16e3e00f25ba52af15c3ccc059381a8d8bcc0361137a8f89f1",
+            "retrievedAt": "2026-11-04T14:45:39.248913+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1990-01-01T00:00:00Z\",_lt:\"2000-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-2000.json",
+            "sha256": "8efdfb14196a824111e817858736d3cb6af459eefa63d52182cb6e3a7d7be181",
+            "retrievedAt": "2026-11-04T14:45:40.292629+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2000-01-01T00:00:00Z\",_lt:\"2010-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-2010.json",
+            "sha256": "0c7bc479e809270edbcdc961a015763f26ca91d44f048cab462787e6efc15536",
+            "retrievedAt": "2026-11-04T14:45:41.316820+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2010-01-01T00:00:00Z\",_lt:\"2020-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2209-2020.json",
+            "sha256": "c06e1061de33516fa3b26ba50757f5d31ce66f28ba8e9e82376e09c4624be11c",
+            "retrievedAt": "2026-11-04T15:18:05.557816+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2209\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2020-01-01T00:00:00Z\",_lt:\"2027-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "2032",
+      "basinId": 171668,
+      "label": "Upper Lake Constance outlet at Konstanz",
+      "areaKm2": 10989.2,
+      "swissPercent": 48.8,
+      "nodes": [
+        {
+          "latitude": 46.80386,
+          "longitude": 9.20282,
+          "weight": 0.19140118721246172
+        },
+        {
+          "latitude": 47.68155,
+          "longitude": 9.32349,
+          "weight": 0.12319430771143053
+        },
+        {
+          "latitude": 46.77728,
+          "longitude": 9.70844,
+          "weight": 0.3341920133463151
+        },
+        {
+          "latitude": 47.60492,
+          "longitude": 9.82238,
+          "weight": 0.35121249172979374
+        }
+      ],
+      "history": {
+        "path": "history-2032.json.gz",
+        "sha256": "762db35f060fc8d679797ed99b0ed89ba14a43620cd3fa25cd6455436456c2bc",
+        "waterSha256": "446efa003c1203bd0671e64770dec639647e79e0f4e2db9d8777985dcb2b4188",
+        "waterSources": [
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-1970.json",
+            "sha256": "f14c1d8953a603ebfd5d22e6731af533e824259197bed8f5063ff1d9f2c15820",
+            "retrievedAt": "2026-11-04T14:45:37.119425+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1970-01-01T00:00:00Z\",_lt:\"1980-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-1980.json",
+            "sha256": "6314a114924734d5ff1ef8293c257a0787c9a41b11265ae3c7c0539c1711e722",
+            "retrievedAt": "2026-11-04T14:45:38.023133+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1980-01-01T00:00:00Z\",_lt:\"1990-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-1990.json",
+            "sha256": "83ee63def76fd837297dff98b0885113176ac7847e1bb83fefd4a51abc231ed3",
+            "retrievedAt": "2026-11-04T14:45:39.146174+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"1990-01-01T00:00:00Z\",_lt:\"2000-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-2000.json",
+            "sha256": "5c7db33db980ec92618b77e4e7afd29a3a974fca24a7affa6bd520f99985ad18",
+            "retrievedAt": "2026-11-04T14:45:40.264346+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2000-01-01T00:00:00Z\",_lt:\"2010-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-2010.json",
+            "sha256": "da32a169496285893c5f484dbbce15d9ff869d0f4a25918a6320f0930a5c54dd",
+            "retrievedAt": "2026-11-04T14:45:41.303759+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2010-01-01T00:00:00Z\",_lt:\"2020-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          },
+          {
+            "url": "https://data.bafu.admin.ch/api",
+            "file": "data/raw/water-network/2032-2020.json",
+            "sha256": "4dffcf1c3299a9f5e6439f0a347610b60fa7bd8a8738cc616a0e84a61a915cef",
+            "retrievedAt": "2026-11-04T15:18:05.136399+00:00",
+            "request": {
+              "query": "{ water { observations { data_1day_mean(where:{station:{no:{_eq:\"2032\"}},parameterName:{_eq:\"W\"},timestamp:{_gte:\"2020-01-01T00:00:00Z\",_lt:\"2027-01-01T00:00:00Z\"}}) { timestamp value unitSymbol releaseState } } } }"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

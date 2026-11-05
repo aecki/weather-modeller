@@ -115,6 +115,15 @@ jobs:
       - name: Refresh FOEN lake levels and recovery comparisons
         shell: bash
         run: .environments/weather-modeller/bin/python scripts/prepare_water.py
+      - name: Cache weather inputs for lake outlooks
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: data/raw/lake-recovery
+          key: lake-weather-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: lake-weather-${{ runner.os }}-
+      - name: Prepare weather-conditioned lake recovery outlooks
+        shell: bash
+        run: .environments/weather-modeller/bin/python scripts/prepare_lake_outlook.py
       - name: Test and build the static site
         shell: bash
         run: python run.py check

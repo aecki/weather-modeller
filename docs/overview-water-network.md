@@ -53,3 +53,7 @@ At the initial split, level/seasonal predictors improved MAE against persistence
 ## Map gestures
 
 Maps accept drag and pinch immediately, without an Explore/Finish mode. Ordinary desktop wheel events scroll the page; modifier-wheel, zoom buttons and pinch zoom the map. Fullscreen allows ordinary wheel map zoom. Touches beginning inside the map are reserved for its gestures; page scrolling remains available outside it. Retain official swisstopo attribution and station click/drag separation.
+
+## Weather-conditioned recovery outlook
+
+Zurich and Constance now additionally use the experimental catchment-weather model described in [lake-recovery.md](lake-recovery.md). The historical analogue and earlier short-term benchmark remain under disclosures. New recovery probabilities, weather-horizon boundary, simulated level range, held-out low-water results and weak-skill warnings are separate from the old analogue method.

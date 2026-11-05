@@ -42,3 +42,5 @@ data/processed/water/
 
 # Derived current-year complete-month summaries
 data/processed/year-overview/
+
+/data/processed/lake-outlook/

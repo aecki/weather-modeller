@@ -4,6 +4,7 @@ import { scaleLinear } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import LakeBenchmark from './LakeBenchmark.jsx';
+import LakeRecoveryOutlook from './LakeRecoveryOutlook.jsx';
 const shortDay = (d) =>
   new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -126,6 +127,8 @@ export function LakeOverview({ selected }) {
       });
     return () => c.abort();
   }, [directory, id]);
+  const weatherModelled = ['2209', '2032'].includes(id);
+  const HistoricalWrapper = weatherModelled ? 'details' : 'div';
   const a = lake?.analysis,
     r = a?.recovery;
   const priorDay = a?.latest
@@ -210,8 +213,10 @@ export function LakeOverview({ selected }) {
             Green line: measured daily level. Shaded band: the middle half of historical levels at
             this time of year, 1991–2020. Gaps remain gaps.
           </p>
-          <div className="lake-recovery">
-            <h3>Recovery outlook</h3>
+          {weatherModelled && <LakeRecoveryOutlook lake={lake} />}
+          <HistoricalWrapper className="lake-recovery">
+            {weatherModelled && <summary>Historical comparison without a weather forecast</summary>}
+            <h3>{weatherModelled ? 'Historical recovery comparison' : 'Recovery outlook'}</h3>
             {stale ? (
               <p>A recovery outlook is withheld because the observation is out of date.</p>
             ) : r?.unavailable ? (
@@ -250,8 +255,15 @@ export function LakeOverview({ selected }) {
               promised recovery date. Future rain, evaporation, inflows and regulated outflows can
               change the outcome. A return means seven consecutive days within the seasonal range.
             </p>
-          </div>
-          <LakeBenchmark id={id} />
+          </HistoricalWrapper>
+          {weatherModelled ? (
+            <details>
+              <summary>Earlier short-term model benchmark</summary>
+              <LakeBenchmark id={id} />
+            </details>
+          ) : (
+            <LakeBenchmark id={id} />
+          )}
           <details>
             <summary>Lake sources, uncertainty and method</summary>
             <p>

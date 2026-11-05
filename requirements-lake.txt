@@ -1,0 +1,4 @@
+# One-time catchment preparation only. Daily forecast preparation uses regional-deps.
+-r requirements-history.txt
+pyproj==3.7.2
+inflate64==1.0.4
