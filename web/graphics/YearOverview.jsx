@@ -160,7 +160,11 @@ export function YearOverview({ summary, date, release }) {
   );
   if (summary?.error) return null;
   return (
-    <section className="year-overview overview-only" aria-label="How unusual was this year">
+    <section
+      id="rainfall-year"
+      className="year-overview overview-only"
+      aria-label="How unusual was this year"
+    >
       <h2>How unusual was {year}?</h2>
       {error ? (
         <p role="status">{error}</p>

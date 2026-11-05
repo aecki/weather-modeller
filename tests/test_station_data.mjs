@@ -88,11 +88,25 @@ for (const hash of ['#station-lab', '#model-lab', '#model-comparison', '#how-it-
   const route = routeForHash(hash);
   assert.equal(route.analysis, 'network');
   assert.equal(route.mode, 'pro');
-  assert.ok(route.hash.startsWith('#network'));
+  assert.equal(route.section, 'rainfall');
+  assert.ok(['#rainfall-stations', '#network-comparison', '#network-methods'].includes(route.hash));
 }
 assert.equal(routeForHash('').mode, 'overview');
 assert.equal(routeForHash('#pro').analysis, 'address');
 assert.equal(routeForHash('#network').analysis, 'network');
+assert.equal(routeForHash('#lake-levels').hash, '#water-levels');
+assert.equal(routeForHash('#overview').hash, '#rainfall');
+for (const [hash, mode, panel] of [
+  ['#water-levels', 'overview', 'records'],
+  ['#water-pro', 'pro', 'records'],
+  ['#water-recovery', 'pro', 'recovery'],
+  ['#water-validation', 'pro', 'validation'],
+]) {
+  const route = routeForHash(hash);
+  assert.equal(route.section, 'water');
+  assert.equal(route.mode, mode);
+  assert.equal(route.panel, panel);
+}
 
 const versionedCSV = stationCSV(
   { ...gaps, id: 'smn:BER', sources: [{ tier: 'historical', sha256: 'a'.repeat(64) }] },

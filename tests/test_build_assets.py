@@ -18,6 +18,7 @@ class AssetVersionTests(unittest.TestCase):
             names = (
                 "style.css",
                 "overview.css",
+                "layout.css",
                 "graphics.js",
                 "data-core.js",
                 "app.js",

@@ -1,4 +1,4 @@
-name: Publish aeckis rainfall explorer
+name: Publish aecki's rainfall explorer
 on:
   push:
     branches: [main]

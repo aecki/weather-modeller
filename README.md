@@ -1,4 +1,4 @@
-# aeckis rainfall explorer
+# aecki's rainfall explorer
 
 A static web app for **daily regional Swiss precipitation estimates** and a separate laboratory for **real historical station rainfall and river observations**. The published GitHub Pages site needs only a browser. Address estimates carry preliminary/consolidated status and source versions; station models remain separate. The development environment, caches, data and build output stay inside this repository.
 

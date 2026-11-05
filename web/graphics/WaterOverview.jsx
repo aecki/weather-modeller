@@ -80,10 +80,8 @@ export function WaterChart({
     </svg>
   );
 }
-export function LakeOverview({ selected }) {
+export function LakeOverview({ id = '2209', onSelect, onDirectory, embedded = false }) {
   const [directory, setDirectory] = useState(null),
-    [id, setId] = useState('2209'),
-    [chosen, setChosen] = useState(false),
     [lake, setLake] = useState(null),
     [error, setError] = useState('');
   useEffect(() => {
@@ -93,22 +91,15 @@ export function LakeOverview({ selected }) {
         if (!r.ok) throw Error('Lake observations are not available in this release.');
         return r.json();
       })
-      .then(setDirectory)
+      .then((data) => {
+        setDirectory(data);
+        onDirectory?.(data);
+      })
       .catch((e) => {
         if (!c.signal.aborted) setError(e.message);
       });
     return () => c.abort();
   }, []);
-  useEffect(() => {
-    if (chosen || !selected || !directory) return;
-    const nearby = [...directory.lakes].sort(
-      (a, b) =>
-        (a.easting - selected.easting) ** 2 +
-        (a.northing - selected.northing) ** 2 -
-        ((b.easting - selected.easting) ** 2 + (b.northing - selected.northing) ** 2),
-    );
-    if (nearby[0]) setId(nearby[0].id);
-  }, [selected, directory, chosen]);
   useEffect(() => {
     if (!directory) return;
     const c = new AbortController();
@@ -138,17 +129,17 @@ export function LakeOverview({ selected }) {
   const weeklyChange = Number.isFinite(prior) ? (a.level - prior) * 100 : null;
   const stale = a?.latest && (Date.now() - Date.parse(a.latest + 'T12:00:00Z')) / 86400000 > 3;
   return (
-    <section
-      id="lake-levels"
-      className="lake-overview overview-only"
-      aria-label="Lake levels and recovery"
-    >
-      <p className="eyebrow">LAKE WATER LEVELS</p>
-      <h2>When could lake levels return to normal?</h2>
-      <p>
-        Compare the latest measured level with the usual range for this time of year. A steady level
-        can still be unusually low.
-      </p>
+    <section id="lake-levels" className="lake-overview" aria-label="Lake levels and recovery">
+      {!embedded && (
+        <>
+          <p className="eyebrow">LAKE WATER LEVELS</p>
+          <h2>When could lake levels return to normal?</h2>
+          <p>
+            Compare the latest measured level with the usual range for this time of year. A steady
+            level can still be unusually low.
+          </p>
+        </>
+      )}
       {directory && (
         <label>
           Lake{' '}
@@ -156,8 +147,7 @@ export function LakeOverview({ selected }) {
             aria-label="Overview lake"
             value={id}
             onChange={(e) => {
-              setId(e.target.value);
-              setChosen(true);
+              onSelect?.(e.target.value);
             }}
           >
             {directory.lakes.map((l) => (
@@ -214,7 +204,7 @@ export function LakeOverview({ selected }) {
             this time of year, 1991–2020. Gaps remain gaps.
           </p>
           {weatherModelled && <LakeRecoveryOutlook lake={lake} />}
-          <HistoricalWrapper className="lake-recovery">
+          <HistoricalWrapper id="water-history" className="lake-recovery">
             {weatherModelled && <summary>Historical comparison without a weather forecast</summary>}
             <h3>{weatherModelled ? 'Historical recovery comparison' : 'Recovery outlook'}</h3>
             {stale ? (

@@ -19,21 +19,21 @@ export function RainAmountGraphic({ amount }) {
               aria-label={`${amountLabel(amount)} millimetres of rainfall on a scale from zero to ${max}`}
               data-renderer="visx"
             >
-              <text x="20" y="25" fill="#d4e8e7" fontSize="12">
+              <text x="20" y="25" fill="#53677e" fontSize="12">
                 A whole day of rainfall
               </text>
-              <Bar x={20} y={49} width={w - 44} height={40} rx={10} fill="#ffffff18" />
-              <Bar x={20} y={49} width={x(amount)} height={40} rx={10} fill="#80d5c9" />
+              <Bar x={20} y={49} width={w - 44} height={40} rx={10} fill="#e7edf4" />
+              <Bar x={20} y={49} width={x(amount)} height={40} rx={10} fill="#2878ed" />
               <g transform="translate(20,98)">
                 <AxisBottom
                   scale={x}
                   numTicks={4}
                   hideAxisLine
                   hideTicks
-                  tickLabelProps={() => ({ fill: '#d4e8e7', fontSize: 12, textAnchor: 'middle' })}
+                  tickLabelProps={() => ({ fill: '#53677e', fontSize: 12, textAnchor: 'middle' })}
                 />
               </g>
-              <text x={w - 25} y="148" textAnchor="end" fill="#d4e8e7" fontSize="11">
+              <text x={w - 25} y="148" textAnchor="end" fill="#53677e" fontSize="11">
                 millimetres (mm) · daily total
               </text>
             </svg>

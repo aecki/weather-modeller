@@ -90,7 +90,7 @@ export function StationNetwork() {
   return (
     <section className="station-network" aria-label="Precipitation network analysis">
       <p className="eyebrow">MEASURED PRECIPITATION</p>
-      <h1>Stations &amp; gauges</h1>
+      <h1>Rainfall station analysis</h1>
       <p>
         Search for a precipitation station or choose one on the map. Its observations, historical
         extremes and models appear below.
@@ -331,19 +331,23 @@ export function StationNetwork() {
           )}
         </details>
       )}
-      <HydroNetwork />
     </section>
   );
 }
-export function HydroNetwork() {
+export function HydroNetwork({ selectedId, onSelect }) {
   const [directory, setDirectory] = useState(null),
-    [id, setId] = useState('2209'),
+    [internalId, setInternalId] = useState('2209'),
     [parameter, setParameter] = useState('W'),
     [rows, setRows] = useState(null),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
     [query, setQuery] = useState(''),
     [request, setRequest] = useState(null);
+  const id = selectedId ?? internalId;
+  const setId = (value) => {
+    setInternalId(value);
+    onSelect?.(value);
+  };
   const pending = useRef(null);
   const today = new Date().toISOString().slice(0, 10),
     [end, setEnd] = useState(today),

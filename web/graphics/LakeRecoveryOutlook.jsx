@@ -150,7 +150,7 @@ export default function LakeRecoveryOutlook({ lake }) {
   const weakerThanBaseline =
     scores.reduce((sum, s) => sum + s.seasonalWeatherBrier - s.baselineBrier, 0) > 0;
   return (
-    <div className="weather-recovery">
+    <div id="water-outlook" className="weather-recovery">
       <p className="eyebrow">EXPERIMENTAL WEATHER-BASED OUTLOOK</p>
       <h3>Chance of returning to the usual range</h3>
       <p>

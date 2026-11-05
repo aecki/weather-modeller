@@ -2,7 +2,6 @@ import { archiveIndex, resolveRainDay, loadRainField } from './archive-data.mjs'
 import { RainAmountGraphic } from './RainVisuals';
 import { YearOverview } from './YearOverview';
 import { ClimateOverview, HistoricalExtremes, useCellSummary } from './ClimateOverview';
-import { LakeOverview } from './WaterOverview';
 import { RegionalAddress } from './RegionalAddress';
 import { HistoricalOverview } from './HistoricalOverview';
 import React, { useEffect, useRef, useState } from 'react';
@@ -45,6 +44,10 @@ function assetURL(path) {
 }
 
 export function DailyRegional({ mode = 'overview' }) {
+  const [seenPro, setSeenPro] = useState(mode === 'pro');
+  useEffect(() => {
+    if (mode === 'pro') setSeenPro(true);
+  }, [mode]);
   const [manifest, setManifest] = useState(null),
     [releaseError, setReleaseError] = useState('');
   const [archive, setArchive] = useState(null),
@@ -264,19 +267,20 @@ export function DailyRegional({ mode = 'overview' }) {
         {mode === 'overview' ? 'How much did it really rain?' : 'Daily rainfall by address'}
       </h1>
       <p className="daily-intro">
-        Choose a Swiss address and a date to see the estimated rainfall and compare it with records
-        since 1961. Estimates describe the surrounding area, not measurements at the building.
+        {mode === 'overview'
+          ? 'Daily rainfall and its place in the historical record.'
+          : 'Explore rainfall history, return periods and model uncertainty for a Swiss address.'}
       </p>
       {mode === 'overview' && (
-        <nav className="overview-topics" aria-label="Overview sections">
+        <nav className="overview-topics" aria-label="Rainfall sections">
           <a href="#daily-title" onClick={(e) => goToSection(e, 'daily-title')}>
-            Daily rainfall
+            Selected day
+          </a>
+          <a href="#rainfall-year" onClick={(e) => goToSection(e, 'rainfall-year')}>
+            This year
           </a>
           <a href="#monthly-rainfall" onClick={(e) => goToSection(e, 'monthly-rainfall')}>
-            Monthly totals
-          </a>
-          <a href="#lake-levels" onClick={(e) => goToSection(e, 'lake-levels')}>
-            Lake levels &amp; recovery
+            Rainfall history
           </a>
         </nav>
       )}
@@ -474,17 +478,19 @@ export function DailyRegional({ mode = 'overview' }) {
               />
               <YearOverview summary={summary} date={date} release={manifest} />
               <ClimateOverview summary={summary} date={date} />
-              {mode === 'pro' && (
-                <RegionalAddress
-                  cell={active.cell}
-                  selected={selected}
-                  date={date}
-                  fieldBuffer={active.buffer}
-                  release={manifest}
-                  mode={mode}
-                  days={days}
-                  onDuration={setDays}
-                />
+              {seenPro && (
+                <div className="pro-only">
+                  <RegionalAddress
+                    cell={active.cell}
+                    selected={selected}
+                    date={date}
+                    fieldBuffer={active.buffer}
+                    release={manifest}
+                    mode={mode}
+                    days={days}
+                    onDuration={setDays}
+                  />
+                </div>
               )}
             </div>
           )}
@@ -548,7 +554,6 @@ export function DailyRegional({ mode = 'overview' }) {
       <p className="daily-station-link overview-only">
         <a href="#pro">Explore regional return periods and uncertainty in Pro Mode →</a>
       </p>
-      {mode === 'overview' && <LakeOverview selected={selected} />}
     </section>
   );
 }

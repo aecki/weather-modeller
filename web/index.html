@@ -11,42 +11,47 @@
       name="description"
       content="Explore real Swiss rainfall records, extreme rainfall models and lake levels, using MeteoSwiss and FOEN observations."
     />
-    <title>aeckis rainfall explorer</title>
+    <title>aecki's rainfall explorer</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="overview.css" />
+    <link rel="stylesheet" href="layout.css" />
     <script defer src="graphics.js"></script>
     <script defer src="data-core.js"></script>
     <script defer src="app.js"></script>
   </head>
-  <body data-mode="overview" data-analysis="address">
+  <body data-mode="overview" data-analysis="address" data-section="rainfall">
     <a class="skip-link" href="#workspace">Skip to content</a>
-    <div class="utility-bar">
-      <span>Swiss Precipitation Analysis</span><span>Observations · History · Models</span>
-    </div>
     <header class="site-header">
-      <a class="overview-brand" href="#overview"
-        ><img src="favicon.svg" alt="" width="42" height="42" /><span
-          >aeckis <b>rainfall explorer</b></span
+      <a class="overview-brand" href="#rainfall"
+        ><img src="favicon.svg" alt="" width="36" height="36" /><span
+          >aecki's <b>rainfall explorer</b></span
         ></a
       >
-      <span class="header-context">Rainfall and lake levels in Switzerland</span>
+      <span class="header-context">Swiss rainfall &amp; water levels</span>
     </header>
-    <nav class="primary-nav" aria-label="Display mode">
-      <a href="#overview" id="overview-mode" aria-current="page">Overview</a
-      ><a href="#pro" id="pro-mode">Pro Mode</a>
-    </nav>
+    <div class="navigation-shell">
+      <nav class="section-tabs" aria-label="Main sections">
+        <a href="#rainfall" id="rainfall-section" aria-current="page">Rainfall</a>
+        <a href="#water-levels" id="water-section">Water levels</a>
+      </nav>
+      <nav class="mode-switch" aria-label="Display mode">
+        <a href="#rainfall" id="overview-mode" aria-current="page">Basic</a>
+        <a href="#rainfall-pro" id="pro-mode">Pro</a>
+      </nav>
+    </div>
     <div class="app">
       <main id="workspace" tabindex="-1">
-        <nav class="pro-only pro-nav" aria-label="Pro Mode sections">
-          <a href="#pro">Address analysis</a><a href="#network">Stations &amp; gauges</a>
+        <nav class="rain-source-nav" aria-label="Rainfall analysis source">
+          <a href="#rainfall-pro">Address</a><a href="#rainfall-stations">Station</a>
         </nav>
         <div id="regional-daily"></div>
-        <div id="station-network" class="network-only pro-only"></div>
+        <div id="station-network" hidden></div>
+        <div id="water-workspace" hidden></div>
       </main>
     </div>
     <footer class="site-footer">
-      <span>aeckis rainfall explorer</span
+      <span>aecki's rainfall explorer</span
       ><span>Independent analysis · Sources: MeteoSwiss, FOEN · Map © swisstopo</span>
     </footer>
   </body>

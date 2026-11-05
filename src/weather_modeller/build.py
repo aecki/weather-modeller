@@ -17,6 +17,7 @@ REQUIRED_ASSETS = (
     "favicon.svg",
     "style.css",
     "overview.css",
+    "layout.css",
     "app.js",
     "data-core.js",
     "graphics.js",
@@ -44,6 +45,7 @@ def version_entry_assets(destination: Path) -> None:
     for name in (
         "style.css",
         "overview.css",
+        "layout.css",
         "graphics.js",
         "data-core.js",
         "app.js",

@@ -10,7 +10,7 @@
 - Keep scientific, cache and file-replacement regression tests meaningful. Do not add tests that merely mirror trivial presentation changes.
 - Do not commit environments, caches, raw downloads, node_modules, exports or build output. Do not claim remote CI passed without observing it.
 
-- Product name: aeckis rainfall explorer. Keep repository/environment identifier `weather-modeller`.
+- Product name: aecki's rainfall explorer. Keep repository/environment identifier `weather-modeller`.
 - Build data graphics with visx in `web/graphics/`. Do not reintroduce manual chart-string rendering or CDN dependencies. Official swisstopo XYZ tiles are authorized for online map detail; the product map is online-only; builds and tests remain network-free.
 - Preserve GitHub Pages compatibility: relative asset/data paths, static build with browser exports, static development preview with browser downloads. Setup installs locked frontend dependencies; do not trigger npm installs during a build.
 
@@ -29,4 +29,4 @@
 
 - Expanded overview and full station/lake access follow docs/overview-water-network.md. Never shrink the ≥400-cell return-period footprint to imply local precision. Monthly cell summaries are descriptive smoothed estimates. Historical extremes are five non-overlapping real windows, not editorial event names or annual-maxima-only ranks. Keep overlapping station network histories separate; annual totalisers are not daily series. Lake historical analogues remain a sparse-guarded, right-censored comparison. Zurich/Constance additionally use the experimental weather-conditioned outlook documented in docs/lake-recovery.md. Preserve training/forecast availability cutoffs, full transboundary catchments, missingness, unrecovered paths, and explicit weak-skill/uncalibrated-ensemble warnings. Preserve source timestamps, height datums, unknown release flags, stale-data warnings and missing follow-up.
 
-- Pro Mode navigation is intentionally minimal: Address analysis and Stations & gauges only. Keep all station tools in the unified network workspace, preserve legacy URL redirects, and never mark unloaded map locations as measured missing rainfall. The map groups station codes; separate network histories remain separate in the finder.
+- Main navigation is Rainfall / Water levels, with Basic / Pro on the right. Rainfall Pro has Address / Station; Water Pro has Records / Recovery model / Validation. Keep selections mounted across navigation and preserve legacy links. Keep all station tools in the unified network workspace, preserve legacy URL redirects, and never mark unloaded map locations as measured missing rainfall. The map groups station codes; separate network histories remain separate in the finder.

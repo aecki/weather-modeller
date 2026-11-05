@@ -47,6 +47,7 @@ def quality(root):
             "web/index.html",
             "web/style.css",
             "web/overview.css",
+            "web/layout.css",
             "web/app.js",
             "web/data-core.js",
             "tests/test_data.cjs",
