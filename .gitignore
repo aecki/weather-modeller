@@ -39,3 +39,6 @@ data/processed/regional-models/
 
 # Explicitly refreshed FOEN water observations
 data/processed/water/
+
+# Derived current-year complete-month summaries
+data/processed/year-overview/

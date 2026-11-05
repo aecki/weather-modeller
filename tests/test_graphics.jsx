@@ -169,7 +169,8 @@ assert.equal(wheelZoomEnabled({}), false);
 assert.equal(wheelZoomEnabled({ ctrlKey: true }), true);
 assert.equal(wheelZoomEnabled({ metaKey: true }), true);
 assert.equal(wheelZoomEnabled({}, true), true);
-assert.ok(classic.includes('touch-action:pan-y'));
+assert.ok(classic.includes('touch-action:none'));
+assert.ok(!classic.includes('Explore map'));
 
 const locationsMap = renderToStaticMarkup(
   <StationMap

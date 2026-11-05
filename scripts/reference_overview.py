@@ -94,7 +94,15 @@ for cell, rec in records.items():
         extremes[str(duration)] = [
             [v, (date.fromisoformat(d) - date(1961, 1, 1)).days] for v, d in chosen
         ]
-    out.append({"cell": cell, "months": months, "annual": yearly, "extremes": extremes})
+    out.append(
+        {
+            "cell": cell,
+            "months": months,
+            "annual": yearly,
+            "extremes": extremes,
+            "yearMonths": rec["months"],
+        }
+    )
 (ROOT / "tests/fixtures/overview-history.json").write_text(
     json.dumps(
         {

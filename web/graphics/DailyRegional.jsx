@@ -1,5 +1,6 @@
 import { archiveIndex, resolveRainDay, loadRainField } from './archive-data.mjs';
 import { RainAmountGraphic } from './RainVisuals';
+import { YearOverview } from './YearOverview';
 import { ClimateOverview, HistoricalExtremes, useCellSummary } from './ClimateOverview';
 import { LakeOverview } from './WaterOverview';
 import { RegionalAddress } from './RegionalAddress';
@@ -471,6 +472,7 @@ export function DailyRegional({ mode = 'overview' }) {
                 date={date}
                 status={record.status}
               />
+              <YearOverview summary={summary} date={date} release={manifest} />
               <ClimateOverview summary={summary} date={date} />
               {mode === 'pro' && (
                 <RegionalAddress

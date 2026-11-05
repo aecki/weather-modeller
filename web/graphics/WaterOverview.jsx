@@ -3,6 +3,7 @@ import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 import { AxisBottom, AxisLeft } from '@visx/axis';
+import LakeBenchmark from './LakeBenchmark.jsx';
 const shortDay = (d) =>
   new Date(d + 'T12:00:00Z').toLocaleDateString('en-GB', {
     day: 'numeric',
@@ -127,6 +128,11 @@ export function LakeOverview({ selected }) {
   }, [directory, id]);
   const a = lake?.analysis,
     r = a?.recovery;
+  const priorDay = a?.latest
+    ? new Date(Date.parse(a.latest + 'T12:00:00Z') - 7 * 86400000).toISOString().slice(0, 10)
+    : null;
+  const prior = a?.recent?.find((row) => row[0] === priorDay)?.[1];
+  const weeklyChange = Number.isFinite(prior) ? (a.level - prior) * 100 : null;
   const stale = a?.latest && (Date.now() - Date.parse(a.latest + 'T12:00:00Z')) / 86400000 > 3;
   return (
     <section
@@ -176,6 +182,15 @@ export function LakeOverview({ selected }) {
           {stale && (
             <p role="status">
               This reading is more than three days old. It does not describe the current level.
+            </p>
+          )}
+          {weeklyChange != null && (
+            <p>
+              Over the seven days to this reading, the level{' '}
+              {Math.abs(weeklyChange) < 0.5
+                ? 'was almost unchanged'
+                : `${weeklyChange > 0 ? 'rose' : 'fell'} by ${Math.abs(weeklyChange).toFixed(1)} cm`}
+              .
             </p>
           )}
           {a.band && (
@@ -236,6 +251,7 @@ export function LakeOverview({ selected }) {
               change the outcome. A return means seven consecutive days within the seasonal range.
             </p>
           </div>
+          <LakeBenchmark id={id} />
           <details>
             <summary>Lake sources, uncertainty and method</summary>
             <p>

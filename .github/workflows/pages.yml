@@ -100,6 +100,9 @@ jobs:
       - name: Prepare a complete daily regional release
         shell: bash
         run: python run.py fetch-regional --days 366
+      - name: Prepare complete-month yearly comparisons
+        shell: bash
+        run: .environments/weather-modeller/bin/python scripts/prepare_year_overview.py
       - name: Cache official lake history
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:

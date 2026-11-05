@@ -146,12 +146,25 @@ def prepare():
         digest = hashlib.sha256(encoded).hexdigest()
         filename = f"{start // 128}-{digest}.json.gz"
         (outdir / filename).write_bytes(encoded)
+        # Descriptive monthly totals at 0.1 mm; missing months have a reserved code.
+        selected = totals[:, :, start : start + len(records)].transpose(2, 0, 1)
+        if np.any(selected[np.isfinite(selected)] >= 6553.5):
+            raise ValueError("Monthly total exceeds the compact reference range")
+        encoded_months = np.where(
+            np.isfinite(selected), np.rint(np.nan_to_num(selected) * 10), 65535
+        ).astype("<u2")
+        yearly = gzip.compress(encoded_months.tobytes(), compresslevel=9, mtime=0)
+        yearly_hash = hashlib.sha256(yearly).hexdigest()
+        yearly_name = f"{start // 128}-{yearly_hash}.years.u16.gz"
+        (outdir / yearly_name).write_bytes(yearly)
         chunks.append(
             {
                 "first": int(cells[start]),
                 "last": int(cells[min(start + 127, len(cells) - 1)]),
                 "path": filename,
                 "sha256": digest,
+                "yearPath": yearly_name,
+                "yearSha256": yearly_hash,
             }
         )
     write_json(
@@ -164,6 +177,7 @@ def prepare():
             "referenceId": baseline["referenceId"],
             "chunks": chunks,
             "monthFields": ["count", "mean", "p10", "p90", "maximum", "maximumYear", "meanWetDays"],
+            "yearEncoding": "cell/year/month uint16 little endian; monthly total in 0.1 mm; 65535 missing",
             "annualFields": ["count", "mean", "minimum", "minimumYear", "maximum", "maximumYear"],
             "interpretation": "Smoothed containing-cell regional estimates; not building observations or local extreme-value estimates",
             "extremes": "Five largest non-overlapping complete windows, within calendar years; ties prefer earliest date",

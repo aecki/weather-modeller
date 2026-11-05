@@ -44,8 +44,6 @@ export function StationMap({
       window.removeEventListener('resize', update);
     };
   }, []);
-  const [exploring, setExploring] = useState(false);
-  const interactive = exploring || Boolean(fullscreenSize);
   const [tileRetry, setTileRetry] = useState(0);
   const [tileFailed, setTileFailed] = useState(false);
   const [showStations, setShowStations] = useState(true);
@@ -103,10 +101,6 @@ export function StationMap({
     return () => element.removeEventListener('wheel', wheel);
   }, [width, height, maxZoom, fullscreenSize]);
   const start = (event) => {
-    if (event.pointerType === 'touch' && !interactive) {
-      dragged.current = false;
-      return;
-    }
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (pointers.current.size === 0) {
       dragged.current = false;
@@ -188,7 +182,7 @@ export function StationMap({
       <svg
         ref={svg}
         width="100%"
-        style={{ touchAction: interactive ? 'none' : 'pan-y' }}
+        style={{ touchAction: 'none' }}
         viewBox={`0 0 ${width} ${height}`}
         role="group"
         tabIndex={0}
@@ -332,9 +326,6 @@ export function StationMap({
         </button>
       </div>
       <div className="map-options">
-        <button aria-pressed={exploring} onClick={() => setExploring(!exploring)}>
-          {exploring ? 'Finish exploring' : 'Explore map'}
-        </button>
         <label>
           <input
             type="checkbox"
@@ -372,9 +363,7 @@ export function StationMap({
           ? 'Drag / pinch / scroll to explore'
           : 'Scroll page normally · Ctrl/⌘ + scroll to zoom'}
         <br />
-        {exploring
-          ? 'Touch exploration enabled · finish to scroll over the map'
-          : 'Touch: choose Explore map to drag and pinch'}
+        Drag to move · pinch to zoom
       </span>
       <span className="map-credit">
         <a

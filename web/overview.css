@@ -769,3 +769,75 @@ body[data-analysis='network'] .network-only {
     gap: 10px;
   }
 }
+
+.year-overview {
+  background: white;
+  border: 1px solid var(--story-line);
+  padding: 28px;
+  margin: 24px 0;
+}
+.year-overview p {
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 900px;
+}
+.year-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin: 22px 0;
+}
+.year-facts article {
+  background: #edf2f5;
+  padding: 20px;
+}
+.year-facts strong {
+  display: block;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.year-facts span {
+  display: block;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.year-facts p {
+  font-size: 14px;
+}
+.visx-map svg {
+  cursor: grab;
+}
+.visx-map svg:active {
+  cursor: grabbing;
+}
+.visx-map svg .visx-point {
+  cursor: pointer;
+}
+@media (max-width: 760px) {
+  .year-overview {
+    padding: 20px;
+  }
+  .year-facts {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lake-benchmark {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #d9e0e5;
+}
+.lake-benchmark table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.lake-benchmark th,
+.lake-benchmark td {
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #d9e0e5;
+}
+.lake-benchmark caption {
+  text-align: left;
+  margin-bottom: 0.5rem;
+}

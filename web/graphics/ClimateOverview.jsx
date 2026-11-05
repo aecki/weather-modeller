@@ -6,6 +6,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis';
 import { verifiedBuffer } from './regional-data.mjs';
 let indexPromise;
 const cache = new Map();
+const yearCache = new Map();
 export function useCellSummary(cell) {
   const [state, setState] = useState(null);
   useEffect(() => {
@@ -14,7 +15,7 @@ export function useCellSummary(cell) {
     (async () => {
       const base = new URL('data/rainfall-summary/', document.baseURI);
       if (!indexPromise)
-        indexPromise = fetch(new URL('manifest.json', base))
+        indexPromise = fetch(new URL('manifest.json', base), { cache: 'no-cache' })
           .then((r) => {
             if (!r.ok) throw Error('Monthly rainfall history is unavailable.');
             return r.json();
@@ -41,7 +42,31 @@ export function useCellSummary(cell) {
       }
       const entry = rows.find((r) => r.cell === cell);
       if (!entry) throw Error('Monthly history does not cover this cell.');
-      return { cell, entry, manifest };
+      let yearly = yearCache.get(chunk.yearSha256);
+      if (!yearly) {
+        const raw = await verifiedBuffer(
+          await fetch(new URL(chunk.yearPath, base)),
+          chunk.yearSha256,
+          'Annual rainfall history',
+        );
+        const bytes = await new Response(
+          new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip')),
+        ).arrayBuffer();
+        if (bytes.byteLength !== rows.length * manifest.years.length * 12 * 2)
+          throw Error('Incomplete annual rainfall reference.');
+        yearly = bytes;
+        yearCache.set(chunk.yearSha256, yearly);
+        if (yearCache.size > 8) yearCache.delete(yearCache.keys().next().value);
+      }
+      const position = rows.indexOf(entry),
+        view = new DataView(yearly);
+      const yearMonths = manifest.years.map((_, i) =>
+        Array.from({ length: 12 }, (_, m) => {
+          const n = view.getUint16(((position * manifest.years.length + i) * 12 + m) * 2, true);
+          return n === 65535 ? null : n / 10;
+        }),
+      );
+      return { cell, entry: { ...entry, yearMonths }, manifest };
     })()
       .then((r) => {
         if (!cancelled) setState(r);

@@ -3,6 +3,7 @@
 import gzip
 import hashlib
 import json
+import struct
 import unittest
 from pathlib import Path
 
@@ -22,6 +23,23 @@ class OverviewHistoryTests(unittest.TestCase):
             raw = (folder / chunk["path"]).read_bytes()
             self.assertEqual(hashlib.sha256(raw).hexdigest(), chunk["sha256"])
             rows = json.loads(gzip.decompress(raw))
+            year_raw = (folder / chunk["yearPath"]).read_bytes()
+            self.assertEqual(hashlib.sha256(year_raw).hexdigest(), chunk["yearSha256"])
+            year_bytes = gzip.decompress(year_raw)
+            self.assertEqual(len(year_bytes), len(rows) * 65 * 12 * 2)
+            for position, row in enumerate(rows):
+                if row["cell"] in requested:
+                    expected = requested[row["cell"]]["yearMonths"]
+                    for yi, months in enumerate(expected):
+                        for mi, total in enumerate(months):
+                            stored = struct.unpack_from(
+                                "<H", year_bytes, ((position * 65 + yi) * 12 + mi) * 2
+                            )[0]
+                            if total is None:
+                                self.assertEqual(stored, 65535)
+                            else:
+                                self.assertLessEqual(abs(stored / 10 - total), 0.050001)
+
             self.assertEqual(rows[0]["cell"], chunk["first"])
             self.assertEqual(rows[-1]["cell"], chunk["last"])
             for row in rows:

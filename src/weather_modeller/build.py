@@ -92,6 +92,11 @@ def build(root: Path) -> Path:
             reference = root / "data/reference" / name
             if reference.exists():
                 shutil.copytree(reference, staged / "data" / name)
+        benchmark = root / "data/reference/lake-benchmark.json"
+        if benchmark.exists():
+            shutil.copy2(benchmark, staged / "data/lake-benchmark.json")
+            for inputs in benchmark.parent.glob("lake-benchmark-*.json.gz"):
+                shutil.copy2(inputs, staged / "data" / inputs.name)
         directory = root / "data/reference/station-network.json"
         if directory.exists():
             shutil.copy2(directory, staged / "data/station-network.json")
