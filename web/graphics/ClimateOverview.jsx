@@ -169,14 +169,14 @@ function MonthChart({ width, rows, selected }) {
         left={left}
         scale={y}
         numTicks={4}
-        tickLabelProps={() => ({ fontSize: 12, fill: '#526963', textAnchor: 'end', dx: -4 })}
+        tickLabelProps={() => ({ fontSize: 12, fill: '#596775', textAnchor: 'end', dx: -4 })}
       />
       <AxisBottom
         top={height - bottom}
         scale={x}
         tickLabelProps={() => ({
           fontSize: 12,
-          fill: '#526963',
+          fill: '#596775',
           textAnchor: w < 500 ? 'end' : 'middle',
           angle: w < 500 ? -50 : 0,
           dy: w < 500 ? 5 : 0,
@@ -191,14 +191,14 @@ function MonthChart({ width, rows, selected }) {
                 y={y(r[1])}
                 width={x.bandwidth()}
                 height={y(0) - y(r[1])}
-                fill={i === selected ? '#146e63' : '#9ec5bc'}
+                fill={i === selected ? '#2563a6' : '#a8bfdc'}
               />
               <line
                 x1={x(months[i]) + x.bandwidth() / 2}
                 x2={x(months[i]) + x.bandwidth() / 2}
                 y1={y(r[2])}
                 y2={y(r[3])}
-                stroke="#244d48"
+                stroke="#234b75"
                 strokeWidth={2}
               />
               <title>
@@ -208,7 +208,7 @@ function MonthChart({ width, rows, selected }) {
             </g>
           ),
       )}
-      <text x={left} y={10} fontSize={11} fill="#526963">
+      <text x={left} y={10} fontSize={11} fill="#596775">
         mm
       </text>
     </InteractiveChart>

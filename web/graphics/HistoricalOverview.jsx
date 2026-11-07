@@ -75,7 +75,7 @@ function HistoryChart({ width, bands }) {
                 y={y(b.label)}
                 width={x(b.share * 100)}
                 height={y.bandwidth()}
-                fill={b.selected ? '#32776f' : '#cbd5e1'}
+                fill={b.selected ? '#2563a6' : '#cbd5e1'}
               />
               {b.interval && (
                 <>

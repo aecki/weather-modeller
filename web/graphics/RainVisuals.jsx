@@ -61,7 +61,7 @@ export function FrequencyDots({ share, dry }) {
             width={8}
             height={15}
             rx={4}
-            fill={i < n ? '#16766b' : '#e4e8e4'}
+            fill={i < n ? '#2563a6' : '#e7edf4'}
           />
         ))}
       </svg>
@@ -91,18 +91,18 @@ export function WetDaysGraphic({ wet, yearLength = 365.25 }) {
         >
           {(pie) =>
             pie.arcs.map((arc, i) => (
-              <path key={i} d={pie.path(arc)} fill={i ? '#e8ece7' : '#16766b'} />
+              <path key={i} d={pie.path(arc)} fill={i ? '#e7edf4' : '#2563a6'} />
             ))
           }
         </Pie>
-        <text textAnchor="middle" y="5" fontSize="20" fontWeight="650" fill="#173e3c">
+        <text textAnchor="middle" y="5" fontSize="20" fontWeight="650" fill="#163a60">
           {Math.round(ratio * 100)}%
         </text>
       </g>
-      <text x="125" y="53" fill="#16766b" fontSize="12">
+      <text x="125" y="53" fill="#2563a6" fontSize="12">
         Wetter
       </text>
-      <text x="125" y="73" fill="#687773" fontSize="12">
+      <text x="125" y="73" fill="#596775" fontSize="12">
         Drier
       </text>
     </svg>
@@ -118,17 +118,17 @@ export function RecordGraphic({ record, selected }) {
       aria-label={`Regional rainfall: record ${record.toFixed(1)} mm${selected === null ? '' : `, selected day ${amountLabel(selected)} mm`}`}
       data-renderer="visx"
     >
-      <text x="5" y="18" fill="#687773" fontSize="11">
+      <text x="5" y="18" fill="#596775" fontSize="11">
         Wettest day
       </text>
-      <Bar x={5} y={26} width={x(record)} height={15} rx={4} fill="#16766b" />
-      <text x="5" y="69" fill="#687773" fontSize="11">
+      <Bar x={5} y={26} width={x(record)} height={15} rx={4} fill="#2563a6" />
+      <text x="5" y="69" fill="#596775" fontSize="11">
         Your selected day
       </text>
       {selected !== null && (
-        <Bar x={5} y={77} width={x(selected)} height={15} rx={4} fill="#86bdb4" />
+        <Bar x={5} y={77} width={x(selected)} height={15} rx={4} fill="#9ebcdb" />
       )}
-      <text x="5" y="112" fill="#687773" fontSize="10">
+      <text x="5" y="112" fill="#596775" fontSize="10">
         Same region · one-day totals
       </text>
     </svg>
