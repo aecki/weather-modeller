@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React, { useEffect, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
@@ -14,7 +15,7 @@ const dayText = (day) =>
   });
 const addDays = (day, n) =>
   new Date(Date.parse(day + 'T12:00:00Z') + n * 86400000).toISOString().slice(0, 10);
-function OutlookChart({ width, data }) {
+export function OutlookChart({ width, data }) {
   const w = Math.max(280, width),
     height = 230,
     left = 62,
@@ -28,7 +29,26 @@ function OutlookChart({ width, data }) {
   const y = scaleLinear({ domain: [low - padding, high + padding], range: [height - bottom, 18] });
   const points = [[data.level, data.level, data.level], ...rows];
   return (
-    <svg
+    <InteractiveChart
+      points={points.map((r, i) => ({
+        x: x(i),
+        y: y(r[1]),
+        title: addDays(data.observationDate, i),
+        lines: [
+          `${i === 0 ? 'Measured' : 'Simulated median'}: ${chartNumber(r[1], 2)} m`,
+          ...(i
+            ? [
+                `Middle 90%: ${chartNumber(r[0], 2)}–${chartNumber(r[2], 2)} m`,
+                i <= data.forecastDays ? 'Weather-forecast period' : 'Historical-weather scenario',
+              ]
+            : []),
+          ...(data.targetBands[i]
+            ? [
+                `Usual range: ${chartNumber(data.targetBands[i][0], 2)}–${chartNumber(data.targetBands[i][1], 2)} m`,
+              ]
+            : []),
+        ],
+      }))}
       viewBox={`0 0 ${w} ${height}`}
       role="img"
       aria-label="Simulated lake levels: median and central 90 percent of paths, not observations"
@@ -94,7 +114,7 @@ function OutlookChart({ width, data }) {
       <text x={left} y={12} fontSize={11} fill="#526570">
         m above sea level
       </text>
-    </svg>
+    </InteractiveChart>
   );
 }
 export default function LakeRecoveryOutlook({ lake }) {

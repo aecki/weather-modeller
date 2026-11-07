@@ -1,3 +1,4 @@
+import InteractiveChart from './InteractiveChart.jsx';
 import { FrequencyDots } from './RainVisuals';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
@@ -26,7 +27,19 @@ function HistoryChart({ width, bands }) {
     padding: 0.35,
   });
   return (
-    <svg
+    <InteractiveChart
+      axis="y"
+      points={bands.map((b) => ({
+        x: left + x(b.share * 100),
+        y: top + y(b.label) + y.bandwidth() / 2,
+        title: b.label,
+        lines: [
+          `${pct(b.share)}% of historical days`,
+          b.interval
+            ? `95% range: ${pct(b.interval[0])}–${pct(b.interval[1])}%`
+            : 'Too few examples for a stable range',
+        ],
+      }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
@@ -102,7 +115,7 @@ function HistoryChart({ width, bands }) {
           Historical days (%)
         </text>
       </g>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function HistoricalOverview({ cell, amount, date, status }) {

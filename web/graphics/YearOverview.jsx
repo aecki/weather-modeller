@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { scaleBand, scaleLinear } from '@visx/scale';
@@ -41,7 +42,16 @@ function YearChart({ width, result }) {
     data.at(-1).year,
   ];
   return (
-    <svg
+    <InteractiveChart
+      points={data.map((r) => ({
+        x: x(r.year) + x.bandwidth() / 2,
+        y: y(r.value),
+        title: String(r.year),
+        lines: [
+          `Rainfall: ${chartNumber(r.value)} mm`,
+          `Same ${result.months} calendar months${r.selected ? ' · selected year' : ''}`,
+        ],
+      }))}
       viewBox={`0 0 ${w} ${height}`}
       role="img"
       aria-label={`Rainfall totals for the same ${result.months} calendar months in each comparison year; ${result.selectedYear} is highlighted`}
@@ -81,7 +91,7 @@ function YearChart({ width, result }) {
       <text x={left} y={11} fontSize={11} fill="#526570">
         mm
       </text>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function YearOverview({ summary, date, release }) {

@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React from 'react';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridRows } from '@visx/grid';
@@ -39,7 +40,17 @@ export function ObservationChart({
   const unit = kind === 'rain' ? 'mm' : 'm³/s';
   const selected = values[cursor];
   return (
-    <svg
+    <InteractiveChart
+      hint={false}
+      points={points.map((p) => ({
+        x: margin.left + center(p.index),
+        y: Number.isFinite(p.value) ? margin.top + y(p.value) : null,
+        title: p.date,
+        lines: [
+          `${chartNumber(p.value)} ${unit}`,
+          ...(releaseStates[p.index] ? [`Release: ${releaseStates[p.index]}`] : []),
+        ],
+      }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="group"
@@ -149,7 +160,7 @@ export function ObservationChart({
           );
         })}
       </Group>
-    </svg>
+    </InteractiveChart>
   );
 }
 

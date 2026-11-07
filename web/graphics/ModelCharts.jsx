@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React from 'react';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridRows } from '@visx/grid';
@@ -5,7 +6,7 @@ import { Group } from '@visx/group';
 import { scaleLinear, scaleLog } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 
-const ticks = { fill: '#596575', fontSize: 10, fontFamily: 'inherit' };
+const ticks = { fill: '#596575', fontSize: 11, fontFamily: 'inherit' };
 const margin = { left: 57, right: 20, top: 24, bottom: 43 };
 export function ReturnLevelChart({
   width,
@@ -40,7 +41,20 @@ export function ReturnLevelChart({
     nice: true,
   });
   return (
-    <svg
+    <InteractiveChart
+      points={curve.map((r) => ({
+        x: margin.left + x(r.period),
+        y: margin.top + y(r.value),
+        title: `${chartNumber(r.period)}-year return period`,
+        lines: [
+          `Model estimate: ${chartNumber(r.value)} mm`,
+          ...(showBand
+            ? [`${confidence}% interval: ${chartNumber(r.lower)}–${chartNumber(r.upper)} mm`]
+            : []),
+          ...(otherName ? [`${otherName}: ${chartNumber(r.other)} mm`] : []),
+          ...(r.period > years ? ['Extrapolated beyond record length'] : []),
+        ],
+      }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
@@ -131,7 +145,7 @@ export function ReturnLevelChart({
         />
         <circle cx={x(period)} cy={y(level)} r={5} fill="#2563a6" stroke="#fff" strokeWidth={1.5} />
       </Group>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function DiagnosticChart({ width, points, kind }) {
@@ -156,7 +170,18 @@ export function DiagnosticChart({ width, points, kind }) {
     nice: true,
   });
   return (
-    <svg
+    <InteractiveChart
+      points={[...points]
+        .sort((a, b) => a.x - b.x)
+        .map((p) => ({
+          x: m.left + x(p.x),
+          y: m.top + y(p.y),
+          title: String(p.year),
+          lines: [
+            `Observed maximum: ${chartNumber(p.y)} mm`,
+            ...(kind === 'qq' ? [`Fitted quantile: ${chartNumber(p.x)} mm`] : []),
+          ],
+        }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
@@ -215,6 +240,6 @@ export function DiagnosticChart({ width, points, kind }) {
           </circle>
         ))}
       </Group>
-    </svg>
+    </InteractiveChart>
   );
 }

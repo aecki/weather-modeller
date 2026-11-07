@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React, { useEffect, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { scaleBand, scaleLinear } from '@visx/scale';
@@ -146,7 +147,19 @@ function MonthChart({ width, rows, selected }) {
     range: [height - bottom, top],
   });
   return (
-    <svg
+    <InteractiveChart
+      points={rows.map((r, i) => ({
+        x: x(months[i]) + x.bandwidth() / 2,
+        y: r ? y(r[1]) : null,
+        title: months[i],
+        lines: r
+          ? [
+              `Average: ${chartNumber(r[1])} mm`,
+              `Middle 80%: ${chartNumber(r[2])}–${chartNumber(r[3])} mm`,
+              `${r[0]} complete months`,
+            ]
+          : ['No complete monthly record'],
+      }))}
       viewBox={`0 0 ${w} ${height}`}
       role="img"
       aria-label="Average monthly precipitation with the middle 80 percent of historical monthly totals"
@@ -198,7 +211,7 @@ function MonthChart({ width, rows, selected }) {
       <text x={left} y={10} fontSize={11} fill="#526963">
         mm
       </text>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function ClimateOverview({ summary, date }) {

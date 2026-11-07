@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React, { useEffect, useState } from 'react';
 import { ParentSize } from '@visx/responsive';
 import { scaleLinear } from '@visx/scale';
@@ -42,7 +43,23 @@ export function WaterChart({
   const x = scaleLinear({ domain: [0, Math.max(1, points.length - 1)], range: [left, w - 12] });
   const y = scaleLinear({ domain: [lo - padding, hi + padding], range: [height - bottom, top] });
   return (
-    <svg viewBox={`0 0 ${w} ${height}`} role="img" aria-label={label} data-renderer="visx">
+    <InteractiveChart
+      points={points.map((r, i) => ({
+        x: x(i),
+        y: Number.isFinite(r[1]) ? y(r[1]) : null,
+        title: r[0],
+        lines: [
+          `Measured: ${chartNumber(r[1], 2)} ${unit}`,
+          ...(r[2]
+            ? [`Usual range: ${chartNumber(r[2][0], 2)}–${chartNumber(r[2][2], 2)} ${unit}`]
+            : []),
+        ],
+      }))}
+      viewBox={`0 0 ${w} ${height}`}
+      role="img"
+      aria-label={label}
+      data-renderer="visx"
+    >
       <AxisLeft
         left={left}
         scale={y}
@@ -77,7 +94,7 @@ export function WaterChart({
       <text x={left} y={12} fontSize={11} fill="#536c66">
         {unit}
       </text>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function LakeOverview({ id = '2209', onSelect, onDirectory, embedded = false }) {

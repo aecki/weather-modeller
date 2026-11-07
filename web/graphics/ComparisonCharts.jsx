@@ -1,3 +1,4 @@
+import InteractiveChart, { chartNumber } from './InteractiveChart.jsx';
 import React from 'react';
 import { AxisBottom, AxisLeft } from '@visx/axis';
 import { GridRows } from '@visx/grid';
@@ -5,7 +6,7 @@ import { Group } from '@visx/group';
 import { scaleLinear, scaleLog } from '@visx/scale';
 import { AreaClosed, LinePath } from '@visx/shape';
 export const MODEL_COLORS = { gev: '#2563a6', gumbel: '#64748b', gpd: '#ae5738', smev: '#25785e' };
-const tick = { fill: '#596575', fontSize: 10, fontFamily: 'inherit' };
+const tick = { fill: '#596575', fontSize: 11, fontFamily: 'inherit' };
 const m = { left: 55, right: 18, top: 24, bottom: 68 };
 export function ComparisonCurve({ width, curves, bandModel, years, period }) {
   const height = 350,
@@ -23,7 +24,23 @@ export function ComparisonCurve({ width, curves, bandModel, years, period }) {
     nice: true,
   });
   return (
-    <svg
+    <InteractiveChart
+      points={(curves[0]?.rows ?? []).map((r, i) => ({
+        x: m.left + x(r.period),
+        y: null,
+        title: `${chartNumber(r.period)}-year return period`,
+        lines: curves.flatMap((c) => {
+          const row = c.rows[i];
+          return row
+            ? [
+                `${c.model.toUpperCase()}: ${chartNumber(row.value)} mm`,
+                ...(c.model === bandModel
+                  ? [`Interval: ${chartNumber(row.lower)}–${chartNumber(row.upper)} mm`]
+                  : []),
+              ]
+            : [];
+        }),
+      }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
@@ -85,7 +102,7 @@ export function ComparisonCurve({ width, curves, bandModel, years, period }) {
         ))}
         <line x1={x(period)} x2={x(period)} y1={0} y2={h} stroke="#64748b" strokeDasharray="3 4" />
       </Group>
-    </svg>
+    </InteractiveChart>
   );
 }
 export function HoldoutHistory({ width, training, test, predictions }) {
@@ -107,7 +124,15 @@ export function HoldoutHistory({ width, training, test, predictions }) {
   });
   const cut = x(+test[0].year - 0.5);
   return (
-    <svg
+    <InteractiveChart
+      points={blocks.map((b) => ({
+        x: m.left + x(+b.year),
+        y: m.top + y(b.maximum),
+        title: String(b.year),
+        lines: [
+          `${training.includes(b) ? 'Training' : 'Held-out'} observation: ${chartNumber(b.maximum)} mm`,
+        ],
+      }))}
       width="100%"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
@@ -163,6 +188,6 @@ export function HoldoutHistory({ width, training, test, predictions }) {
           </circle>
         ))}
       </Group>
-    </svg>
+    </InteractiveChart>
   );
 }

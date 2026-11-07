@@ -183,3 +183,30 @@ const locationsMap = renderToStaticMarkup(
 assert.ok(locationsMap.includes('Select Meiringen (MER)'));
 assert.ok(!locationsMap.includes('missing rainfall'));
 assert.ok(locationsMap.includes('aria-pressed="true"'));
+
+// Inspection must retain missing dates and infinite statistical bounds, and use
+// the correct SVG axis for horizontal category bars.
+import { nearestPlotPoint, stepPlotPoint } from '../web/graphics/chart-inspection.mjs';
+import { chartNumber } from '../web/graphics/InteractiveChart.jsx';
+const inspectionPoints = [
+  { x: 10, y: 30 },
+  { x: 20, y: null },
+  { x: 30, y: 10 },
+];
+assert.equal(nearestPlotPoint(inspectionPoints, { x: 21, y: 11 }), 1);
+assert.equal(nearestPlotPoint(inspectionPoints, { x: 21, y: 11 }, 'y'), 2);
+assert.equal(nearestPlotPoint([], { x: 10, y: 10 }), null);
+assert.equal(stepPlotPoint(0, 3, 'ArrowLeft'), 0);
+assert.equal(stepPlotPoint(2, 3, 'ArrowRight'), 2);
+assert.equal(stepPlotPoint(1, 3, 'Home'), 0);
+assert.equal(stepPlotPoint(0, 3, 'End'), 2);
+assert.equal(stepPlotPoint(null, 0, 'ArrowRight'), null);
+assert.equal(chartNumber(null), 'Unavailable');
+assert.equal(chartNumber(0), '0.0');
+assert.equal(chartNumber(Infinity), '∞');
+assert.equal(chartNumber(-Infinity), '−∞');
+assert.ok(rainfall.includes('aria-describedby='));
+assert.ok(rainfall.includes('Escape clears it'));
+console.log(
+  'Chart inspection verified: missingness, unbounded intervals, horizontal selection and keyboard limits.',
+);
