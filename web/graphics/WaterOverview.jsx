@@ -264,14 +264,14 @@ export function LakeOverview({ id = '2209', onSelect, onDirectory, embedded = fa
             </p>
           </HistoricalWrapper>
           {weatherModelled ? (
-            <details>
+            <details className="lake-disclosure">
               <summary>Earlier short-term model benchmark</summary>
               <LakeBenchmark id={id} />
             </details>
           ) : (
             <LakeBenchmark id={id} />
           )}
-          <details>
+          <details className="lake-disclosure">
             <summary>Lake sources, uncertainty and method</summary>
             <p>
               Source: FOEN. {lake.station.riverName}, {lake.station.name}, station {lake.station.no}

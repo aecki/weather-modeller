@@ -1015,9 +1015,110 @@ body[data-section] main input:not([type='range']):not([type='checkbox']) {
   font-size: 12px;
   min-height: 36px;
 }
-.chart-inspector span,
 .model-parameters,
 code,
 pre {
   font-family: 'Geist Mono', ui-monospace, monospace;
+}
+
+/* Section colour semantics and readable lake supporting information. */
+:root {
+  --water: #25785e;
+  --water-soft: #eef7f2;
+}
+body[data-section='water'] .section-tabs a[aria-current='page'] {
+  border-bottom-color: var(--water);
+}
+body[data-section='water'] .workspace-tabs a[aria-current='page'],
+body[data-section='water'] .lake-reading strong,
+body[data-section='water'] .recovery-probabilities strong {
+  color: var(--water);
+}
+body[data-section='water'] input[type='range'] {
+  accent-color: var(--water);
+}
+body[data-section='water'] main a:not(.workspace-tabs a) {
+  color: #21664f;
+}
+.lake-overview > .lake-outlook-status {
+  margin: 32px 0 24px;
+  padding: 18px 20px;
+  border: 1px solid #e8d6ae;
+  border-left: 3px solid #a66b16;
+  border-radius: 8px;
+  background: #fffbf3;
+  color: #654b25;
+  font-size: 15px;
+  line-height: 1.65;
+  max-width: none;
+}
+.lake-overview > details.lake-recovery,
+.lake-overview > details.lake-disclosure {
+  margin: 12px 0;
+  padding: 0 24px;
+  border: 1px solid var(--story-line);
+  border-radius: 10px;
+  background: white;
+}
+.lake-overview > details > summary {
+  padding: 20px 0;
+  color: #253f34;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.5;
+  list-style-position: outside;
+  margin-left: 18px;
+}
+.lake-overview > details > summary::marker {
+  color: var(--water);
+}
+.lake-overview > details[open] > summary {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--story-line);
+}
+.lake-overview > details[open] {
+  padding-bottom: 24px;
+}
+.lake-overview > details > h3 {
+  margin-top: 0;
+}
+.lake-disclosure .lake-benchmark {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.lake-overview > details p {
+  margin: 16px 0;
+}
+.lake-overview > details a {
+  overflow-wrap: anywhere;
+}
+.lake-overview .chart-caption {
+  margin-bottom: 28px;
+}
+body[data-section='water'] .weather-recovery {
+  padding-top: 32px;
+  margin-top: 40px;
+}
+.chart-inspector span {
+  font-family: inherit;
+  font-size: 13px;
+}
+.chart-caption,
+.model-caption,
+.history-caption {
+  font-size: 14px;
+  line-height: 1.7;
+}
+@media (max-width: 760px) {
+  .lake-overview > details.lake-recovery,
+  .lake-overview > details.lake-disclosure {
+    padding-inline: 18px;
+  }
+  .lake-overview > details > summary {
+    padding-block: 18px;
+  }
+  .lake-overview > .lake-outlook-status {
+    padding: 16px;
+  }
 }

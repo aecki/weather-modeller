@@ -153,14 +153,24 @@ export default function LakeRecoveryOutlook({ lake }) {
     });
     return () => controller.abort();
   }, [id, lake.analysis.latest, lake.analysis.level]);
-  if (error) return <p role="status">{error}</p>;
-  if (!data) return <p role="status">Loading the weather-based recovery outlook…</p>;
+  if (error)
+    return (
+      <p className="lake-outlook-status" role="status">
+        {error}
+      </p>
+    );
+  if (!data)
+    return (
+      <p className="lake-outlook-status" role="status">
+        Loading the weather-based recovery outlook…
+      </p>
+    );
   const stale =
     (Date.now() - Date.parse(data.generatedAt)) / 3600000 > 36 ||
     (Date.now() - Date.parse(data.observationDate + 'T12:00:00Z')) / 86400000 > 3;
   if (stale)
     return (
-      <p role="status">
+      <p className="lake-outlook-status" role="status">
         The outlook prepared on {dayText(data.generatedAt.slice(0, 10))} is out of date. Recovery
         probabilities are withheld until the next successful refresh.
       </p>
