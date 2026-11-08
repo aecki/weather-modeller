@@ -5,7 +5,6 @@ import { ObservationChart } from './TimeSeries';
 import { WaterChart } from './WaterOverview';
 import { loadStation, largestWindows, stationLocations, stationCSV } from './station-data.mjs';
 import { StationMap } from './StationMap';
-import { WindowExplanation } from './WindowExplanation';
 function downloadCSV(content, filename) {
   const url = URL.createObjectURL(
     new Blob(['\uFEFF' + content], { type: 'text/csv;charset=utf-8' }),
@@ -241,28 +240,6 @@ export function StationNetwork() {
                 />
               )}
             </ParentSize>
-          )}
-          {selectedPeak && (
-            <details className="calculation-details">
-              <summary>How this rainfall total is calculated</summary>
-              <ParentSize style={{ height: 240 }}>
-                {({ width }) => (
-                  <WindowExplanation
-                    width={Math.max(width, 280)}
-                    samples={active.dates
-                      .slice(Math.max(0, at - days + 1), at + 1)
-                      .map((date, i) => ({
-                        date,
-                        value: active.values[Math.max(0, at - days + 1) + i],
-                      }))}
-                    days={days}
-                    total={selectedPeak.value}
-                    stationName={station.name}
-                    ending={chosen}
-                  />
-                )}
-              </ParentSize>
-            </details>
           )}
           <section id="network-models">
             <ModelLab
