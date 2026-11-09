@@ -1346,3 +1346,133 @@ main .comparison-table small {
     padding: 14px 16px;
   }
 }
+
+/* Rainfall uses the Water workspace hierarchy: open sections, metric panels,
+   and consistent supporting disclosures. Colour alone identifies the section. */
+body[data-section='rainfall'] .historical-overview,
+body[data-section='rainfall'] .year-overview,
+body[data-section='rainfall'] .climate-overview,
+body[data-section='rainfall'] .historical-extremes,
+body[data-section='rainfall'] .regional-address,
+body[data-section='rainfall'] .model-lab,
+body[data-section='rainfall'] .comparison-lab {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--story-line);
+  border-radius: 0;
+  box-shadow: none;
+  margin: 40px 0 0;
+  padding: 32px 0 0;
+}
+body[data-section='rainfall'] .rain-hero {
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: none;
+  gap: 24px;
+}
+body[data-section='rainfall'] .daily-amount {
+  font-size: 40px;
+  font-weight: 650;
+  letter-spacing: -1px;
+  margin: 0 0 10px;
+  line-height: 1.25;
+  color: #2563a6;
+}
+body[data-section='rainfall'] .daily-amount span {
+  font-size: 22px;
+}
+body[data-section='rainfall'] .rain-hero p {
+  margin: 12px 0 0;
+  font-size: 16px;
+}
+body[data-section='rainfall'] .result-kicker {
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+body[data-section='rainfall'] .address-search,
+body[data-section='rainfall'] .network-controls {
+  box-shadow: none;
+  background: white;
+  padding: 24px;
+}
+body[data-section='rainfall'] .daily-intro {
+  font-size: 17px;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+body[data-section='rainfall'] .historical-overview h3,
+body[data-section='rainfall'] .historical-extremes h3,
+body[data-section='rainfall'] .regional-address > div > h3 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.7px;
+}
+body[data-section='rainfall'] .history-copy .historical-headline {
+  font-size: 20px;
+  line-height: 1.5;
+}
+body[data-section='rainfall'] .history-story {
+  gap: 32px;
+}
+body[data-section='rainfall'] .rain-facts article {
+  box-shadow: none;
+  padding: 24px;
+}
+body[data-section='rainfall'] .daily-regional details,
+body[data-section='rainfall'] .station-network > details {
+  margin: 12px 0;
+  padding: 0 24px;
+  border: 1px solid var(--story-line);
+  border-radius: 10px;
+  background: white;
+}
+body[data-section='rainfall'] .daily-regional details > summary,
+body[data-section='rainfall'] .station-network > details > summary {
+  padding: 20px 0;
+  margin-left: 18px;
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.5;
+  color: #234b75;
+  list-style-position: outside;
+}
+body[data-section='rainfall'] details > summary::marker {
+  color: #2563a6;
+}
+body[data-section='rainfall'] .daily-regional details[open],
+body[data-section='rainfall'] .station-network > details[open] {
+  padding-bottom: 24px;
+}
+body[data-section='rainfall'] .daily-regional details[open] > summary,
+body[data-section='rainfall'] .station-network > details[open] > summary {
+  border-bottom: 1px solid var(--story-line);
+  margin-bottom: 24px;
+}
+body[data-section='rainfall'] .daily-regional details p {
+  margin: 16px 0;
+}
+@media (max-width: 760px) {
+  body[data-section='rainfall'] .historical-overview,
+  body[data-section='rainfall'] .year-overview,
+  body[data-section='rainfall'] .climate-overview,
+  body[data-section='rainfall'] .historical-extremes,
+  body[data-section='rainfall'] .regional-address,
+  body[data-section='rainfall'] .model-lab,
+  body[data-section='rainfall'] .comparison-lab {
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+  body[data-section='rainfall'] .rain-hero,
+  body[data-section='rainfall'] .address-search,
+  body[data-section='rainfall'] .network-controls {
+    padding: 20px;
+  }
+  body[data-section='rainfall'] .daily-regional details,
+  body[data-section='rainfall'] .station-network > details {
+    padding-inline: 18px;
+  }
+  body[data-section='rainfall'] .historical-overview h3,
+  body[data-section='rainfall'] .historical-extremes h3 {
+    font-size: 24px;
+  }
+}
