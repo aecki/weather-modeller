@@ -54,7 +54,7 @@ export function DailyRegional({ mode = 'overview' }) {
     [resolved, setResolved] = useState(null),
     [dayError, setDayError] = useState('');
   const [reload, setReload] = useState(0),
-    [analysisDate, setDate] = useState('');
+    [analysisDate, setDate] = useState('2007-08-08');
   const expected = expectedRainDay();
   const date = analysisDate || expected;
   const calendarInput = useRef(null);
@@ -66,7 +66,7 @@ export function DailyRegional({ mode = 'overview' }) {
     const input = event.currentTarget;
     if (input.validity.valid && input.value) setDate(input.value);
   };
-  const [query, setQuery] = useState(''),
+  const [query, setQuery] = useState('Bahnhofstrasse 1 8001 Zürich'),
     [options, setOptions] = useState([]),
     [selected, setSelected] = useState(null);
   const [highlight, setHighlight] = useState(-1);
@@ -77,6 +77,38 @@ export function DailyRegional({ mode = 'overview' }) {
   const [result, setResult] = useState(null);
   const searchRequest = useRef(null),
     boundary = useRef(null);
+  // Resolve the public example through the official address service; never
+  // approximate an address coordinate or replace a user's later selection.
+  useEffect(() => {
+    const controller = new AbortController();
+    searchRequest.current = controller;
+    const url = new URL('https://api3.geo.admin.ch/rest/services/ech/SearchServer');
+    url.search = new URLSearchParams({
+      type: 'locations',
+      origins: 'address',
+      searchText: 'Bahnhofstrasse 1 8001 Zürich',
+      sr: '2056',
+      geometryFormat: 'geojson',
+      returnGeometry: 'true',
+      limit: '8',
+    });
+    fetch(url, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw Error('Address service unavailable');
+        return response.json();
+      })
+      .then((response) => {
+        const example = addressesFromResponse(response).find(
+          (option) => option.label === 'Bahnhofstrasse 1 8001 Zürich',
+        );
+        if (!controller.signal.aborted && example) {
+          setSelected(example);
+          setOptions([]);
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     setReleaseError('');
@@ -241,7 +273,13 @@ export function DailyRegional({ mode = 'overview' }) {
     setSearching(false);
   };
   useEffect(() => {
-    if (selected || query.trim().length < 3 || query.trim().split(/\s+/).length > 10) return;
+    if (
+      selected ||
+      (query === 'Bahnhofstrasse 1 8001 Zürich' && searchRequest.current) ||
+      query.trim().length < 3 ||
+      query.trim().split(/\s+/).length > 10
+    )
+      return;
     suggestionTimer.current = setTimeout(() => search(), 350);
     return () => {
       clearTimeout(suggestionTimer.current);
